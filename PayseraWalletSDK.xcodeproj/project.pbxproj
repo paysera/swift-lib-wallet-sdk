@@ -1,0 +1,824 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1C042A9021A45A8C0027B236 /* PSTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C042A8F21A45A8C0027B236 /* PSTransaction.swift */; };
+		1C0E64DD2105C1B60013415B /* PSGetLocationsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E64DC2105C1B60013415B /* PSGetLocationsRequest.swift */; };
+		1C0E64DF2105C51F0013415B /* PSMetadataAwareResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E64DE2105C51F0013415B /* PSMetadataAwareResponse.swift */; };
+		1C0E64E12105C5550013415B /* PSMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E64E02105C5550013415B /* PSMetadata.swift */; };
+		1C0E64E32105D0480013415B /* PSLocationPinImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C0E64E22105D0480013415B /* PSLocationPinImages.swift */; };
+		1C126970217F2E6300BADC39 /* PSClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C12696F217F2E6300BADC39 /* PSClient.swift */; };
+		1C126983217F477100BADC39 /* PayseraWalletSDK.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CD8619120EA23AF003E6195 /* PayseraWalletSDK.plist */; };
+		1C30105220F384C400188877 /* PSServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C30105120F384C400188877 /* PSServerConfiguration.swift */; };
+		1C30105420F3850200188877 /* PSServerInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C30105320F3850200188877 /* PSServerInformation.swift */; };
+		1C30130F20F3A0F500188877 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C30130E20F3A0F500188877 /* ApiRequest.swift */; };
+		1C437DE520ECD33B00778D90 /* RequestSigningAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */; };
+		1C50B5D920F6462500927C09 /* RefreshingWalletAsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */; };
+		1C73CCCB21503C5900F4E861 /* PSQRCodeInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */; };
+		1C7C759920F76A8100C5BCCC /* ClientsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C759820F76A8100C5BCCC /* ClientsFactory.swift */; };
+		1C7FA2C521074F1F009F588B /* PSPasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7FA2C421074F1F009F588B /* PSPasswordResetRequest.swift */; };
+		1C7FA2C72107559D009F588B /* PSPasswordChangeRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7FA2C62107559D009F588B /* PSPasswordChangeRequest.swift */; };
+		1C856BCA20FC876D007F423C /* PSCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C856BC920FC876D007F423C /* PSCredentials.swift */; };
+		1C8EA23320F8BB8300572BC9 /* PSUserRegistrationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EA22E20F8BB8300572BC9 /* PSUserRegistrationRequest.swift */; };
+		1C8EA23520F8BB8300572BC9 /* PSRefreshTokenRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EA23020F8BB8300572BC9 /* PSRefreshTokenRequest.swift */; };
+		1C8EA23620F8BB8300572BC9 /* PSUserLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EA23120F8BB8300572BC9 /* PSUserLoginRequest.swift */; };
+		1C8EA23920F8BEA000572BC9 /* PSGetUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EA23820F8BEA000572BC9 /* PSGetUserRequest.swift */; };
+		1C8EA23B20F8CFA200572BC9 /* PSUserDeviceInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C8EA23A20F8CFA200572BC9 /* PSUserDeviceInfoRequest.swift */; };
+		1CB2D46120EB66DC000D0B5F /* PSUserIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D45F20EB66DC000D0B5F /* PSUserIdentity.swift */; };
+		1CB2D46220EB66DC000D0B5F /* PSUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D46020EB66DC000D0B5F /* PSUser.swift */; };
+		1CB2D47C20EB6B11000D0B5F /* PSLocationCategoryImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D47A20EB6B11000D0B5F /* PSLocationCategoryImages.swift */; };
+		1CB2D47D20EB6B11000D0B5F /* PSPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D47B20EB6B11000D0B5F /* PSPayment.swift */; };
+		1CB2D47F20EB6C5A000D0B5F /* PSProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D47E20EB6C5A000D0B5F /* PSProject.swift */; };
+		1CB2D48D20EB6CB4000D0B5F /* PSTransferNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48020EB6CB3000D0B5F /* PSTransferNotification.swift */; };
+		1CB2D48E20EB6CB4000D0B5F /* PSIdentityDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48120EB6CB3000D0B5F /* PSIdentityDocument.swift */; };
+		1CB2D48F20EB6CB4000D0B5F /* PSCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48220EB6CB3000D0B5F /* PSCard.swift */; };
+		1CB2D49020EB6CB4000D0B5F /* PSLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48320EB6CB3000D0B5F /* PSLocationService.swift */; };
+		1CB2D49120EB6CB4000D0B5F /* PSIdentificationRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48420EB6CB4000D0B5F /* PSIdentificationRequest.swift */; };
+		1CB2D49220EB6CB4000D0B5F /* PSIdentificationDocumentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48520EB6CB4000D0B5F /* PSIdentificationDocumentRequest.swift */; };
+		1CB2D49420EB6CB4000D0B5F /* PSTransfer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48720EB6CB4000D0B5F /* PSTransfer.swift */; };
+		1CB2D49520EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48820EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift */; };
+		1CB2D49620EB6CB4000D0B5F /* PSWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48920EB6CB4000D0B5F /* PSWallet.swift */; };
+		1CB2D49720EB6CB4000D0B5F /* PSTransfersResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48A20EB6CB4000D0B5F /* PSTransfersResult.swift */; };
+		1CB2D49820EB6CB4000D0B5F /* PSLocationPrice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48B20EB6CB4000D0B5F /* PSLocationPrice.swift */; };
+		1CB2D49920EB6CB4000D0B5F /* PSLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D48C20EB6CB4000D0B5F /* PSLocation.swift */; };
+		1CB2D49C20EB7A5A000D0B5F /* PSLocationWorkingHours.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830E20EB66BE000C3962 /* PSLocationWorkingHours.swift */; };
+		1CB2D49D20EB7A63000D0B5F /* PSAccountInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2831720EB66BE000C3962 /* PSAccountInformation.swift */; };
+		1CB2D49E20EB7A63000D0B5F /* PSLocationCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2831120EB66BE000C3962 /* PSLocationCategory.swift */; };
+		1CB2D49F20EB7A63000D0B5F /* PSLocationRemoteOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2831420EB66BE000C3962 /* PSLocationRemoteOrder.swift */; };
+		1CB2D4A020EB7A63000D0B5F /* PSMoney.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2831320EB66BE000C3962 /* PSMoney.swift */; };
+		1CB2D4A120EB7A63000D0B5F /* PSPayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830C20EB66BD000C3962 /* PSPayer.swift */; };
+		1CB2D4A320EB7A63000D0B5F /* PSPurpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830720EB66BD000C3962 /* PSPurpose.swift */; };
+		1CB2D4A420EB7A63000D0B5F /* PSTransactionRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2831020EB66BE000C3962 /* PSTransactionRequest.swift */; };
+		1CB2D4A620EB7A63000D0B5F /* PSUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830B20EB66BD000C3962 /* PSUserService.swift */; };
+		1CB2D4A820EB7A63000D0B5F /* PSWalletIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830D20EB66BD000C3962 /* PSWalletIdentifier.swift */; };
+		1CB2D4CE20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4CD20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift */; };
+		1CB2D4D120EBA5A8000D0B5F /* TransferStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4D020EBA5A8000D0B5F /* TransferStatus.swift */; };
+		1CB2D4D920EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4D320EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift */; };
+		1CB2D4DA20EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4D420EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift */; };
+		1CB2D4DB20EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4D520EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift */; };
+		1CB2D4DC20EBA661000D0B5F /* PSBeneficiaryBankAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4D620EBA661000D0B5F /* PSBeneficiaryBankAccount.swift */; };
+		1CB2D4DE20EBA661000D0B5F /* PSBeneficiary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4D820EBA661000D0B5F /* PSBeneficiary.swift */; };
+		1CB2D4E420EBAA85000D0B5F /* PSCardRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4E320EBAA85000D0B5F /* PSCardRelation.swift */; };
+		1CB2D4E620EBAA9C000D0B5F /* PSCardData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4E520EBAA9C000D0B5F /* PSCardData.swift */; };
+		1CB2D4E820EBAB0B000D0B5F /* PSCardExpiration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4E720EBAB0B000D0B5F /* PSCardExpiration.swift */; };
+		1CB2D4EA20EBAB32000D0B5F /* PSCardAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4E920EBAB32000D0B5F /* PSCardAccount.swift */; };
+		1CB2D4EC20EBAB63000D0B5F /* PSCommissionRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4EB20EBAB63000D0B5F /* PSCommissionRule.swift */; };
+		1CB2D4EF20EBAFD4000D0B5F /* PSUserServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB2D4EE20EBAFD4000D0B5F /* PSUserServiceResponse.swift */; };
+		1CB7F6A921A2D99F00B2E282 /* BaseFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB7F6A821A2D99F00B2E282 /* BaseFilter.swift */; };
+		1CB8C87020F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C86F20F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift */; };
+		1CB8C87320F4AF2E00647BC9 /* OAuthAsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C87220F4AF2E00647BC9 /* OAuthAsyncClient.swift */; };
+		1CB8C87520F4AFAC00647BC9 /* OAuthApiRequestRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C87420F4AFAC00647BC9 /* OAuthApiRequestRouter.swift */; };
+		1CB8C88620F4C67800647BC9 /* WalletAsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C88420F4C67800647BC9 /* WalletAsyncClient.swift */; };
+		1CB8C88720F4C67800647BC9 /* WalletApiRequestRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C88520F4C67800647BC9 /* WalletApiRequestRouter.swift */; };
+		1CB8C88C20F4C88400647BC9 /* PublicApiRequestRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C88B20F4C88400647BC9 /* PublicApiRequestRouter.swift */; };
+		1CB8C89020F4C8D200647BC9 /* PublicWalletApiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C88F20F4C8D200647BC9 /* PublicWalletApiClient.swift */; };
+		1CB8C89220F4C91100647BC9 /* BaseAsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CB8C89120F4C91100647BC9 /* BaseAsyncClient.swift */; };
+		1CC2830520EB5DC5000C3962 /* PSAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830420EB5DC5000C3962 /* PSAddress.swift */; };
+		1CE7723220EA3CF300CD53E2 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1CE7723120EA3CF200CD53E2 /* Cartfile */; };
+		1CE7723420EA3D5700CD53E2 /* Cartfile.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 1CE7723320EA3D5700CD53E2 /* Cartfile.resolved */; };
+		1CE7725220EA5B8900CD53E2 /* PSWalletApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */; };
+		1CEF872D2164ADCD00A0FA1D /* PSWalletBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */; };
+		1CEF87322164BF2A00A0FA1D /* PSTransferInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */; };
+		1CEF87342164C0AC00A0FA1D /* PSTransferFailureStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */; };
+		1CEF87362164F8B000A0FA1D /* PSCreateClientInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1C042A8F21A45A8C0027B236 /* PSTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSTransaction.swift; sourceTree = "<group>"; };
+		1C0E64DC2105C1B60013415B /* PSGetLocationsRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSGetLocationsRequest.swift; sourceTree = "<group>"; };
+		1C0E64DE2105C51F0013415B /* PSMetadataAwareResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSMetadataAwareResponse.swift; sourceTree = "<group>"; };
+		1C0E64E02105C5550013415B /* PSMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSMetadata.swift; sourceTree = "<group>"; };
+		1C0E64E22105D0480013415B /* PSLocationPinImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLocationPinImages.swift; sourceTree = "<group>"; };
+		1C12696F217F2E6300BADC39 /* PSClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSClient.swift; sourceTree = "<group>"; };
+		1C30105120F384C400188877 /* PSServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSServerConfiguration.swift; sourceTree = "<group>"; };
+		1C30105320F3850200188877 /* PSServerInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSServerInformation.swift; sourceTree = "<group>"; };
+		1C30130E20F3A0F500188877 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
+		1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSigningAdapter.swift; sourceTree = "<group>"; };
+		1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshingWalletAsyncClient.swift; sourceTree = "<group>"; };
+		1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSQRCodeInformation.swift; sourceTree = "<group>"; };
+		1C7C759820F76A8100C5BCCC /* ClientsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsFactory.swift; sourceTree = "<group>"; };
+		1C7FA2C421074F1F009F588B /* PSPasswordResetRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPasswordResetRequest.swift; sourceTree = "<group>"; };
+		1C7FA2C62107559D009F588B /* PSPasswordChangeRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPasswordChangeRequest.swift; sourceTree = "<group>"; };
+		1C856BC920FC876D007F423C /* PSCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSCredentials.swift; sourceTree = "<group>"; };
+		1C8EA22E20F8BB8300572BC9 /* PSUserRegistrationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSUserRegistrationRequest.swift; sourceTree = "<group>"; };
+		1C8EA23020F8BB8300572BC9 /* PSRefreshTokenRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSRefreshTokenRequest.swift; sourceTree = "<group>"; };
+		1C8EA23120F8BB8300572BC9 /* PSUserLoginRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSUserLoginRequest.swift; sourceTree = "<group>"; };
+		1C8EA23820F8BEA000572BC9 /* PSGetUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSGetUserRequest.swift; sourceTree = "<group>"; };
+		1C8EA23A20F8CFA200572BC9 /* PSUserDeviceInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSUserDeviceInfoRequest.swift; sourceTree = "<group>"; };
+		1CB2D45F20EB66DC000D0B5F /* PSUserIdentity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSUserIdentity.swift; sourceTree = "<group>"; };
+		1CB2D46020EB66DC000D0B5F /* PSUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSUser.swift; sourceTree = "<group>"; };
+		1CB2D47A20EB6B11000D0B5F /* PSLocationCategoryImages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLocationCategoryImages.swift; sourceTree = "<group>"; };
+		1CB2D47B20EB6B11000D0B5F /* PSPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSPayment.swift; sourceTree = "<group>"; };
+		1CB2D47E20EB6C5A000D0B5F /* PSProject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSProject.swift; sourceTree = "<group>"; };
+		1CB2D48020EB6CB3000D0B5F /* PSTransferNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSTransferNotification.swift; sourceTree = "<group>"; };
+		1CB2D48120EB6CB3000D0B5F /* PSIdentityDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSIdentityDocument.swift; sourceTree = "<group>"; };
+		1CB2D48220EB6CB3000D0B5F /* PSCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSCard.swift; sourceTree = "<group>"; };
+		1CB2D48320EB6CB3000D0B5F /* PSLocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLocationService.swift; sourceTree = "<group>"; };
+		1CB2D48420EB6CB4000D0B5F /* PSIdentificationRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSIdentificationRequest.swift; sourceTree = "<group>"; };
+		1CB2D48520EB6CB4000D0B5F /* PSIdentificationDocumentRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSIdentificationDocumentRequest.swift; sourceTree = "<group>"; };
+		1CB2D48720EB6CB4000D0B5F /* PSTransfer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSTransfer.swift; sourceTree = "<group>"; };
+		1CB2D48820EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSIdentificationRequestsFilter.swift; sourceTree = "<group>"; };
+		1CB2D48920EB6CB4000D0B5F /* PSWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSWallet.swift; sourceTree = "<group>"; };
+		1CB2D48A20EB6CB4000D0B5F /* PSTransfersResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSTransfersResult.swift; sourceTree = "<group>"; };
+		1CB2D48B20EB6CB4000D0B5F /* PSLocationPrice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLocationPrice.swift; sourceTree = "<group>"; };
+		1CB2D48C20EB6CB4000D0B5F /* PSLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSLocation.swift; sourceTree = "<group>"; };
+		1CB2D4CD20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Mappable+EnumeratedMapping.swift"; sourceTree = "<group>"; };
+		1CB2D4D020EBA5A8000D0B5F /* TransferStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferStatus.swift; sourceTree = "<group>"; };
+		1CB2D4D320EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSBeneficiaryTaxAccount.swift; sourceTree = "<group>"; };
+		1CB2D4D420EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSBeneficiaryPayseraAccount.swift; sourceTree = "<group>"; };
+		1CB2D4D520EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSBeneficiaryWebmoneyAccount.swift; sourceTree = "<group>"; };
+		1CB2D4D620EBA661000D0B5F /* PSBeneficiaryBankAccount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSBeneficiaryBankAccount.swift; sourceTree = "<group>"; };
+		1CB2D4D820EBA661000D0B5F /* PSBeneficiary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSBeneficiary.swift; sourceTree = "<group>"; };
+		1CB2D4E320EBAA85000D0B5F /* PSCardRelation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCardRelation.swift; sourceTree = "<group>"; };
+		1CB2D4E520EBAA9C000D0B5F /* PSCardData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCardData.swift; sourceTree = "<group>"; };
+		1CB2D4E720EBAB0B000D0B5F /* PSCardExpiration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCardExpiration.swift; sourceTree = "<group>"; };
+		1CB2D4E920EBAB32000D0B5F /* PSCardAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCardAccount.swift; sourceTree = "<group>"; };
+		1CB2D4EB20EBAB63000D0B5F /* PSCommissionRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCommissionRule.swift; sourceTree = "<group>"; };
+		1CB2D4EE20EBAFD4000D0B5F /* PSUserServiceResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSUserServiceResponse.swift; sourceTree = "<group>"; };
+		1CB7F6A821A2D99F00B2E282 /* BaseFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFilter.swift; sourceTree = "<group>"; };
+		1CB8C86F20F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTimeSynchronizationProtocol.swift; sourceTree = "<group>"; };
+		1CB8C87220F4AF2E00647BC9 /* OAuthAsyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthAsyncClient.swift; sourceTree = "<group>"; };
+		1CB8C87420F4AFAC00647BC9 /* OAuthApiRequestRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthApiRequestRouter.swift; sourceTree = "<group>"; };
+		1CB8C88420F4C67800647BC9 /* WalletAsyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletAsyncClient.swift; sourceTree = "<group>"; };
+		1CB8C88520F4C67800647BC9 /* WalletApiRequestRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletApiRequestRouter.swift; sourceTree = "<group>"; };
+		1CB8C88B20F4C88400647BC9 /* PublicApiRequestRouter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicApiRequestRouter.swift; sourceTree = "<group>"; };
+		1CB8C88F20F4C8D200647BC9 /* PublicWalletApiClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicWalletApiClient.swift; sourceTree = "<group>"; };
+		1CB8C89120F4C91100647BC9 /* BaseAsyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseAsyncClient.swift; sourceTree = "<group>"; };
+		1CC2830420EB5DC5000C3962 /* PSAddress.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSAddress.swift; sourceTree = "<group>"; };
+		1CC2830720EB66BD000C3962 /* PSPurpose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPurpose.swift; sourceTree = "<group>"; };
+		1CC2830B20EB66BD000C3962 /* PSUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSUserService.swift; sourceTree = "<group>"; };
+		1CC2830C20EB66BD000C3962 /* PSPayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPayer.swift; sourceTree = "<group>"; };
+		1CC2830D20EB66BD000C3962 /* PSWalletIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletIdentifier.swift; sourceTree = "<group>"; };
+		1CC2830E20EB66BE000C3962 /* PSLocationWorkingHours.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSLocationWorkingHours.swift; sourceTree = "<group>"; };
+		1CC2831020EB66BE000C3962 /* PSTransactionRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransactionRequest.swift; sourceTree = "<group>"; };
+		1CC2831120EB66BE000C3962 /* PSLocationCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSLocationCategory.swift; sourceTree = "<group>"; };
+		1CC2831320EB66BE000C3962 /* PSMoney.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSMoney.swift; sourceTree = "<group>"; };
+		1CC2831420EB66BE000C3962 /* PSLocationRemoteOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSLocationRemoteOrder.swift; sourceTree = "<group>"; };
+		1CC2831720EB66BE000C3962 /* PSAccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSAccountInformation.swift; sourceTree = "<group>"; };
+		1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PayseraWalletSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1CD8619120EA23AF003E6195 /* PayseraWalletSDK.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PayseraWalletSDK.plist; sourceTree = "<group>"; };
+		1CE7722420EA368700CD53E2 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
+		1CE7722520EA368700CD53E2 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
+		1CE7722620EA368700CD53E2 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		1CE7723120EA3CF200CD53E2 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
+		1CE7723320EA3D5700CD53E2 /* Cartfile.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
+		1CE7723820EA441100CD53E2 /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
+		1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletApiError.swift; sourceTree = "<group>"; };
+		1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletBalance.swift; sourceTree = "<group>"; };
+		1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferInitiator.swift; sourceTree = "<group>"; };
+		1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferFailureStatus.swift; sourceTree = "<group>"; };
+		1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCreateClientInfoRequest.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1CD8616F20EA1F32003E6195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1C0E64DB2105C1A20013415B /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				1C0E64DC2105C1B60013415B /* PSGetLocationsRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		1C30105020F384AD00188877 /* Server */ = {
+			isa = PBXGroup;
+			children = (
+				1C856BC920FC876D007F423C /* PSCredentials.swift */,
+				1C30105120F384C400188877 /* PSServerConfiguration.swift */,
+				1C30105320F3850200188877 /* PSServerInformation.swift */,
+			);
+			path = Server;
+			sourceTree = "<group>";
+		};
+		1C8EA22D20F8B6F900572BC9 /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */,
+				1C8EA23120F8BB8300572BC9 /* PSUserLoginRequest.swift */,
+				1C8EA23020F8BB8300572BC9 /* PSRefreshTokenRequest.swift */,
+				1C8EA22E20F8BB8300572BC9 /* PSUserRegistrationRequest.swift */,
+				1C8EA23820F8BEA000572BC9 /* PSGetUserRequest.swift */,
+				1C8EA23A20F8CFA200572BC9 /* PSUserDeviceInfoRequest.swift */,
+				1C7FA2C421074F1F009F588B /* PSPasswordResetRequest.swift */,
+				1C7FA2C62107559D009F588B /* PSPasswordChangeRequest.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+		1CB2D45E20EB66DC000D0B5F /* User */ = {
+			isa = PBXGroup;
+			children = (
+				1C8EA22D20F8B6F900572BC9 /* Request */,
+				1CB2D46020EB66DC000D0B5F /* PSUser.swift */,
+				1CB2D45F20EB66DC000D0B5F /* PSUserIdentity.swift */,
+				1CC2830B20EB66BD000C3962 /* PSUserService.swift */,
+				1CB2D4EE20EBAFD4000D0B5F /* PSUserServiceResponse.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		1CB2D4CF20EBA5A8000D0B5F /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				1CB2D4D020EBA5A8000D0B5F /* TransferStatus.swift */,
+			);
+			path = Enums;
+			sourceTree = "<group>";
+		};
+		1CB2D4D220EBA661000D0B5F /* Transfers */ = {
+			isa = PBXGroup;
+			children = (
+				1CB2D4D820EBA661000D0B5F /* PSBeneficiary.swift */,
+				1CB2D4D620EBA661000D0B5F /* PSBeneficiaryBankAccount.swift */,
+				1CB2D4D420EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift */,
+				1CB2D4D320EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift */,
+				1CB2D4D520EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift */,
+				1CB2D47E20EB6C5A000D0B5F /* PSProject.swift */,
+				1CB2D48720EB6CB4000D0B5F /* PSTransfer.swift */,
+				1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */,
+				1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */,
+			);
+			path = Transfers;
+			sourceTree = "<group>";
+		};
+		1CB2D4E120EBAA4E000D0B5F /* Card */ = {
+			isa = PBXGroup;
+			children = (
+				1CB2D48220EB6CB3000D0B5F /* PSCard.swift */,
+				1CB2D4E320EBAA85000D0B5F /* PSCardRelation.swift */,
+				1CB2D4E520EBAA9C000D0B5F /* PSCardData.swift */,
+				1CB2D4E720EBAB0B000D0B5F /* PSCardExpiration.swift */,
+				1CB2D4E920EBAB32000D0B5F /* PSCardAccount.swift */,
+				1CB2D4EB20EBAB63000D0B5F /* PSCommissionRule.swift */,
+			);
+			path = Card;
+			sourceTree = "<group>";
+		};
+		1CB2D4E220EBAA4E000D0B5F /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				1CC2830D20EB66BD000C3962 /* PSWalletIdentifier.swift */,
+				1CB2D48920EB6CB4000D0B5F /* PSWallet.swift */,
+				1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		1CB2D4ED20EBAE01000D0B5F /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				1CC2831720EB66BE000C3962 /* PSAccountInformation.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		1CB2D4F020EBBA49000D0B5F /* Identification */ = {
+			isa = PBXGroup;
+			children = (
+				1CEF87302164B4F800A0FA1D /* Request */,
+				1CB2D48120EB6CB3000D0B5F /* PSIdentityDocument.swift */,
+			);
+			path = Identification;
+			sourceTree = "<group>";
+		};
+		1CB2D4F120EBBBDA000D0B5F /* Locations */ = {
+			isa = PBXGroup;
+			children = (
+				1C0E64DB2105C1A20013415B /* Request */,
+				1CB2D48C20EB6CB4000D0B5F /* PSLocation.swift */,
+				1CC2831120EB66BE000C3962 /* PSLocationCategory.swift */,
+				1CB2D47A20EB6B11000D0B5F /* PSLocationCategoryImages.swift */,
+				1CB2D48B20EB6CB4000D0B5F /* PSLocationPrice.swift */,
+				1CC2831420EB66BE000C3962 /* PSLocationRemoteOrder.swift */,
+				1CB2D48320EB6CB3000D0B5F /* PSLocationService.swift */,
+				1CC2830E20EB66BE000C3962 /* PSLocationWorkingHours.swift */,
+				1C0E64E22105D0480013415B /* PSLocationPinImages.swift */,
+			);
+			path = Locations;
+			sourceTree = "<group>";
+		};
+		1CB8C87120F4AF1100647BC9 /* OAuthClient */ = {
+			isa = PBXGroup;
+			children = (
+				1CB8C87420F4AFAC00647BC9 /* OAuthApiRequestRouter.swift */,
+				1CB8C87220F4AF2E00647BC9 /* OAuthAsyncClient.swift */,
+			);
+			path = OAuthClient;
+			sourceTree = "<group>";
+		};
+		1CB8C88120F4C60600647BC9 /* WalletAsyncClient */ = {
+			isa = PBXGroup;
+			children = (
+				1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */,
+				1CB8C88520F4C67800647BC9 /* WalletApiRequestRouter.swift */,
+				1CB8C88420F4C67800647BC9 /* WalletAsyncClient.swift */,
+			);
+			path = WalletAsyncClient;
+			sourceTree = "<group>";
+		};
+		1CB8C88A20F4C88400647BC9 /* PublicWalletApiClient */ = {
+			isa = PBXGroup;
+			children = (
+				1CB8C88F20F4C8D200647BC9 /* PublicWalletApiClient.swift */,
+				1CB8C88B20F4C88400647BC9 /* PublicApiRequestRouter.swift */,
+			);
+			path = PublicWalletApiClient;
+			sourceTree = "<group>";
+		};
+		1CD8616920EA1F32003E6195 = {
+			isa = PBXGroup;
+			children = (
+				1CE7723120EA3CF200CD53E2 /* Cartfile */,
+				1CE7723320EA3D5700CD53E2 /* Cartfile.resolved */,
+				1CE7722220EA366000CD53E2 /* Carthage */,
+				1CE7721E20EA353100CD53E2 /* Sources */,
+				1CD8618D20EA22EE003E6195 /* Configs */,
+				1CD8617420EA1F32003E6195 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1CD8617420EA1F32003E6195 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1CD8618D20EA22EE003E6195 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				1CD8619120EA23AF003E6195 /* PayseraWalletSDK.plist */,
+			);
+			path = Configs;
+			sourceTree = "<group>";
+		};
+		1CE7721E20EA353100CD53E2 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1CE7724620EA55D300CD53E2 /* Entities */,
+				1CB2D4CF20EBA5A8000D0B5F /* Enums */,
+				1CE7722E20EA396C00CD53E2 /* Extensions */,
+				1CE7722B20EA36F700CD53E2 /* Services */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		1CE7722220EA366000CD53E2 /* Carthage */ = {
+			isa = PBXGroup;
+			children = (
+				1CE7722620EA368700CD53E2 /* Alamofire.framework */,
+				1CE7723820EA441100CD53E2 /* CommonCrypto.framework */,
+				1CE7722420EA368700CD53E2 /* ObjectMapper.framework */,
+				1CE7722520EA368700CD53E2 /* PromiseKit.framework */,
+			);
+			name = Carthage;
+			sourceTree = "<group>";
+		};
+		1CE7722B20EA36F700CD53E2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1CB8C87120F4AF1100647BC9 /* OAuthClient */,
+				1CB8C88A20F4C88400647BC9 /* PublicWalletApiClient */,
+				1CB8C88120F4C60600647BC9 /* WalletAsyncClient */,
+				1C30130E20F3A0F500188877 /* ApiRequest.swift */,
+				1CB8C89120F4C91100647BC9 /* BaseAsyncClient.swift */,
+				1C7C759820F76A8100C5BCCC /* ClientsFactory.swift */,
+				1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */,
+				1CB8C86F20F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1CE7722E20EA396C00CD53E2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1CB2D4CD20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		1CE7724620EA55D300CD53E2 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				1CB2D4ED20EBAE01000D0B5F /* Account */,
+				1CB2D4E120EBAA4E000D0B5F /* Card */,
+				1CB2D4F020EBBA49000D0B5F /* Identification */,
+				1CB2D4F120EBBBDA000D0B5F /* Locations */,
+				1C30105020F384AD00188877 /* Server */,
+				1CB2D4D220EBA661000D0B5F /* Transfers */,
+				1CB2D45E20EB66DC000D0B5F /* User */,
+				1CB2D4E220EBAA4E000D0B5F /* Wallet */,
+				1CB7F6A821A2D99F00B2E282 /* BaseFilter.swift */,
+				1CC2830420EB5DC5000C3962 /* PSAddress.swift */,
+				1C12696F217F2E6300BADC39 /* PSClient.swift */,
+				1C0E64E02105C5550013415B /* PSMetadata.swift */,
+				1C0E64DE2105C51F0013415B /* PSMetadataAwareResponse.swift */,
+				1CC2831320EB66BE000C3962 /* PSMoney.swift */,
+				1CC2830C20EB66BD000C3962 /* PSPayer.swift */,
+				1CB2D47B20EB6B11000D0B5F /* PSPayment.swift */,
+				1CC2830720EB66BD000C3962 /* PSPurpose.swift */,
+				1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */,
+				1C042A8F21A45A8C0027B236 /* PSTransaction.swift */,
+				1CC2831020EB66BE000C3962 /* PSTransactionRequest.swift */,
+				1CB2D48020EB6CB3000D0B5F /* PSTransferNotification.swift */,
+				1CB2D48A20EB6CB4000D0B5F /* PSTransfersResult.swift */,
+				1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		1CEF87302164B4F800A0FA1D /* Request */ = {
+			isa = PBXGroup;
+			children = (
+				1CB2D48520EB6CB4000D0B5F /* PSIdentificationDocumentRequest.swift */,
+				1CB2D48420EB6CB4000D0B5F /* PSIdentificationRequest.swift */,
+				1CB2D48820EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift */,
+			);
+			path = Request;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		1CD8617020EA1F32003E6195 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		1CD8617220EA1F32003E6195 /* PayseraWalletSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1CD8618720EA1F32003E6195 /* Build configuration list for PBXNativeTarget "PayseraWalletSDK" */;
+			buildPhases = (
+				1CD8616E20EA1F32003E6195 /* Sources */,
+				1CD8616F20EA1F32003E6195 /* Frameworks */,
+				1CD8617020EA1F32003E6195 /* Headers */,
+				1CD8617120EA1F32003E6195 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PayseraWalletSDK;
+			productName = PayseraWalletSDK;
+			productReference = 1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1CD8616A20EA1F32003E6195 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0940;
+				LastUpgradeCheck = 1000;
+				ORGANIZATIONNAME = Paysera;
+				TargetAttributes = {
+					1CD8617220EA1F32003E6195 = {
+						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1000;
+					};
+				};
+			};
+			buildConfigurationList = 1CD8616D20EA1F32003E6195 /* Build configuration list for PBXProject "PayseraWalletSDK" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 1CD8616920EA1F32003E6195;
+			productRefGroup = 1CD8617420EA1F32003E6195 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1CD8617220EA1F32003E6195 /* PayseraWalletSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1CD8617120EA1F32003E6195 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CE7723220EA3CF300CD53E2 /* Cartfile in Resources */,
+				1CE7723420EA3D5700CD53E2 /* Cartfile.resolved in Resources */,
+				1C126983217F477100BADC39 /* PayseraWalletSDK.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1CD8616E20EA1F32003E6195 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1CB2D4E620EBAA9C000D0B5F /* PSCardData.swift in Sources */,
+				1C8EA23520F8BB8300572BC9 /* PSRefreshTokenRequest.swift in Sources */,
+				1C50B5D920F6462500927C09 /* RefreshingWalletAsyncClient.swift in Sources */,
+				1CB2D49C20EB7A5A000D0B5F /* PSLocationWorkingHours.swift in Sources */,
+				1C0E64E32105D0480013415B /* PSLocationPinImages.swift in Sources */,
+				1CB2D4A120EB7A63000D0B5F /* PSPayer.swift in Sources */,
+				1CB8C87020F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift in Sources */,
+				1C042A9021A45A8C0027B236 /* PSTransaction.swift in Sources */,
+				1CB2D4EF20EBAFD4000D0B5F /* PSUserServiceResponse.swift in Sources */,
+				1CB2D48D20EB6CB4000D0B5F /* PSTransferNotification.swift in Sources */,
+				1C30130F20F3A0F500188877 /* ApiRequest.swift in Sources */,
+				1CE7725220EA5B8900CD53E2 /* PSWalletApiError.swift in Sources */,
+				1CB2D4EA20EBAB32000D0B5F /* PSCardAccount.swift in Sources */,
+				1CB2D49720EB6CB4000D0B5F /* PSTransfersResult.swift in Sources */,
+				1CB2D4A620EB7A63000D0B5F /* PSUserService.swift in Sources */,
+				1CB8C87520F4AFAC00647BC9 /* OAuthApiRequestRouter.swift in Sources */,
+				1C0E64E12105C5550013415B /* PSMetadata.swift in Sources */,
+				1CB2D4A020EB7A63000D0B5F /* PSMoney.swift in Sources */,
+				1CB2D49920EB6CB4000D0B5F /* PSLocation.swift in Sources */,
+				1CB2D4DE20EBA661000D0B5F /* PSBeneficiary.swift in Sources */,
+				1C856BCA20FC876D007F423C /* PSCredentials.swift in Sources */,
+				1C7C759920F76A8100C5BCCC /* ClientsFactory.swift in Sources */,
+				1C7FA2C521074F1F009F588B /* PSPasswordResetRequest.swift in Sources */,
+				1CB2D4A320EB7A63000D0B5F /* PSPurpose.swift in Sources */,
+				1C8EA23320F8BB8300572BC9 /* PSUserRegistrationRequest.swift in Sources */,
+				1CEF872D2164ADCD00A0FA1D /* PSWalletBalance.swift in Sources */,
+				1CB2D49520EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift in Sources */,
+				1CB2D49420EB6CB4000D0B5F /* PSTransfer.swift in Sources */,
+				1CB7F6A921A2D99F00B2E282 /* BaseFilter.swift in Sources */,
+				1CB2D4E820EBAB0B000D0B5F /* PSCardExpiration.swift in Sources */,
+				1C8EA23620F8BB8300572BC9 /* PSUserLoginRequest.swift in Sources */,
+				1CB2D4CE20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift in Sources */,
+				1CB2D49620EB6CB4000D0B5F /* PSWallet.swift in Sources */,
+				1CC2830520EB5DC5000C3962 /* PSAddress.swift in Sources */,
+				1CB2D4E420EBAA85000D0B5F /* PSCardRelation.swift in Sources */,
+				1C0E64DF2105C51F0013415B /* PSMetadataAwareResponse.swift in Sources */,
+				1CB8C87320F4AF2E00647BC9 /* OAuthAsyncClient.swift in Sources */,
+				1CB2D4A820EB7A63000D0B5F /* PSWalletIdentifier.swift in Sources */,
+				1CB2D4A420EB7A63000D0B5F /* PSTransactionRequest.swift in Sources */,
+				1CEF87322164BF2A00A0FA1D /* PSTransferInitiator.swift in Sources */,
+				1CB2D4D920EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift in Sources */,
+				1C437DE520ECD33B00778D90 /* RequestSigningAdapter.swift in Sources */,
+				1C0E64DD2105C1B60013415B /* PSGetLocationsRequest.swift in Sources */,
+				1CB2D46220EB66DC000D0B5F /* PSUser.swift in Sources */,
+				1CB2D49020EB6CB4000D0B5F /* PSLocationService.swift in Sources */,
+				1CB8C88720F4C67800647BC9 /* WalletApiRequestRouter.swift in Sources */,
+				1CEF87362164F8B000A0FA1D /* PSCreateClientInfoRequest.swift in Sources */,
+				1C30105220F384C400188877 /* PSServerConfiguration.swift in Sources */,
+				1CB8C88C20F4C88400647BC9 /* PublicApiRequestRouter.swift in Sources */,
+				1CB8C89020F4C8D200647BC9 /* PublicWalletApiClient.swift in Sources */,
+				1CB8C89220F4C91100647BC9 /* BaseAsyncClient.swift in Sources */,
+				1CB8C88620F4C67800647BC9 /* WalletAsyncClient.swift in Sources */,
+				1C7FA2C72107559D009F588B /* PSPasswordChangeRequest.swift in Sources */,
+				1CB2D48F20EB6CB4000D0B5F /* PSCard.swift in Sources */,
+				1C8EA23920F8BEA000572BC9 /* PSGetUserRequest.swift in Sources */,
+				1CB2D49120EB6CB4000D0B5F /* PSIdentificationRequest.swift in Sources */,
+				1CB2D49E20EB7A63000D0B5F /* PSLocationCategory.swift in Sources */,
+				1CB2D49820EB6CB4000D0B5F /* PSLocationPrice.swift in Sources */,
+				1CB2D49220EB6CB4000D0B5F /* PSIdentificationDocumentRequest.swift in Sources */,
+				1CB2D47D20EB6B11000D0B5F /* PSPayment.swift in Sources */,
+				1C126970217F2E6300BADC39 /* PSClient.swift in Sources */,
+				1C73CCCB21503C5900F4E861 /* PSQRCodeInformation.swift in Sources */,
+				1C8EA23B20F8CFA200572BC9 /* PSUserDeviceInfoRequest.swift in Sources */,
+				1CB2D46120EB66DC000D0B5F /* PSUserIdentity.swift in Sources */,
+				1CB2D47C20EB6B11000D0B5F /* PSLocationCategoryImages.swift in Sources */,
+				1CB2D49F20EB7A63000D0B5F /* PSLocationRemoteOrder.swift in Sources */,
+				1CB2D49D20EB7A63000D0B5F /* PSAccountInformation.swift in Sources */,
+				1CB2D47F20EB6C5A000D0B5F /* PSProject.swift in Sources */,
+				1CB2D4DB20EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift in Sources */,
+				1C30105420F3850200188877 /* PSServerInformation.swift in Sources */,
+				1CB2D4EC20EBAB63000D0B5F /* PSCommissionRule.swift in Sources */,
+				1CB2D4DA20EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift in Sources */,
+				1CB2D4DC20EBA661000D0B5F /* PSBeneficiaryBankAccount.swift in Sources */,
+				1CB2D48E20EB6CB4000D0B5F /* PSIdentityDocument.swift in Sources */,
+				1CEF87342164C0AC00A0FA1D /* PSTransferFailureStatus.swift in Sources */,
+				1CB2D4D120EBA5A8000D0B5F /* TransferStatus.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1CD8618520EA1F32003E6195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		1CD8618620EA1F32003E6195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Carthage/Build/iOS";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		1CD8618820EA1F32003E6195 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "$(SRCROOT)/Configs/PayseraWalletSDK.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Paysera.WalletSDK;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1CD8618920EA1F32003E6195 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				INFOPLIST_FILE = "$(SRCROOT)/Configs/PayseraWalletSDK.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Paysera.WalletSDK;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1CD8616D20EA1F32003E6195 /* Build configuration list for PBXProject "PayseraWalletSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CD8618520EA1F32003E6195 /* Debug */,
+				1CD8618620EA1F32003E6195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1CD8618720EA1F32003E6195 /* Build configuration list for PBXNativeTarget "PayseraWalletSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1CD8618820EA1F32003E6195 /* Debug */,
+				1CD8618920EA1F32003E6195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1CD8616A20EA1F32003E6195 /* Project object */;
+}

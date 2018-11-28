@@ -1,0 +1,5 @@
+github "Alamofire/Alamofire" "4.7.3"
+github "Hearst-DD/ObjectMapper" "3.3.0"
+github "auth0/JWTDecode.swift" "2.1.1"
+github "mxcl/PromiseKit" "6.4.1"
+github "soffes/CommonCrypto" "v1.1.0"
