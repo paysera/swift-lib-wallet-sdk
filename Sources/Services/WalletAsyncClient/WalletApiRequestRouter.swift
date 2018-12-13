@@ -15,6 +15,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getCurrentUser()
     case getUser(PSGetUserRequest)
     case getWallet(id: Int)
+    case getSpot(id: Int)
     
     
     // MARK: - POST
@@ -26,6 +27,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     
     // MARK: - Put
     case verifyPhone(userId: Int, code: String)
+    case checkIn(spotId: Int, fields: [String])
     
     // MARK: - Variables
     static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
@@ -44,13 +46,15 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getCurrentUser(),
              .getUser(_),
              .getLocations(_),
-             .getWallet(_):
+             .getWallet(_),
+             .getSpot(_):
             return .get
             
         case .put(_),
              .putWithData(_, _, _),
              .verifyPhone(_, _),
-             .changePassword(_):
+             .changePassword(_),
+             .checkIn(_, _):
             return .put
             
         case .delete(_, _):
@@ -70,6 +74,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getUser(_),
              .registerUser(_):
             return "/user"
+            
+        case .getSpot(let id):
+            return "spot/\(id)"
             
         case .resetPassword(_):
             return "/user/password/reset"
@@ -98,6 +105,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .putWithData(let path, _, _),
              .delete(let path, _):
             return path
+            
+        case .checkIn(let spotId, _):
+            return "spot/\(spotId)/check-in"
         }
     }
     
@@ -131,6 +141,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .registerClient(let deviceInfo):
             return deviceInfo.toJSON()
             
+        case .checkIn(_, let fields):
+            return ["fields": fields]
+
         case .get(_, let parameters),
              .post(_, let parameters),
              .put(_, let parameters),
@@ -156,6 +169,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = data
             
+        case .checkIn(_, _):
+            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
+            
         case (_) where method == .get,
              (_) where method == .delete:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
@@ -167,6 +183,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         default:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
         }
+        
         
         return urlRequest
     }

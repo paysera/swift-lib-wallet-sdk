@@ -36,7 +36,6 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
-            
             guard !tokenIsRefreshing else {
                 requestsQueue.append(apiRequest)
                 return
@@ -53,6 +52,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                         apiRequest.pendingPromise.resolver.reject(error)
                         return
                     }
+                    
                     
                     if statusCode >= 200 && statusCode < 300 {
                         apiRequest.pendingPromise.resolver.fulfill(responseData as Any)

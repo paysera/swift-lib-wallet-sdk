@@ -9,6 +9,8 @@ public class PSTransactionRequest: Mappable {
     required public init?(map: Map) {
     }
     
+    init() {}
+    
     public func mapping(map: Map) {
         userId          <- map["user_id"]
         email           <- map["email"]

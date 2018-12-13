@@ -7,7 +7,7 @@ public class PSTransfer: Mappable {
     public let beneficiary: PSBeneficiary
     public let initiator: PSTransferInitiator
     public let createdAt: TimeInterval
-    public let performedAt: TimeInterval
+    public let performAt: TimeInterval
     public var failureStatus: PSTransferFailureStatus?
     public var outCommission: PSMoney?
     public var urgency: String?
@@ -27,7 +27,7 @@ public class PSTransfer: Mappable {
             beneficiary = try map.value("beneficiary")
             initiator = try map.value("initiator")
             createdAt = try map.value("created_at")
-            performedAt = try map.value("performed_at")
+            performAt = try map.value("perform_at")
             amount = try map.value("amount")
             payer = try map.value("payer")
             allowedToCancel = try map.value("allowed_to_cancel")

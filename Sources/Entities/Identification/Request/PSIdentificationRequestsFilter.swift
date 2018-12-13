@@ -8,8 +8,4 @@ public class PSIdentificationRequestsFilter: BaseFilter {
         super.mapping(map: map)
         statuses        <- map["statuses"]
     }
-    
-    func toDictionary() -> Dictionary<String, AnyObject> {
-        return self.toJSON() as Dictionary<String, AnyObject>
-    }
 }

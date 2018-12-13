@@ -3,7 +3,7 @@ import ObjectMapper
 public class PSIdentificationRequest: Mappable {
     public var id: Int?
     public var facePhotos: Array<AnyObject>?
-    public var identityDocuments: Array<PSIdentificationDocumentRequest>?
+    public var identityDocuments: Array<PSIdentityDocument>?
     public var userId: String?
     public var status: String?
     public var comment: String?

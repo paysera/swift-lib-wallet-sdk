@@ -17,6 +17,9 @@
 		1C30105220F384C400188877 /* PSServerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C30105120F384C400188877 /* PSServerConfiguration.swift */; };
 		1C30105420F3850200188877 /* PSServerInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C30105320F3850200188877 /* PSServerInformation.swift */; };
 		1C30130F20F3A0F500188877 /* ApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C30130E20F3A0F500188877 /* ApiRequest.swift */; };
+		1C3E446A21C25098003FC8D3 /* PSSpotPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3E446721C25098003FC8D3 /* PSSpotPlace.swift */; };
+		1C3E446B21C25098003FC8D3 /* PSSpot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3E446821C25098003FC8D3 /* PSSpot.swift */; };
+		1C3E446C21C25098003FC8D3 /* PSSpotOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3E446921C25098003FC8D3 /* PSSpotOrder.swift */; };
 		1C437DE520ECD33B00778D90 /* RequestSigningAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */; };
 		1C50B5D920F6462500927C09 /* RefreshingWalletAsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */; };
 		1C73CCCB21503C5900F4E861 /* PSQRCodeInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */; };
@@ -98,6 +101,9 @@
 		1C30105120F384C400188877 /* PSServerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSServerConfiguration.swift; sourceTree = "<group>"; };
 		1C30105320F3850200188877 /* PSServerInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSServerInformation.swift; sourceTree = "<group>"; };
 		1C30130E20F3A0F500188877 /* ApiRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ApiRequest.swift; sourceTree = "<group>"; };
+		1C3E446721C25098003FC8D3 /* PSSpotPlace.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSSpotPlace.swift; sourceTree = "<group>"; };
+		1C3E446821C25098003FC8D3 /* PSSpot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSSpot.swift; sourceTree = "<group>"; };
+		1C3E446921C25098003FC8D3 /* PSSpotOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSSpotOrder.swift; sourceTree = "<group>"; };
 		1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSigningAdapter.swift; sourceTree = "<group>"; };
 		1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshingWalletAsyncClient.swift; sourceTree = "<group>"; };
 		1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSQRCodeInformation.swift; sourceTree = "<group>"; };
@@ -302,11 +308,14 @@
 				1CB2D48C20EB6CB4000D0B5F /* PSLocation.swift */,
 				1CC2831120EB66BE000C3962 /* PSLocationCategory.swift */,
 				1CB2D47A20EB6B11000D0B5F /* PSLocationCategoryImages.swift */,
+				1C0E64E22105D0480013415B /* PSLocationPinImages.swift */,
 				1CB2D48B20EB6CB4000D0B5F /* PSLocationPrice.swift */,
 				1CC2831420EB66BE000C3962 /* PSLocationRemoteOrder.swift */,
 				1CB2D48320EB6CB3000D0B5F /* PSLocationService.swift */,
 				1CC2830E20EB66BE000C3962 /* PSLocationWorkingHours.swift */,
-				1C0E64E22105D0480013415B /* PSLocationPinImages.swift */,
+				1C3E446821C25098003FC8D3 /* PSSpot.swift */,
+				1C3E446921C25098003FC8D3 /* PSSpotOrder.swift */,
+				1C3E446721C25098003FC8D3 /* PSSpotPlace.swift */,
 			);
 			path = Locations;
 			sourceTree = "<group>";
@@ -540,6 +549,7 @@
 				1CB2D49C20EB7A5A000D0B5F /* PSLocationWorkingHours.swift in Sources */,
 				1C0E64E32105D0480013415B /* PSLocationPinImages.swift in Sources */,
 				1CB2D4A120EB7A63000D0B5F /* PSPayer.swift in Sources */,
+				1C3E446C21C25098003FC8D3 /* PSSpotOrder.swift in Sources */,
 				1CB8C87020F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift in Sources */,
 				1C042A9021A45A8C0027B236 /* PSTransaction.swift in Sources */,
 				1CB2D4EF20EBAFD4000D0B5F /* PSUserServiceResponse.swift in Sources */,
@@ -556,6 +566,7 @@
 				1CB2D4DE20EBA661000D0B5F /* PSBeneficiary.swift in Sources */,
 				1C856BCA20FC876D007F423C /* PSCredentials.swift in Sources */,
 				1C7C759920F76A8100C5BCCC /* ClientsFactory.swift in Sources */,
+				1C3E446A21C25098003FC8D3 /* PSSpotPlace.swift in Sources */,
 				1C7FA2C521074F1F009F588B /* PSPasswordResetRequest.swift in Sources */,
 				1CB2D4A320EB7A63000D0B5F /* PSPurpose.swift in Sources */,
 				1C8EA23320F8BB8300572BC9 /* PSUserRegistrationRequest.swift in Sources */,
@@ -567,6 +578,7 @@
 				1C8EA23620F8BB8300572BC9 /* PSUserLoginRequest.swift in Sources */,
 				1CB2D4CE20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift in Sources */,
 				1CB2D49620EB6CB4000D0B5F /* PSWallet.swift in Sources */,
+				1C3E446B21C25098003FC8D3 /* PSSpot.swift in Sources */,
 				1CC2830520EB5DC5000C3962 /* PSAddress.swift in Sources */,
 				1CB2D4E420EBAA85000D0B5F /* PSCardRelation.swift in Sources */,
 				1C0E64DF2105C51F0013415B /* PSMetadataAwareResponse.swift in Sources */,
