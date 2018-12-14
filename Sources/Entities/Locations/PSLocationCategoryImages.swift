@@ -8,7 +8,7 @@ public class PSLocationCategoryImages: Mappable {
     required public init?(map: Map) {
         do {
             activeUrl = try map.value("active_uri")
-            inactiveUrl = try map.value("inactive_url")
+            inactiveUrl = try map.value("inactive_uri")
             
         } catch {
             return nil

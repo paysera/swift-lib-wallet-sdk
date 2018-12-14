@@ -41,7 +41,7 @@ public class BaseAsyncClient {
     }
     
     private func createPromiseWithArrayResult<T: Mappable>(body: Any) -> Promise<[T]> {
-        guard let objects = Mapper<T>().mapArray(JSONObject: body) else {
+        guard let objects = Mapper<T>().mapArray(JSONString: (body as! String)) else {
             return Promise(error: mapError(body: body, statusCode: nil))
         }
         return Promise.value(objects)
