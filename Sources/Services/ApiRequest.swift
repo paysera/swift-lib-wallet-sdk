@@ -3,10 +3,10 @@ import PromiseKit
 
 class ApiRequest {
 
-    var pendingPromise: (promise: Promise<Any>, resolver: Resolver<Any>)
+    var pendingPromise: (promise: Promise<String>, resolver: Resolver<String>)
     var requestEndPoint: URLRequestConvertible
     
-    required init<T: URLRequestConvertible>(pendingPromise: (promise: Promise<Any>, resolver: Resolver<Any>), requestEndPoint: T) {
+    required init<T: URLRequestConvertible>(pendingPromise: (promise: Promise<String>, resolver: Resolver<String>), requestEndPoint: T) {
         
         self.pendingPromise = pendingPromise
         self.requestEndPoint = requestEndPoint
