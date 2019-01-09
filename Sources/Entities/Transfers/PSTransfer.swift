@@ -16,7 +16,6 @@ public class PSTransfer: Mappable {
     public var purpose: PSPurpose?
     public var allowedToCancel: Bool
     public var cancelable: Bool
-    public var referanceNumber: String?
     public var notifications: [PSTransferNotification]?
     
     required public init?(map: Map) {
@@ -47,7 +46,6 @@ public class PSTransfer: Mappable {
         purpose         <- map["purpose"]
         allowedToCancel <- map["allowed_to_cancel"]
         cancelable      <- map["cancelable"]
-        referanceNumber <- map["referance_number"]
     }
     
     func isSigned() -> Bool {

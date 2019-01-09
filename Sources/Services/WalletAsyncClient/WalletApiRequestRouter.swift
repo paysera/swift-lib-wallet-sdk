@@ -16,6 +16,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getUser(PSGetUserRequest)
     case getWallet(id: Int)
     case getSpot(id: Int)
+    case getTransfer(id: Int)
     
     
     // MARK: - POST
@@ -48,6 +49,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getLocations(_),
              .getWallet(_),
              .getSpot(_):
+             .getTransfer(_)
             return .get
             
         case .put(_),
@@ -77,6 +79,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .getSpot(let id):
             return "spot/\(id)"
+            
+        case .getTransfer(let id):
+            return "transfers/\(id)"
             
         case .resetPassword(_):
             return "/user/password/reset"

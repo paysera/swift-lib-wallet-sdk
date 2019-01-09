@@ -89,6 +89,7 @@
 		1CEF87322164BF2A00A0FA1D /* PSTransferInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */; };
 		1CEF87342164C0AC00A0FA1D /* PSTransferFailureStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */; };
 		1CEF87362164F8B000A0FA1D /* PSCreateClientInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */; };
+		6DF0048121E634A10080FD43 /* PSDetailsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -179,6 +180,7 @@
 		1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferInitiator.swift; sourceTree = "<group>"; };
 		1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferFailureStatus.swift; sourceTree = "<group>"; };
 		1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCreateClientInfoRequest.swift; sourceTree = "<group>"; };
+		6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSDetailsOptions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,10 +255,11 @@
 				1CB2D4D420EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift */,
 				1CB2D4D320EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift */,
 				1CB2D4D520EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift */,
+				6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */,
 				1CB2D47E20EB6C5A000D0B5F /* PSProject.swift */,
 				1CB2D48720EB6CB4000D0B5F /* PSTransfer.swift */,
-				1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */,
 				1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */,
+				1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */,
 			);
 			path = Transfers;
 			sourceTree = "<group>";
@@ -613,6 +616,7 @@
 				1CB2D47C20EB6B11000D0B5F /* PSLocationCategoryImages.swift in Sources */,
 				1CB2D49F20EB7A63000D0B5F /* PSLocationRemoteOrder.swift in Sources */,
 				1CB2D49D20EB7A63000D0B5F /* PSAccountInformation.swift in Sources */,
+				6DF0048121E634A10080FD43 /* PSDetailsOptions.swift in Sources */,
 				1CB2D47F20EB6C5A000D0B5F /* PSProject.swift in Sources */,
 				1CB2D4DB20EBA661000D0B5F /* PSBeneficiaryWebmoneyAccount.swift in Sources */,
 				1C30105420F3850200188877 /* PSServerInformation.swift in Sources */,
