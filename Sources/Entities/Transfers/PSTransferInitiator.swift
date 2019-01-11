@@ -9,7 +9,7 @@ public class PSTransferInitiator: Mappable {
     
     // Mappable
     public func mapping(map: Map) {
-        userId          <- map["userId"]
+        userId          <- map["user_id"]
         clientId        <- map["client_id"]
     }
 }
