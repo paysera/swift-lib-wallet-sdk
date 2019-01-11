@@ -48,8 +48,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getUser(_),
              .getLocations(_),
              .getWallet(_),
-             .getSpot(_):
-             .getTransfer(_)
+             .getSpot(_),
+             .getTransfer(_):
             return .get
             
         case .put(_),

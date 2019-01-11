@@ -9,7 +9,7 @@ public class PSGetLocationsRequest: Mappable {
     public var status: String?
     public var updatedAfter: TimeInterval?
     
-    public required init?(map: Map) {
+    required public init?(map: Map) {
     }
     
     public init() {

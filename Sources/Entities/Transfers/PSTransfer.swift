@@ -5,7 +5,7 @@ public class PSTransfer: Mappable {
     public let id: String
     public let status: String
     public let beneficiary: PSBeneficiary
-    public let initiator: PSTransferInitiator
+    public var initiator: PSTransferInitiator?
     public let createdAt: TimeInterval
     public let performAt: TimeInterval
     public var failureStatus: PSTransferFailureStatus?
@@ -24,7 +24,6 @@ public class PSTransfer: Mappable {
             id = try map.value("id")
             status = try map.value("status")
             beneficiary = try map.value("beneficiary")
-            initiator = try map.value("initiator")
             createdAt = try map.value("created_at")
             performAt = try map.value("perform_at")
             amount = try map.value("amount")
@@ -41,6 +40,7 @@ public class PSTransfer: Mappable {
         failureStatus   <- map["failure_status"]
         urgency         <- map["urgency"]
         amount          <- map["amount"]
+        initiator       <- map["initiator"]
         outCommission   <- map["out_commission"]
         payer           <- map["payer"]
         purpose         <- map["purpose"]

@@ -1,12 +1,12 @@
 import ObjectMapper
 
-class PSDetailsOptions: Mappable {
+public class PSDetailsOptions: Mappable {
     public var preserve: Bool?
     
-    required init?(map: Map) {
+    required public init?(map: Map) {
     }
     
-    func mapping(map: Map) {
+    public func mapping(map: Map) {
         preserve   <- map["preserve"]
     }
 }
