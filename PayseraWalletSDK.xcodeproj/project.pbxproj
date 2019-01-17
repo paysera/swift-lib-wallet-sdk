@@ -90,6 +90,13 @@
 		1CEF87342164C0AC00A0FA1D /* PSTransferFailureStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */; };
 		1CEF87362164F8B000A0FA1D /* PSCreateClientInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */; };
 		6DF0048121E634A10080FD43 /* PSDetailsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */; };
+		EDF1E44621F0B0DC00C848AB /* backup-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = EDF1E44421F0B0D800C848AB /* backup-certificate.der */; };
+		EDF1E44721F0B0DE00C848AB /* main-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = EDF1E44521F0B0D800C848AB /* main-certificate.der */; };
+		EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */; };
+		EDF1E47221F0C49E00C848AB /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46D21F0C49E00C848AB /* ObjectMapper.framework */; };
+		EDF1E47321F0C49E00C848AB /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */; };
+		EDF1E47421F0C49E00C848AB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46F21F0C49E00C848AB /* Alamofire.framework */; };
+		EDF1E47521F0C49E00C848AB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E47021F0C49E00C848AB /* PromiseKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -169,18 +176,21 @@
 		1CC2831720EB66BE000C3962 /* PSAccountInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSAccountInformation.swift; sourceTree = "<group>"; };
 		1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PayseraWalletSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1CD8619120EA23AF003E6195 /* PayseraWalletSDK.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PayseraWalletSDK.plist; sourceTree = "<group>"; };
-		1CE7722420EA368700CD53E2 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
-		1CE7722520EA368700CD53E2 /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
-		1CE7722620EA368700CD53E2 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		1CE7723120EA3CF200CD53E2 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		1CE7723320EA3D5700CD53E2 /* Cartfile.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
-		1CE7723820EA441100CD53E2 /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
 		1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletApiError.swift; sourceTree = "<group>"; };
 		1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletBalance.swift; sourceTree = "<group>"; };
 		1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferInitiator.swift; sourceTree = "<group>"; };
 		1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferFailureStatus.swift; sourceTree = "<group>"; };
 		1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCreateClientInfoRequest.swift; sourceTree = "<group>"; };
 		6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSDetailsOptions.swift; sourceTree = "<group>"; };
+		EDF1E44421F0B0D800C848AB /* backup-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "backup-certificate.der"; sourceTree = "<group>"; };
+		EDF1E44521F0B0D800C848AB /* main-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "main-certificate.der"; sourceTree = "<group>"; };
+		EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JWTDecode.framework; path = Carthage/Build/iOS/JWTDecode.framework; sourceTree = "<group>"; };
+		EDF1E46D21F0C49E00C848AB /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
+		EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
+		EDF1E46F21F0C49E00C848AB /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
+		EDF1E47021F0C49E00C848AB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +198,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDF1E47221F0C49E00C848AB /* ObjectMapper.framework in Frameworks */,
+				EDF1E47321F0C49E00C848AB /* CommonCrypto.framework in Frameworks */,
+				EDF1E47521F0C49E00C848AB /* PromiseKit.framework in Frameworks */,
+				EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */,
+				EDF1E47421F0C49E00C848AB /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +375,7 @@
 				1CE7721E20EA353100CD53E2 /* Sources */,
 				1CD8618D20EA22EE003E6195 /* Configs */,
 				1CD8617420EA1F32003E6195 /* Products */,
+				EDF1E45721F0C1F700C848AB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -382,6 +398,7 @@
 		1CE7721E20EA353100CD53E2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				EDF1E44321F0B0B600C848AB /* Resources */,
 				1CE7724620EA55D300CD53E2 /* Entities */,
 				1CB2D4CF20EBA5A8000D0B5F /* Enums */,
 				1CE7722E20EA396C00CD53E2 /* Extensions */,
@@ -393,10 +410,11 @@
 		1CE7722220EA366000CD53E2 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
-				1CE7722620EA368700CD53E2 /* Alamofire.framework */,
-				1CE7723820EA441100CD53E2 /* CommonCrypto.framework */,
-				1CE7722420EA368700CD53E2 /* ObjectMapper.framework */,
-				1CE7722520EA368700CD53E2 /* PromiseKit.framework */,
+				EDF1E46F21F0C49E00C848AB /* Alamofire.framework */,
+				EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */,
+				EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */,
+				EDF1E46D21F0C49E00C848AB /* ObjectMapper.framework */,
+				EDF1E47021F0C49E00C848AB /* PromiseKit.framework */,
 			);
 			name = Carthage;
 			sourceTree = "<group>";
@@ -464,6 +482,22 @@
 			path = Request;
 			sourceTree = "<group>";
 		};
+		EDF1E44321F0B0B600C848AB /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				EDF1E44421F0B0D800C848AB /* backup-certificate.der */,
+				EDF1E44521F0B0D800C848AB /* main-certificate.der */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EDF1E45721F0C1F700C848AB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -501,7 +535,7 @@
 		1CD8616A20EA1F32003E6195 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Paysera;
 				TargetAttributes = {
@@ -533,7 +567,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDF1E44721F0B0DE00C848AB /* main-certificate.der in Resources */,
 				1CE7723220EA3CF300CD53E2 /* Cartfile in Resources */,
+				EDF1E44621F0B0DC00C848AB /* backup-certificate.der in Resources */,
 				1CE7723420EA3D5700CD53E2 /* Cartfile.resolved in Resources */,
 				1C126983217F477100BADC39 /* PayseraWalletSDK.plist in Resources */,
 			);
@@ -685,6 +721,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -742,6 +783,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@loader_path/Frameworks",
+					"@executable_path/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -768,11 +814,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Configs/PayseraWalletSDK.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Paysera.WalletSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -798,11 +840,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/Configs/PayseraWalletSDK.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.Paysera.WalletSDK;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";

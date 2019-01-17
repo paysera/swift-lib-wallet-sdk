@@ -1,56 +1,97 @@
 import Alamofire
 
-
 public class ClientsFactory {
-
-    public static func createWalletAsyncClient(sessionManager: SessionManager,
-                                               credentials: PSCredentials,
-                                               publicWalletApiClient: PublicWalletApiClient,
-                                               serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol) -> WalletAsyncClient {
+    public static func createWalletAsyncClient(
+        credentials: PSCredentials,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol
+    ) -> WalletAsyncClient {
+        let sessionManager = self.createSessionManager()
+        sessionManager.adapter = RequestSigningAdapter(
+            credentials: credentials,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+        )
         
-        sessionManager.adapter = RequestSigningAdapter(credentials: credentials,
-                                                       serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol)
-        
-        return WalletAsyncClient(sessionManager: sessionManager,
-                                 publicWalletApiClient: publicWalletApiClient,
-                                 serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol)
+        return WalletAsyncClient(
+            sessionManager: sessionManager,
+            publicWalletApiClient: publicWalletApiClient,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+        )
     }
     
-    
-    public static func createOAuthClient(sessionManager: SessionManager,
-                                         credentials: PSCredentials,
-                                         publicWalletApiClient: PublicWalletApiClient,
-                                         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol) -> OAuthAsyncClient {
-  
-        sessionManager.adapter = RequestSigningAdapter(credentials: credentials,
-                                                       serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol)
+    public static func createOAuthClient(
+        credentials: PSCredentials,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol
+    ) -> OAuthAsyncClient {
+        let sessionManager = self.createSessionManager()
+        sessionManager.adapter = RequestSigningAdapter(
+            credentials: credentials,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+        )
         
-        return OAuthAsyncClient(sessionManager: sessionManager,
-                                publicWalletApiClient: publicWalletApiClient,
-                                serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol)
+        return OAuthAsyncClient(
+            sessionManager: sessionManager,
+            publicWalletApiClient: publicWalletApiClient,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+        )
     }
     
-    
-    public static func createRefreshingWalletAsyncClient(sessionManager: SessionManager,
-                                                         credentials: PSCredentials,
-                                                         authAsyncClient: OAuthAsyncClient,
-                                                         publicWalletApiClient: PublicWalletApiClient,
-                                                         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
-                                                         accessTokenRefresherDelegate: AccessTokenRefresherDelegate) -> RefreshingWalletAsyncClient {
+    public static func createRefreshingWalletAsyncClient(
+        credentials: PSCredentials,
+        authAsyncClient: OAuthAsyncClient,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        accessTokenRefresherDelegate: AccessTokenRefresherDelegate
+    ) -> RefreshingWalletAsyncClient {
+        let sessionManager = self.createSessionManager()
+        sessionManager.adapter = RequestSigningAdapter(
+            credentials: credentials,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+        )
         
-        sessionManager.adapter = RequestSigningAdapter(credentials: credentials,
-                                                       serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol)
-        
-        return RefreshingWalletAsyncClient(sessionManager: sessionManager,
-                                           userCredentials: credentials,
-                                           authAsyncClient: authAsyncClient,
-                                           publicWalletApiClient: publicWalletApiClient,
-                                           serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
-                                           accessTokenRefresherDelegate: accessTokenRefresherDelegate)
+        return RefreshingWalletAsyncClient(
+            sessionManager: sessionManager,
+            userCredentials: credentials,
+            authAsyncClient: authAsyncClient,
+            publicWalletApiClient: publicWalletApiClient,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            accessTokenRefresherDelegate: accessTokenRefresherDelegate
+        )
     }
     
+    public static func createPublicWalletApiClient() -> PublicWalletApiClient {
+        return PublicWalletApiClient(sessionManager: self.createSessionManager())
+    }
     
-    public static func createPublicWalletApiClient(sessionManager: SessionManager) -> PublicWalletApiClient {
-        return PublicWalletApiClient(sessionManager: sessionManager)
+    private static func createSessionManager() -> SessionManager {
+        let serverTrustPolicy = ServerTrustPolicy.pinPublicKeys(
+            publicKeys: [
+                self.getSecKey(name: "main-certificate")!,
+                self.getSecKey(name: "backup-certificate")!,
+            ],
+            validateCertificateChain: true,
+            validateHost: true
+        )
+        let policies = ["wallet-api.paysera.com": serverTrustPolicy]
+        let serverTrustPolicyManager = ServerTrustPolicyManager(policies: policies)
+        
+        return SessionManager(serverTrustPolicyManager: serverTrustPolicyManager)
+    }
+    
+    private static func getSecKey(name: String) -> SecKey? {
+        let certificateData = NSData(contentsOf: Bundle(for: ClientsFactory.self).url(forResource: name, withExtension: "der")!)
+        let certificate = SecCertificateCreateWithData(nil, certificateData!)
+        
+        var trust: SecTrust?
+        
+        let policy = SecPolicyCreateBasicX509()
+        let status = SecTrustCreateWithCertificates(certificate!, policy, &trust)
+        
+        var key: SecKey?
+        if status == errSecSuccess {
+            key = SecTrustCopyPublicKey(trust!)!;
+        }
+        return key
     }
 }
