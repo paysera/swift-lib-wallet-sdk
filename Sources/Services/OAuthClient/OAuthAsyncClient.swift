@@ -10,8 +10,8 @@ public class OAuthAsyncClient: BaseAsyncClient {
     }
     
     public func refreshToken(_ refreshToken: String,
-                             scopes: [String]? = nil,
-                             code: String? = nil) -> Promise<PSCredentials> {
+                             code: String? = nil,
+                             scopes: [String]? = nil) -> Promise<PSCredentials> {
         
         let refreshTokenRequest = PSRefreshTokenRequest()
         
