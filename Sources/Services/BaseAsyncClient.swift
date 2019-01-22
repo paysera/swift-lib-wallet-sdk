@@ -74,7 +74,6 @@ public class BaseAsyncClient {
     func makeRequest(apiRequest: ApiRequest) {
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
-            
             guard !timeIsSyncing else {
                 requestsQueue.append(apiRequest)
                 return
@@ -112,7 +111,6 @@ public class BaseAsyncClient {
     func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSWalletApiError) {
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
-            
             requestsQueue.append(apiRequest)
             guard !timeIsSyncing else {
                 return

@@ -10,7 +10,6 @@ public protocol AccessTokenRefresherDelegate {
 public class RefreshingWalletAsyncClient: WalletAsyncClient {
     
     var userCredentials: PSCredentials
-    
     private let accessTokenRefresherDelegate: AccessTokenRefresherDelegate
     private let authAsyncClient: OAuthAsyncClient
     private var tokenIsRefreshing = false
@@ -33,7 +32,6 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     override func makeRequest(apiRequest: ApiRequest) {
-        
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
             guard !tokenIsRefreshing else {
@@ -67,12 +65,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                         return
                     }
                     if statusCode == 400 && error.isTokenExpired() {
-                        self.handleExpiredRefreshToken(apiRequest, error)
-                        return
-                    }
-                    
-                    if statusCode == 401 && error.isRefreshTokenExpired() {
-                        self.handleUnauthorizedRequest(apiRequest, error)
+                        self.handleExpiredAccessToken(apiRequest, error)
                         return
                     }
                     
@@ -81,61 +74,49 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         }
     }
     
-    func handleExpiredRefreshToken(_ apiRequest: ApiRequest, _ error: PSWalletApiError) {
-        
+    func handleExpiredAccessToken(_ apiRequest: ApiRequest, _ error: PSWalletApiError) {
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
-            
             guard !hasRecentlyRefreshed() else {
                 self.makeRequest(apiRequest: apiRequest)
                 return
             }
-            
             self.requestsQueue.append(apiRequest)
             guard !tokenIsRefreshing else {
                 return
             }
-        
             self.tokenIsRefreshing = true
             refreshToken()
-                .done { result in
-                    lockQueue.sync {
-                        self.tokenIsRefreshing = false
-                        self.resumeQueue()
-                    }
-                }.catch { error in
-                    lockQueue.sync {
-                        self.tokenIsRefreshing = false
-                        self.cancelQueue(error: error)
-                    }
-            }
         }
     }
     
     private func refreshToken() -> Promise<Bool> {
-        
-        return Promise<Bool> { value in
-            
-            guard let refreshToken = userCredentials.refreshToken else {
-                value.reject(PSWalletApiError(error: "invalid_refresh_token", description: "refresh token is not provided to user credentials"))
-                return
-            }
-            authAsyncClient.refreshToken(refreshToken).done { refreshedCredentials in
-                self.updateCredentials(with: refreshedCredentials)
-                self.accessTokenRefresherDelegate.tokenRefreshed(self.userCredentials)
-                value.fulfill(true)
-                }.catch { error in
-                    value.reject(error)
-                    self.accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
-            }
-        }
-    }
-    
-    private func handleUnauthorizedRequest(_ apiRequest: ApiRequest, _ error: PSWalletApiError) {
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
-        lockQueue.sync { [weak self] in
-            self?.cancelQueue(error: error)
-            self?.accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
+        return Promise<Bool> { value in
+            lockQueue.sync {
+                guard let refreshToken = userCredentials.refreshToken else {
+                    value.reject(PSWalletApiError(error: "invalid_refresh_token", description: "refresh token is not provided to user credentials"))
+                    return
+                }
+                authAsyncClient.refreshToken(refreshToken).done { refreshedCredentials in
+                        lockQueue.sync {
+                            self.updateCredentials(with: refreshedCredentials)
+                            self.tokenIsRefreshing = false
+                            self.resumeQueue()
+                            self.accessTokenRefresherDelegate.tokenRefreshed(self.userCredentials)
+                            value.fulfill(true)
+                        }
+                    }.catch { error in
+                        lockQueue.sync {
+                            self.tokenIsRefreshing = false
+                            if let walletApiError = error as? PSWalletApiError, walletApiError.isRefreshTokenExpired() {
+                                self.accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
+                            }
+                            self.cancelQueue(error: error)
+                            value.reject(error)
+                        }
+                }
+            }
         }
     }
     
