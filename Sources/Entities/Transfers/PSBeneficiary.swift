@@ -12,7 +12,6 @@ public class PSBeneficiary: Mappable {
         do {
             name = try map.value("name")
             type = try map.value("type")
-            
         } catch {
             return nil
         }
