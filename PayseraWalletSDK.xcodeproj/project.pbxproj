@@ -22,6 +22,7 @@
 		1C3E446C21C25098003FC8D3 /* PSSpotOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3E446921C25098003FC8D3 /* PSSpotOrder.swift */; };
 		1C437DE520ECD33B00778D90 /* RequestSigningAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */; };
 		1C50B5D920F6462500927C09 /* RefreshingWalletAsyncClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */; };
+		1C724A1322117AD6000400A1 /* PSAccountInformationFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C724A1222117AD6000400A1 /* PSAccountInformationFlags.swift */; };
 		1C73CCCB21503C5900F4E861 /* PSQRCodeInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */; };
 		1C7C759920F76A8100C5BCCC /* ClientsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7C759820F76A8100C5BCCC /* ClientsFactory.swift */; };
 		1C7FA2C521074F1F009F588B /* PSPasswordResetRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7FA2C421074F1F009F588B /* PSPasswordResetRequest.swift */; };
@@ -114,6 +115,7 @@
 		1C3E446921C25098003FC8D3 /* PSSpotOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSSpotOrder.swift; sourceTree = "<group>"; };
 		1C437DE420ECD33B00778D90 /* RequestSigningAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestSigningAdapter.swift; sourceTree = "<group>"; };
 		1C50B5D820F6462500927C09 /* RefreshingWalletAsyncClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RefreshingWalletAsyncClient.swift; sourceTree = "<group>"; };
+		1C724A1222117AD6000400A1 /* PSAccountInformationFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSAccountInformationFlags.swift; sourceTree = "<group>"; };
 		1C73CCCA21503C5900F4E861 /* PSQRCodeInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSQRCodeInformation.swift; sourceTree = "<group>"; };
 		1C7C759820F76A8100C5BCCC /* ClientsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientsFactory.swift; sourceTree = "<group>"; };
 		1C7FA2C421074F1F009F588B /* PSPasswordResetRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPasswordResetRequest.swift; sourceTree = "<group>"; };
@@ -306,6 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				1CC2831720EB66BE000C3962 /* PSAccountInformation.swift */,
+				1C724A1222117AD6000400A1 /* PSAccountInformationFlags.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -639,6 +642,7 @@
 				1CB8C88620F4C67800647BC9 /* WalletAsyncClient.swift in Sources */,
 				1C7FA2C72107559D009F588B /* PSPasswordChangeRequest.swift in Sources */,
 				1CB2D48F20EB6CB4000D0B5F /* PSCard.swift in Sources */,
+				1C724A1322117AD6000400A1 /* PSAccountInformationFlags.swift in Sources */,
 				1C8EA23920F8BEA000572BC9 /* PSGetUserRequest.swift in Sources */,
 				1CB2D49120EB6CB4000D0B5F /* PSIdentificationRequest.swift in Sources */,
 				1CB2D49E20EB7A63000D0B5F /* PSLocationCategory.swift in Sources */,

@@ -5,27 +5,30 @@ public class PSAccountInformation: Mappable {
     public var ownerDisplayName: String?
     public var ownerTitle: String?
     public var ownerType: String?
-    public var accountDescription: String?
-    public var userId: Int?
     public var type: String?
+    public var userId: Int?
+    public var status: String?
     public var ibans: [String]?
+    public var flags: PSAccountInformationFlags?
+    public var accountDescription: String?
     
     required public init?(map: Map) {
         do {
             accountNumber = try map.value("number")
-            
         } catch {
             return nil
         }
     }
     
     public func mapping(map: Map) {
-        ownerDisplayName            <- map["owner_display_name"]
-        ownerTitle                  <- map["owner_title"]
-        ownerType                   <- map["owner_type"]
-        accountDescription          <- map["description"]
-        userId                      <- map["user_id"]
-        type                        <- map["type"]
-        ibans                       <- map["ibans"]
+        ownerDisplayName    <- map["owner_display_name"]
+        ownerTitle          <- map["owner_title"]
+        ownerType           <- map["owner_type"]
+        status              <- map["status"]
+        type                <- map["type"]
+        userId              <- map["user_id"]
+        flags               <- map["flags"]
+        accountDescription  <- map["description"]
+        ibans               <- map["ibans"]
     }
 }

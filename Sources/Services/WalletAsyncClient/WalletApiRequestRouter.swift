@@ -15,6 +15,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getCurrentUser()
     case getUser(PSGetUserRequest)
     case getWallet(id: Int)
+    case getUserWallets(inactiveIncluded: String)
     case getSpot(id: Int)
     case getTransfer(id: Int)
     
@@ -48,6 +49,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getUser(_),
              .getLocations(_),
              .getWallet(_),
+             .getUserWallets(_),
              .getSpot(_),
              .getTransfer(_):
             return .get
@@ -89,6 +91,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getWallet(let id):
             return "/wallet/\(id)"
             
+        case .getUserWallets(_):
+            return "user/me/wallets"
+            
         case .sendPhoneVerificationCode(let userId, _, _):
             return "/user/\(userId)/phone"
             
@@ -124,6 +129,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .getUser(let userRequest):
             return userRequest.toJSON()
+            
+        case .getUserWallets(let inactiveIncluded):
+            return ["inactive_included" : inactiveIncluded]
             
         case .registerUser(let userRequest):
             return userRequest.toJSON()
@@ -176,6 +184,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .checkIn(_, _):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
+
             
         case (_) where method == .get,
              (_) where method == .delete:
