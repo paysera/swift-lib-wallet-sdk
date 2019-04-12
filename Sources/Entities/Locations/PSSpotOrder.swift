@@ -4,6 +4,7 @@ public class PSSpotOrder: Mappable {
     public let orderId: Int
     public let transactionKey: String
     public let status: String
+    public let transaction: PSTransaction?
     
     required public init?(map: Map) {
         do {
@@ -24,6 +25,7 @@ public class PSSpotOrder: Mappable {
             
             orderId             <- map["id"]
             transactionKey      <- map["transaction_key"]
+            transaction         <- map["transaction"]
             status              <- map["status"]
         }
     }
