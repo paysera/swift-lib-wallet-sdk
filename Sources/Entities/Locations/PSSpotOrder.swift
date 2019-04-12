@@ -4,7 +4,7 @@ public class PSSpotOrder: Mappable {
     public let orderId: Int
     public let transactionKey: String
     public let status: String
-    public let transaction: PSTransaction?
+    public var transaction: PSTransaction?
     
     required public init?(map: Map) {
         do {
