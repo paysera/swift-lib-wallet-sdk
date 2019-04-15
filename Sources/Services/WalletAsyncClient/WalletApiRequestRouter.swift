@@ -155,7 +155,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return deviceInfo.toJSON()
             
         case .checkIn(_, let fields):
-            return ["fields": fields]
+            return ["fields": fields.joined(separator: ",")]
 
         case .get(_, let parameters),
              .post(_, let parameters),
@@ -183,8 +183,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             urlRequest.httpBody = data
             
         case .checkIn(_, _):
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
-
+            urlRequest.url = try! "\(urlRequest.url!.absoluteString)?\(parameters!.queryString)".asURL()
             
         case (_) where method == .get,
              (_) where method == .delete:
@@ -197,7 +196,6 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         default:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
         }
-        
         
         return urlRequest
     }

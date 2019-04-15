@@ -33,7 +33,6 @@ public class BaseAsyncClient {
     }
     
     func createPromise<T: Mappable>(jsonString: String) -> Promise<T> {
-        
         guard let object = Mapper<T>().map(JSONString: jsonString) else {
             return Promise(error: mapError(jsonString: jsonString, statusCode: nil))
         }

@@ -91,6 +91,9 @@
 		1CEF87342164C0AC00A0FA1D /* PSTransferFailureStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */; };
 		1CEF87362164F8B000A0FA1D /* PSCreateClientInfoRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */; };
 		6DF0048121E634A10080FD43 /* PSDetailsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */; };
+		ED0C9833226462B900838924 /* Dictionary+QueryString.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0C9832226462B900838924 /* Dictionary+QueryString.swift */; };
+		EDA52E3A2260CF46002941FD /* PayseraWalletSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA52E392260CF46002941FD /* PayseraWalletSDKTests.swift */; };
+		EDA52E3C2260CF46002941FD /* PayseraWalletSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */; };
 		EDF1E44621F0B0DC00C848AB /* backup-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = EDF1E44421F0B0D800C848AB /* backup-certificate.der */; };
 		EDF1E44721F0B0DE00C848AB /* main-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = EDF1E44521F0B0D800C848AB /* main-certificate.der */; };
 		EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */; };
@@ -99,6 +102,16 @@
 		EDF1E47421F0C49E00C848AB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46F21F0C49E00C848AB /* Alamofire.framework */; };
 		EDF1E47521F0C49E00C848AB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E47021F0C49E00C848AB /* PromiseKit.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EDA52E3D2260CF46002941FD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1CD8616A20EA1F32003E6195 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1CD8617220EA1F32003E6195;
+			remoteInfo = PayseraWalletSDK;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		1C042A8F21A45A8C0027B236 /* PSTransaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PSTransaction.swift; sourceTree = "<group>"; };
@@ -186,6 +199,10 @@
 		1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferFailureStatus.swift; sourceTree = "<group>"; };
 		1CEF87352164F8B000A0FA1D /* PSCreateClientInfoRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCreateClientInfoRequest.swift; sourceTree = "<group>"; };
 		6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSDetailsOptions.swift; sourceTree = "<group>"; };
+		ED0C9832226462B900838924 /* Dictionary+QueryString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+QueryString.swift"; sourceTree = "<group>"; };
+		EDA52E372260CF45002941FD /* PayseraWalletSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PayseraWalletSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDA52E392260CF46002941FD /* PayseraWalletSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayseraWalletSDKTests.swift; sourceTree = "<group>"; };
+		EDA52E3B2260CF46002941FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDF1E44421F0B0D800C848AB /* backup-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "backup-certificate.der"; sourceTree = "<group>"; };
 		EDF1E44521F0B0D800C848AB /* main-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "main-certificate.der"; sourceTree = "<group>"; };
 		EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JWTDecode.framework; path = Carthage/Build/iOS/JWTDecode.framework; sourceTree = "<group>"; };
@@ -205,6 +222,14 @@
 				EDF1E47521F0C49E00C848AB /* PromiseKit.framework in Frameworks */,
 				EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */,
 				EDF1E47421F0C49E00C848AB /* Alamofire.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDA52E342260CF45002941FD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA52E3C2260CF46002941FD /* PayseraWalletSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +402,7 @@
 				1CE7722220EA366000CD53E2 /* Carthage */,
 				1CE7721E20EA353100CD53E2 /* Sources */,
 				1CD8618D20EA22EE003E6195 /* Configs */,
+				EDA52E382260CF46002941FD /* PayseraWalletSDKTests */,
 				1CD8617420EA1F32003E6195 /* Products */,
 				EDF1E45721F0C1F700C848AB /* Frameworks */,
 			);
@@ -386,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */,
+				EDA52E372260CF45002941FD /* PayseraWalletSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -441,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				1CB2D4CD20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift */,
+				ED0C9832226462B900838924 /* Dictionary+QueryString.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -483,6 +511,15 @@
 				1CB2D48820EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift */,
 			);
 			path = Request;
+			sourceTree = "<group>";
+		};
+		EDA52E382260CF46002941FD /* PayseraWalletSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				EDA52E392260CF46002941FD /* PayseraWalletSDKTests.swift */,
+				EDA52E3B2260CF46002941FD /* Info.plist */,
+			);
+			path = PayseraWalletSDKTests;
 			sourceTree = "<group>";
 		};
 		EDF1E44321F0B0B600C848AB /* Resources */ = {
@@ -532,19 +569,40 @@
 			productReference = 1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		EDA52E362260CF45002941FD /* PayseraWalletSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDA52E412260CF46002941FD /* Build configuration list for PBXNativeTarget "PayseraWalletSDKTests" */;
+			buildPhases = (
+				EDA52E332260CF45002941FD /* Sources */,
+				EDA52E342260CF45002941FD /* Frameworks */,
+				EDA52E352260CF45002941FD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EDA52E3E2260CF46002941FD /* PBXTargetDependency */,
+			);
+			name = PayseraWalletSDKTests;
+			productName = PayseraWalletSDKTests;
+			productReference = EDA52E372260CF45002941FD /* PayseraWalletSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		1CD8616A20EA1F32003E6195 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1010;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = Paysera;
 				TargetAttributes = {
 					1CD8617220EA1F32003E6195 = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1000;
+					};
+					EDA52E362260CF45002941FD = {
+						CreatedOnToolsVersion = 10.2;
 					};
 				};
 			};
@@ -561,6 +619,7 @@
 			projectRoot = "";
 			targets = (
 				1CD8617220EA1F32003E6195 /* PayseraWalletSDK */,
+				EDA52E362260CF45002941FD /* PayseraWalletSDKTests */,
 			);
 		};
 /* End PBXProject section */
@@ -578,6 +637,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDA52E352260CF45002941FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -592,6 +658,7 @@
 				1C0E64E32105D0480013415B /* PSLocationPinImages.swift in Sources */,
 				1CB2D4A120EB7A63000D0B5F /* PSPayer.swift in Sources */,
 				1C3E446C21C25098003FC8D3 /* PSSpotOrder.swift in Sources */,
+				ED0C9833226462B900838924 /* Dictionary+QueryString.swift in Sources */,
 				1CB8C87020F4933600647BC9 /* ServerTimeSynchronizationProtocol.swift in Sources */,
 				1C042A9021A45A8C0027B236 /* PSTransaction.swift in Sources */,
 				1CB2D4EF20EBAFD4000D0B5F /* PSUserServiceResponse.swift in Sources */,
@@ -669,7 +736,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDA52E332260CF45002941FD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA52E3A2260CF46002941FD /* PayseraWalletSDKTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EDA52E3E2260CF46002941FD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1CD8617220EA1F32003E6195 /* PayseraWalletSDK */;
+			targetProxy = EDA52E3D2260CF46002941FD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1CD8618520EA1F32003E6195 /* Debug */ = {
@@ -855,6 +938,52 @@
 			};
 			name = Release;
 		};
+		EDA52E3F2260CF46002941FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6YAQCX388J;
+				INFOPLIST_FILE = PayseraWalletSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.paysera.PayseraWalletSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EDA52E402260CF46002941FD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 6YAQCX388J;
+				INFOPLIST_FILE = PayseraWalletSDKTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.paysera.PayseraWalletSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -872,6 +1001,15 @@
 			buildConfigurations = (
 				1CD8618820EA1F32003E6195 /* Debug */,
 				1CD8618920EA1F32003E6195 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDA52E412260CF46002941FD /* Build configuration list for PBXNativeTarget "PayseraWalletSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDA52E3F2260CF46002941FD /* Debug */,
+				EDA52E402260CF46002941FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
