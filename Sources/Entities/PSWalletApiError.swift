@@ -35,8 +35,8 @@ public class PSWalletApiError: Mappable, Error {
         return error == "invalid_timestamp"
     }
     
-    public class func mapping() -> PSWalletApiError {
-        return PSWalletApiError.init(error: "mapping", description: "mapping failed")
+    public class func mapping(json: String) -> PSWalletApiError {
+        return PSWalletApiError.init(error: "mapping", description: "mapping failed: \(json)")
     }
 
     public class func cancelled() -> PSWalletApiError {

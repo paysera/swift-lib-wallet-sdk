@@ -157,6 +157,6 @@ public class BaseAsyncClient {
             apiError.statusCode = statusCode
             return apiError
         }
-        return PSWalletApiError.mapping()
+        return PSWalletApiError.mapping(json: jsonString)
     }
 }

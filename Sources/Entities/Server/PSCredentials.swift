@@ -13,9 +13,8 @@ public class PSCredentials: Mappable {
     required public init?(map: Map) {
         do {
             validUntil = Date().addingTimeInterval(try Double(map.value("expires_in") ?? 0))
-            
         } catch {
-            return nil
+            // intentionally not returning nil
         }
     }
     
