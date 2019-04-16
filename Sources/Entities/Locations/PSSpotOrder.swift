@@ -17,7 +17,6 @@ public class PSSpotOrder: Mappable {
     }
     
     public func mapping(map: Map) {
-        
         if map.mappingType == .toJSON {
             var orderId = self.orderId
             var transactionKey = self.transactionKey
@@ -25,8 +24,9 @@ public class PSSpotOrder: Mappable {
             
             orderId             <- map["id"]
             transactionKey      <- map["transaction_key"]
-            transaction         <- map["transaction"]
             status              <- map["status"]
         }
+        
+        transaction <- map["transaction"]
     }
 }
