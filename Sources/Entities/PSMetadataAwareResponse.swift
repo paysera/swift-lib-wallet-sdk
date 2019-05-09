@@ -10,6 +10,9 @@ public class PSMetadataAwareResponse<T: Mappable>: Mappable  {
         switch T.self {
         case ( _) where T.self == PSLocation.self:
             return "locations"
+        case ( _) where T.self == PSIdentificationRequest.self:
+            return "identification_requests"
+            
             
         default:
             return ""
