@@ -35,10 +35,18 @@ public class PSWalletApiError: Mappable, Error {
         return error == "invalid_timestamp"
     }
     
-    public class func mapping(json: String) -> PSWalletApiError {
-        return PSWalletApiError.init(error: "mapping", description: "mapping failed: \(json)")
+    func isNoInternet() -> Bool {
+        return error == "no_internet"
     }
-
+    
+    public class func mapping(json: String) -> PSWalletApiError {
+        return PSWalletApiError(error: "mapping", description: "mapping failed: \(json)")
+    }
+    
+    public class func noInternet() -> PSWalletApiError {
+        return PSWalletApiError(error: "no_internet", description: "No internet connection")
+    }
+    
     public class func cancelled() -> PSWalletApiError {
         return PSWalletApiError(error: "cancelled")
     }
