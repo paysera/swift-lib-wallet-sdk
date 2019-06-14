@@ -41,25 +41,23 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
             sessionManager
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
-                    
                     if let error = response.error, error.isCancelled {
                         apiRequest.pendingPromise.resolver.reject(PSWalletApiError.cancelled())
                         return
                     }
-                    let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
                     
                     guard let statusCode = response.response?.statusCode else {
-                        let error = self.mapError(jsonString: responseString, statusCode: response.response?.statusCode)
-                        apiRequest.pendingPromise.resolver.reject(error)
+                        apiRequest.pendingPromise.resolver.reject(PSWalletApiError.noInternet())
                         return
                     }
                     
+                    let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
                     if statusCode >= 200 && statusCode < 300 {
                         apiRequest.pendingPromise.resolver.fulfill(responseString)
                         return
                     }
                     
-                    let error = self.mapError(jsonString: responseString, statusCode: response.response?.statusCode)
+                    let error = self.mapError(jsonString: responseString, statusCode: statusCode)
                     if statusCode == 401 && error.isInvalidTimestamp() {
                         self.syncTimestamp(apiRequest, error)
                         return
