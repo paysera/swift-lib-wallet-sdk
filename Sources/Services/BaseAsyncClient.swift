@@ -38,14 +38,14 @@ public class BaseAsyncClient {
     
     func createPromise<T: Mappable>(jsonString: String) -> Promise<T> {
         guard let object = Mapper<T>().map(JSONString: jsonString) else {
-            return Promise(error: PSWalletApiError.mapping(json: jsonString))
+            return Promise(error: PSApiError.mapping(json: jsonString))
         }
         return Promise.value(object)
     }
     
     private func createPromiseWithArrayResult<T: Mappable>(jsonString: String) -> Promise<[T]> {
         guard let objects = Mapper<T>().mapArray(JSONString: jsonString) else {
-            return Promise(error: PSWalletApiError.mapping(json: jsonString))
+            return Promise(error: PSApiError.mapping(json: jsonString))
         }
         return Promise.value(objects)
     }
@@ -93,12 +93,12 @@ public class BaseAsyncClient {
                     self.logger?.log(level: .INFO, message: logMessage)
                     
                     if let error = response.error, error.isCancelled {
-                        apiRequest.pendingPromise.resolver.reject(PSWalletApiError.cancelled())
+                        apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
                         return
                     }
                     
                     guard let statusCode = response.response?.statusCode else {
-                        apiRequest.pendingPromise.resolver.reject(PSWalletApiError.noInternet())
+                        apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
                         return
                     }
                     
@@ -118,7 +118,7 @@ public class BaseAsyncClient {
         
     }
     
-    func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSWalletApiError) {
+    func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSApiError) {
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
             requestsQueue.append(apiRequest)
@@ -162,8 +162,8 @@ public class BaseAsyncClient {
         requestsQueue.removeAll()
     }
     
-    func mapError(jsonString: String, statusCode: Int) -> PSWalletApiError {
-        let apiError = Mapper<PSWalletApiError>().map(JSONString: jsonString) ?? PSWalletApiError.mapping(json: jsonString)
+    func mapError(jsonString: String, statusCode: Int) -> PSApiError {
+        let apiError = Mapper<PSApiError>().map(JSONString: jsonString) ?? PSApiError.mapping(json: jsonString)
         apiError.statusCode = statusCode
         return apiError
     }

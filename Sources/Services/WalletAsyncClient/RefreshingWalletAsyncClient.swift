@@ -57,12 +57,12 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                     self.logger?.log(level: .INFO, message: logMessage)
                     
                     if let error = response.error, error.isCancelled {
-                        apiRequest.pendingPromise.resolver.reject(PSWalletApiError.cancelled())
+                        apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
                         return
                     }
                     
                     guard let statusCode = response.response?.statusCode else {
-                        apiRequest.pendingPromise.resolver.reject(PSWalletApiError.noInternet())
+                        apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
                         return
                     }
                     
@@ -91,7 +91,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         return refreshToken(code: code, scopes: extensionScopes)
     }
     
-    func handleExpiredAccessToken(_ apiRequest: ApiRequest, _ error: PSWalletApiError) {
+    func handleExpiredAccessToken(_ apiRequest: ApiRequest, _ error: PSApiError) {
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
             guard !hasRecentlyRefreshed() else {
@@ -112,7 +112,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         return Promise<PSCredentials> { value in
             lockQueue.sync {
                 guard let refreshToken = userCredentials.refreshToken else {
-                    value.reject(PSWalletApiError(error: "invalid_refresh_token", description: "refresh token is not provided to user credentials"))
+                    value.reject(PSApiError.unknown())
                     return
                 }
                 authAsyncClient.refreshToken(refreshToken, code: code, scopes: scopes).done { refreshedCredentials in
@@ -126,7 +126,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                     }.catch { error in
                         lockQueue.sync {
                             self.tokenIsRefreshing = false
-                            if let walletApiError = error as? PSWalletApiError, walletApiError.isRefreshTokenExpired() {
+                            if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
                                 self.accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
                             }
                             self.cancelQueue(error: error)

@@ -81,7 +81,6 @@
 		1CC2830520EB5DC5000C3962 /* PSAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CC2830420EB5DC5000C3962 /* PSAddress.swift */; };
 		1CE7723220EA3CF300CD53E2 /* Cartfile in Resources */ = {isa = PBXBuildFile; fileRef = 1CE7723120EA3CF200CD53E2 /* Cartfile */; };
 		1CE7723420EA3D5700CD53E2 /* Cartfile.resolved in Resources */ = {isa = PBXBuildFile; fileRef = 1CE7723320EA3D5700CD53E2 /* Cartfile.resolved */; };
-		1CE7725220EA5B8900CD53E2 /* PSWalletApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */; };
 		1CEF872D2164ADCD00A0FA1D /* PSWalletBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */; };
 		1CEF87322164BF2A00A0FA1D /* PSTransferInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */; };
 		1CEF87342164C0AC00A0FA1D /* PSTransferFailureStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */; };
@@ -188,7 +187,6 @@
 		1CD8619120EA23AF003E6195 /* PayseraWalletSDK.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = PayseraWalletSDK.plist; sourceTree = "<group>"; };
 		1CE7723120EA3CF200CD53E2 /* Cartfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile; sourceTree = "<group>"; };
 		1CE7723320EA3D5700CD53E2 /* Cartfile.resolved */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cartfile.resolved; sourceTree = "<group>"; };
-		1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletApiError.swift; sourceTree = "<group>"; };
 		1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletBalance.swift; sourceTree = "<group>"; };
 		1CEF87312164BF2A00A0FA1D /* PSTransferInitiator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferInitiator.swift; sourceTree = "<group>"; };
 		1CEF87332164C0AC00A0FA1D /* PSTransferFailureStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferFailureStatus.swift; sourceTree = "<group>"; };
@@ -496,7 +494,6 @@
 				1CC2831020EB66BE000C3962 /* PSTransactionRequest.swift */,
 				1CB2D48020EB6CB3000D0B5F /* PSTransferNotification.swift */,
 				1CB2D48A20EB6CB4000D0B5F /* PSTransfersResult.swift */,
-				1CE7725020EA5B6D00CD53E2 /* PSWalletApiError.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -662,7 +659,6 @@
 				1CB2D4EF20EBAFD4000D0B5F /* PSUserServiceResponse.swift in Sources */,
 				1CB2D48D20EB6CB4000D0B5F /* PSTransferNotification.swift in Sources */,
 				1C30130F20F3A0F500188877 /* ApiRequest.swift in Sources */,
-				1CE7725220EA5B8900CD53E2 /* PSWalletApiError.swift in Sources */,
 				1CB2D4EA20EBAB32000D0B5F /* PSCardAccount.swift in Sources */,
 				1CB2D49720EB6CB4000D0B5F /* PSTransfersResult.swift in Sources */,
 				1CB2D4A620EB7A63000D0B5F /* PSUserService.swift in Sources */,
