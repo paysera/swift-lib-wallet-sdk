@@ -2,6 +2,7 @@ import Foundation
 import Alamofire
 import ObjectMapper
 import PromiseKit
+import PayseraCommonSDK
 
 public class WalletAsyncClient: BaseAsyncClient {
     

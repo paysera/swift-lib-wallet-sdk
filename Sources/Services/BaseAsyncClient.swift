@@ -1,23 +1,27 @@
 import Alamofire
 import ObjectMapper
 import PromiseKit
+import PayseraCommonSDK
 
 public class BaseAsyncClient {
-    
     let sessionManager: SessionManager
     let publicWalletApiClient: PublicWalletApiClient?
     let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
+    let logger: PSLoggerProtocol?
     
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
     
-    init(sessionManager: SessionManager,
-         publicWalletApiClient: PublicWalletApiClient? = nil,
-         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol? = nil) {
-        
+    init(
+        sessionManager: SessionManager,
+        publicWalletApiClient: PublicWalletApiClient? = nil,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol? = nil,
+        logger: PSLoggerProtocol?
+    ) {
         self.sessionManager = sessionManager
         self.publicWalletApiClient = publicWalletApiClient
         self.serverTimeSynchronizationProtocol = serverTimeSynchronizationProtocol
+        self.logger = logger
     }
     
     public func cancelAllOperations() {
@@ -77,9 +81,17 @@ public class BaseAsyncClient {
                 requestsQueue.append(apiRequest)
                 return
             }
+            self.logger?.log(level: .INFO, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
             sessionManager
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
+                    var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
+                    if let statusCode = response.response?.statusCode {
+                        logMessage += " (\(statusCode))"
+                    }
+                    
+                    self.logger?.log(level: .INFO, message: logMessage)
+                    
                     if let error = response.error, error.isCancelled {
                         apiRequest.pendingPromise.resolver.reject(PSWalletApiError.cancelled())
                         return

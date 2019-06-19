@@ -1,10 +1,12 @@
 import Alamofire
+import PayseraCommonSDK
 
 public class ClientsFactory {
     public static func createWalletAsyncClient(
         credentials: PSCredentials,
         publicWalletApiClient: PublicWalletApiClient,
-        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        logger: PSLoggerProtocol? = nil
     ) -> WalletAsyncClient {
         let sessionManager = self.createSessionManager()
         sessionManager.adapter = RequestSigningAdapter(
@@ -15,14 +17,16 @@ public class ClientsFactory {
         return WalletAsyncClient(
             sessionManager: sessionManager,
             publicWalletApiClient: publicWalletApiClient,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
         )
     }
     
     public static func createOAuthClient(
         credentials: PSCredentials,
         publicWalletApiClient: PublicWalletApiClient,
-        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        logger: PSLoggerProtocol? = nil
     ) -> OAuthAsyncClient {
         let sessionManager = self.createSessionManager()
         sessionManager.adapter = RequestSigningAdapter(
@@ -33,7 +37,8 @@ public class ClientsFactory {
         return OAuthAsyncClient(
             sessionManager: sessionManager,
             publicWalletApiClient: publicWalletApiClient,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
         )
     }
     
@@ -42,7 +47,8 @@ public class ClientsFactory {
         authAsyncClient: OAuthAsyncClient,
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
-        accessTokenRefresherDelegate: AccessTokenRefresherDelegate
+        accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
+        logger: PSLoggerProtocol? = nil
     ) -> RefreshingWalletAsyncClient {
         let sessionManager = self.createSessionManager()
         sessionManager.adapter = RequestSigningAdapter(
@@ -56,12 +62,13 @@ public class ClientsFactory {
             authAsyncClient: authAsyncClient,
             publicWalletApiClient: publicWalletApiClient,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
-            accessTokenRefresherDelegate: accessTokenRefresherDelegate
+            accessTokenRefresherDelegate: accessTokenRefresherDelegate,
+            logger: logger
         )
     }
     
-    public static func createPublicWalletApiClient() -> PublicWalletApiClient {
-        return PublicWalletApiClient(sessionManager: self.createSessionManager())
+    public static func createPublicWalletApiClient(logger: PSLoggerProtocol? = nil) -> PublicWalletApiClient {
+        return PublicWalletApiClient(sessionManager: self.createSessionManager(), logger: logger)
     }
     
     private static func createSessionManager() -> SessionManager {

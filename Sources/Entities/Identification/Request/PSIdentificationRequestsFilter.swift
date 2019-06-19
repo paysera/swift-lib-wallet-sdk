@@ -1,7 +1,7 @@
 import ObjectMapper
+import PayseraCommonSDK
 
-public class PSIdentificationRequestsFilter: BaseFilter {
- 
+public class PSIdentificationRequestsFilter: PSBaseFilter {
     public var statuses: [String]?
 
     public override func mapping(map: Map) {

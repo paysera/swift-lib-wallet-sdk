@@ -1,4 +1,5 @@
 import ObjectMapper
+import PayseraCommonSDK
 
 public class PSTransfersResult: Mappable {
     public var metadata: PSMetadata?
