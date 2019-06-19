@@ -1,5 +1,6 @@
 import Alamofire
 import PromiseKit
+import PayseraCommonSDK
 
 public protocol AccessTokenRefresherDelegate {
     
@@ -15,20 +16,26 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     private var tokenIsRefreshing = false
     
     
-    init(sessionManager: SessionManager,
-         userCredentials: PSCredentials,
-         authAsyncClient: OAuthAsyncClient,
-         publicWalletApiClient: PublicWalletApiClient,
-         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
-         accessTokenRefresherDelegate: AccessTokenRefresherDelegate) {
+    init(
+        sessionManager: SessionManager,
+        userCredentials: PSCredentials,
+        authAsyncClient: OAuthAsyncClient,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
+        logger: PSLoggerProtocol? = nil
+    ) {
         
         self.userCredentials = userCredentials
         self.authAsyncClient = authAsyncClient
         self.accessTokenRefresherDelegate = accessTokenRefresherDelegate
         
-        super.init(sessionManager: sessionManager,
-                   publicWalletApiClient: publicWalletApiClient,
-                   serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol)
+        super.init(
+            sessionManager: sessionManager,
+            publicWalletApiClient: publicWalletApiClient,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
+        )
     }
     
     override func makeRequest(apiRequest: ApiRequest) {
@@ -38,9 +45,17 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 requestsQueue.append(apiRequest)
                 return
             }
+            self.logger?.log(level: .INFO, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
             sessionManager
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
+                    var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
+                    if let statusCode = response.response?.statusCode {
+                        logMessage += " (\(statusCode))"
+                    }
+                    
+                    self.logger?.log(level: .INFO, message: logMessage)
+                    
                     if let error = response.error, error.isCancelled {
                         apiRequest.pendingPromise.resolver.reject(PSWalletApiError.cancelled())
                         return

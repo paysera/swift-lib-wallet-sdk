@@ -1,3 +1,4 @@
+github "paysera/swift-lib-common-sdk" ~> 1.0
 github "Alamofire/Alamofire" ~> 4.4
 github "mxcl/PromiseKit" ~> 6.0
 github "Hearst-DD/ObjectMapper" ~> 3.1
