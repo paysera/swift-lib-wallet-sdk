@@ -38,6 +38,10 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.verifyPhone(userId: userId, code: code))
     }
     
+    public func verifyEmail(userId: Int, code: String) -> Promise<PSUser> {
+        return doRequest(requestRouter: WalletApiRequestRouter.verifyEmail(userId: userId, code: code))
+    }
+    
     public func getWallet(byId id: Int) -> Promise<PSWallet> {
         return doRequest(requestRouter: WalletApiRequestRouter.getWallet(id: id))
     }

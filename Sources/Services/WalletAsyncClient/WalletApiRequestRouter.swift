@@ -29,6 +29,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     
     // MARK: - Put
     case verifyPhone(userId: Int, code: String)
+    case verifyEmail(userId: Int, code: String)
     case checkIn(spotId: Int, fields: [String])
     
     // MARK: - Variables
@@ -57,6 +58,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .put(_),
              .putWithData(_, _, _),
              .verifyPhone(_, _),
+             .verifyEmail(_, _),
              .changePassword(_),
              .checkIn(_, _):
             return .put
@@ -74,6 +76,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .verifyPhone(let userId, _):
             return "/user/\(userId)/phone/confirm"
+            
+        case .verifyEmail(userId: let userId, _):
+            return "/user/\(userId)/email/confirm"
             
         case .getUser(_),
              .registerUser(_):
@@ -143,6 +148,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return userRequest.toJSON()
             
         case .verifyPhone(_, let code):
+            return ["code": code]
+            
+        case .verifyEmail(_, let code):
             return ["code": code]
             
         case .sendPhoneVerificationCode(_, let phone, let scopes):
