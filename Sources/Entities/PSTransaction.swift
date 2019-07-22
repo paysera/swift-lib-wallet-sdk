@@ -8,6 +8,8 @@ public class PSTransaction: Mappable {
     public var status: String?
     public var project: PSProject?
     
+    public init() {}
+    
     required public init?(map: Map) {
     }
     

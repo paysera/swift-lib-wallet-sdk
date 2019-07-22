@@ -8,6 +8,8 @@ public class PSPayment: Mappable {
     public var beneficiary: PSWalletIdentifier?
     public var items: [PSPaymentItem]?
 
+    public init() {}
+    
     required public init?(map: Map) {
     }
     

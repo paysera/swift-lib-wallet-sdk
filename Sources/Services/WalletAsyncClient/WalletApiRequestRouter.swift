@@ -1,13 +1,11 @@
 import Alamofire
 
 public enum WalletApiRequestRouter: URLRequestConvertible {
-
     case get(path: String, parameters: [String: Any]?)
     case post(path: String, parameters: [String: Any]?)
     case put(path: String, parameters: [String: Any]?)
     case putWithData(path: String, data: Data, contentType: String)
     case delete(path: String, parameters: [String: Any]?)
-    
     
     // MARK: - GET
     case getLocations(PSGetLocationsRequest)
@@ -15,10 +13,10 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getCurrentUser()
     case getUser(PSGetUserRequest)
     case getWallet(id: Int)
+    case getWallets(PSWalletsFilter)
     case getUserWallets(inactiveIncluded: String)
     case getSpot(id: Int)
     case getTransfer(id: Int)
-    
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -26,6 +24,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case resetPassword(PSPasswordResetRequest)
     case sendPhoneVerificationCode(userId: Int, phone: String, scopes: [String])
     case changePassword(userId: Int, PSPasswordChangeRequest)
+    case createTransaction(PSTransaction)
+    case createTransactionRequest(key: String, request: PSTransactionRequest)
     
     // MARK: - Put
     case verifyPhone(userId: Int, code: String)
@@ -41,7 +41,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .registerClient(_),
              .registerUser(_),
              .resetPassword(_),
-             .sendPhoneVerificationCode(_):
+             .sendPhoneVerificationCode(_),
+             .createTransaction(_),
+             .createTransactionRequest(_,_):
             return .post
             
         case .get(_),
@@ -52,7 +54,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getWallet(_),
              .getUserWallets(_),
              .getSpot(_),
-             .getTransfer(_):
+             .getTransfer(_),
+             .getWallets(_):
             return .get
             
         case .put(_),
@@ -71,6 +74,12 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     
     private var path: String {
         switch self {
+        case .createTransaction(_):
+            return "/transaction"
+        
+        case .createTransactionRequest(let key, _):
+            return "/transaction/\(key)/request"
+            
         case .getCurrentUser():
             return "/user/me"
             
@@ -95,6 +104,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .getWallet(let id):
             return "/wallet/\(id)"
+            
+        case .getWallets(_):
+            return "/wallets"
             
         case .getUserWallets(_):
             return "user/me/wallets"
@@ -129,11 +141,20 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     private var parameters: Parameters? {
         switch self {
             
+        case .createTransaction(let transaction):
+            return transaction.toJSON()
+            
+        case .createTransactionRequest( _, let request):
+            return request.toJSON()
+            
         case .getLocationCategories(let locale):
             return ["locale": locale]
             
         case .getUser(let userRequest):
             return userRequest.toJSON()
+            
+        case .getWallets(let filter):
+            return filter.toJSON()
             
         case .getUserWallets(let inactiveIncluded):
             return ["inactive_included" : inactiveIncluded]

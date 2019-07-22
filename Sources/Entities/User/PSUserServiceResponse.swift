@@ -1,7 +1,6 @@
 import ObjectMapper
 
 public class PSUserServiceResponse: Mappable {
-    
     public var services: [PSUserService] = []
     
     required public init?(map: Map) {
