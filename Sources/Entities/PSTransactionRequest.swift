@@ -9,16 +9,12 @@ public class PSTransactionRequest: Mappable {
     required public init?(map: Map) {
     }
     
-    init() {}
+    public init() {}
     
     public func mapping(map: Map) {
         userId          <- map["user_id"]
         email           <- map["email"]
         phone           <- map["phone"]
         initiatorId     <- map["initiator_id"]
-    }
-    
-    func toDictionary() -> NSDictionary {
-        return self.toJSON() as NSDictionary
     }
 }

@@ -6,6 +6,8 @@ public class PSWalletIdentifier: Mappable {
     public var email: String?
     public var wallet: PSWallet?
     
+    public init() {}
+    
     required public init?(map: Map) {
     }
     

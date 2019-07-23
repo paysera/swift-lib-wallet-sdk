@@ -46,6 +46,10 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getWallet(id: id))
     }
     
+    public func getWallets(filter: PSWalletsFilter) -> Promise<PSGetWalletsResponse> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getWallets(filter))
+    }
+    
     public func getUserWallets(inactiveIncluded: String) -> Promise<[PSWallet]> {
         return doRequest(requestRouter: WalletApiRequestRouter.getUserWallets(inactiveIncluded: inactiveIncluded))
     }
@@ -65,9 +69,16 @@ public class WalletAsyncClient: BaseAsyncClient {
     public func changePassword(userId: Int, changePasswordRequest: PSPasswordChangeRequest) -> Promise<PSUser> {
         return doRequest(requestRouter: WalletApiRequestRouter.changePassword(userId: userId, changePasswordRequest))
     }
+        
+    public func createTransaction(transaction: PSTransaction) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.createTransaction(transaction))
+    }
+    
+    public func createTransactionRequest(key: String, request: PSTransactionRequest) -> Promise<PSTransactionRequest> {
+        return doRequest(requestRouter: WalletApiRequestRouter.createTransactionRequest(key: key, request: request))
+    }
     
     public func get(path: String, parameters: [String: Any]? = nil) -> Promise<String> {
-        
         let request = createRequest(WalletApiRequestRouter.get(path: path, parameters: parameters))
         makeRequest(apiRequest: request)
         
