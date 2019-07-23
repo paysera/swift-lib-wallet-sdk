@@ -7,6 +7,7 @@ public class PSTransaction: Mappable {
     public var key: String?
     public var status: String?
     public var project: PSProject?
+    public var redirectUri: String?
     
     public init() {}
     
@@ -21,5 +22,6 @@ public class PSTransaction: Mappable {
         key             <- map["transaction_key"]
         status          <- map["status"]
         project         <- map["project"]
+        redirectUri     <- map["redirect_uri"]
     }
 }
