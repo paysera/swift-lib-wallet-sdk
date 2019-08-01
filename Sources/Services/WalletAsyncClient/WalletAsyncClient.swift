@@ -58,10 +58,6 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getTransfer(id: id))
     }
     
-    public func getTransaction(byKey key: String) -> Promise<PSTransaction> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getTransaction(key: key))
-    }
-    
     public func resetPassword(_ passwordResetRequest: PSPasswordResetRequest) -> Promise<PSUser> {
         return doRequest(requestRouter: WalletApiRequestRouter.resetPassword(passwordResetRequest))
     }
@@ -73,7 +69,15 @@ public class WalletAsyncClient: BaseAsyncClient {
     public func changePassword(userId: Int, changePasswordRequest: PSPasswordChangeRequest) -> Promise<PSUser> {
         return doRequest(requestRouter: WalletApiRequestRouter.changePassword(userId: userId, changePasswordRequest))
     }
-        
+    
+    public func getTransaction(byKey key: String, fields: [String] = []) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getTransaction(key: key, fields: fields))
+    }
+    
+    public func reserveTransaction(key: String, reservationCode: String) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.reserveTransaction(key: key, reservationCode: reservationCode))
+    }
+    
     public func createTransaction(transaction: PSTransaction) -> Promise<PSTransaction> {
         return doRequest(requestRouter: WalletApiRequestRouter.createTransaction(transaction))
     }

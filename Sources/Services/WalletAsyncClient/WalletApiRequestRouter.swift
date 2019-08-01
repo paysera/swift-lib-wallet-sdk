@@ -17,7 +17,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getUserWallets(inactiveIncluded: String)
     case getSpot(id: Int)
     case getTransfer(id: Int)
-    case getTransaction(key: String)
+    case getTransaction(key: String, fields: [String])
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -32,6 +32,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case verifyPhone(userId: Int, code: String)
     case verifyEmail(userId: Int, code: String)
     case checkIn(spotId: Int, fields: [String])
+    case reserveTransaction(key: String, reservationCode: String)
     
     // MARK: - Variables
     static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
@@ -65,6 +66,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .verifyPhone(_, _),
              .verifyEmail(_, _),
              .changePassword(_),
+             .reserveTransaction(_),
              .checkIn(_, _):
             return .put
             
@@ -76,6 +78,12 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     
     private var path: String {
         switch self {
+        case .getTransaction(let key, _):
+            return "transaction/\(key)"
+            
+        case .reserveTransaction(let key, _):
+            return "transaction/\(key)/reserve"
+            
         case .createTransaction(_):
             return "/transaction"
         
@@ -128,9 +136,6 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getLocationCategories:
             return "/locations/pay-categories"
             
-        case .getTransaction(let key):
-            return "transaction/\(key)"
-            
         case .get(let path, _),
              .post(let path, _),
              .put(let path, _),
@@ -145,6 +150,12 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     
     private var parameters: Parameters? {
         switch self {
+        
+        case .getTransaction(_, let fields):
+            return ["fields": fields.joined(separator: ",")]
+            
+        case .reserveTransaction(_, let reservationCode):
+            return ["reservation_code": reservationCode]
             
         case .createTransaction(let transaction):
             return transaction.toJSON()

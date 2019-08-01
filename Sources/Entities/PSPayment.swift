@@ -4,6 +4,7 @@ public class PSPayment: Mappable {
     public var id: Int?
     public var paymentDescription: String?
     public var price: Int?
+    public var cashback: Int?
     public var currency: String?
     public var beneficiary: PSWalletIdentifier?
     public var items: [PSPaymentItem]?
@@ -18,6 +19,7 @@ public class PSPayment: Mappable {
         paymentDescription  <- map["description"]
         beneficiary         <- map["beneficiary"]
         price               <- map["price"]
+        cashback            <- map["cashback"]
         currency            <- map["currency"]
         items               <- map["items"]
     }
