@@ -4,7 +4,7 @@ public class PSSpot: Mappable {
     public let id: Int
     public let status: String
     public let identifier: String
-    public var place: PSSpotPlace?
+    public var place: PSSpotPlace!
     public var orders: [PSSpotOrder]?
     
     required public init?(map: Map) {

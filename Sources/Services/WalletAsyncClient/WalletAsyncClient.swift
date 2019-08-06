@@ -22,8 +22,8 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getUser(getUserRequest))
     }
     
-    public func getSpot(byId id: Int) -> Promise<PSSpot> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getSpot(id: id))
+    public func getSpot(byId id: Int, fields: [String] = []) -> Promise<PSSpot> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getSpot(id: id, fields: fields))
     }
     
     public func checkIn(spotId: Int, fields: [String]) -> Promise<PSSpot> {
