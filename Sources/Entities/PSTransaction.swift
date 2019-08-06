@@ -5,7 +5,7 @@ public class PSTransaction: Mappable {
     public var useAllowance: Bool?
     public var payments: Array<PSPayment>?
     public var key: String!
-    public var status: String?
+    public var status: String!
     public var project: PSProject?
     public var redirectUri: String?
     public var validForPaymentCardDebit: Bool!
