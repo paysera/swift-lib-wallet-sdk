@@ -54,10 +54,6 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getUserWallets(inactiveIncluded: inactiveIncluded))
     }
     
-    public func getTransfer(byId id: Int) -> Promise<PSTransfer> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getTransfer(id: id))
-    }
-    
     public func resetPassword(_ passwordResetRequest: PSPasswordResetRequest) -> Promise<PSUser> {
         return doRequest(requestRouter: WalletApiRequestRouter.resetPassword(passwordResetRequest))
     }
