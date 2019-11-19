@@ -64,3 +64,52 @@ public class PSSubscriberEvent: Mappable {
         data        <- map["data"]
     }
 }
+
+extension PSSubscriber: Equatable {
+    public static func == (lhs: PSSubscriber, rhs: PSSubscriber) -> Bool {
+        guard lhs.id == rhs.id,
+            lhs.type == rhs.type,
+            lhs.recipient == rhs.recipient,
+            lhs.locale == rhs.locale,
+            lhs.privacyLevel == rhs.privacyLevel,
+            lhs.events?.count == rhs.events?.count
+        else { return false }
+        
+        var lEvents = lhs.events ?? []
+        var rEvents = rhs.events ?? []
+        
+        while let lEvent = lEvents.popLast() {
+            guard let rIndex = rEvents.firstIndex(of: lEvent) else {
+                return false
+            }
+            rEvents.remove(at: rIndex)
+        }
+        
+        return lEvents.count == rEvents.count
+    }
+}
+
+extension PSSubscriberRecipient: Equatable {
+    public static func == (lhs: PSSubscriberRecipient, rhs: PSSubscriberRecipient) -> Bool {
+        return lhs.identifier == rhs.identifier
+    }
+}
+
+extension PSSubscriberEvent: Equatable {
+    public static func == (lhs: PSSubscriberEvent, rhs: PSSubscriberEvent) -> Bool {
+        guard (lhs.event == rhs.event) && (lhs.object == rhs.object) else {
+            return false
+        }
+        
+        if lhs.parameters == nil && rhs.parameters == nil {
+            return true
+        }
+        
+        guard
+            let lParameters = lhs.parameters,
+            let rParameters = rhs.parameters
+        else { return false }
+        
+        return NSDictionary(dictionary: lParameters).isEqual(to: rParameters)
+    }
+}
