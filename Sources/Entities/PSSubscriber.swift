@@ -97,7 +97,10 @@ extension PSSubscriberRecipient: Equatable {
 
 extension PSSubscriberEvent: Equatable {
     public static func == (lhs: PSSubscriberEvent, rhs: PSSubscriberEvent) -> Bool {
-        guard (lhs.event == rhs.event) && (lhs.object == rhs.object) else {
+        guard
+            lhs.event == rhs.event,
+            lhs.object == rhs.object
+        else {
             return false
         }
         
