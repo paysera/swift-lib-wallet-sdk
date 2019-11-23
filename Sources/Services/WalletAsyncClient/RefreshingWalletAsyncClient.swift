@@ -45,7 +45,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 requestsQueue.append(apiRequest)
                 return
             }
-            self.logger?.log(level: .INFO, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
+            self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
             sessionManager
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
@@ -54,7 +54,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                         logMessage += " (\(statusCode))"
                     }
                     
-                    self.logger?.log(level: .INFO, message: logMessage)
+                    self.logger?.log(level: .DEBUG, message: logMessage)
                     
                     if let error = response.error, error.isCancelled {
                         apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
