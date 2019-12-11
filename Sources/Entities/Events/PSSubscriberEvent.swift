@@ -6,7 +6,6 @@ public class PSSubscriberEvent: Mappable {
     public var parameters: [String : Any]?
     
     public var identifier: NSNumber?
-    public var data: [String : Any]?
     
     public init() {}
     
@@ -24,7 +23,6 @@ public class PSSubscriberEvent: Mappable {
         event       <- map["event"]
         object      <- map["object"]
         parameters  <- map["parameters"]
-        data        <- map["data"]
     }
 }
 
