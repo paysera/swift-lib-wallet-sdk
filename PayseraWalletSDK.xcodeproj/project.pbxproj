@@ -85,6 +85,7 @@
 		604EC46A239FE9C70030894A /* PSNotificationObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604EC469239FE9C70030894A /* PSNotificationObjectType.swift */; };
 		604EC46C239FE9F30030894A /* PSNotificationEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604EC46B239FE9F30030894A /* PSNotificationEventType.swift */; };
 		604EC46E239FEBDB0030894A /* PSWalletEventDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 604EC46D239FEBDB0030894A /* PSWalletEventDirection.swift */; };
+		6052EADB23A236E700A23AE3 /* PSEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6052EADA23A236E700A23AE3 /* PSEvent.swift */; };
 		6DF0048121E634A10080FD43 /* PSDetailsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */; };
 		ED0C9833226462B900838924 /* Dictionary+QueryString.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0C9832226462B900838924 /* Dictionary+QueryString.swift */; };
 		ED3AA33C2269D6FA009663CB /* PSPaymentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3AA33B2269D6FA009663CB /* PSPaymentItem.swift */; };
@@ -198,6 +199,7 @@
 		604EC469239FE9C70030894A /* PSNotificationObjectType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSNotificationObjectType.swift; sourceTree = "<group>"; };
 		604EC46B239FE9F30030894A /* PSNotificationEventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSNotificationEventType.swift; sourceTree = "<group>"; };
 		604EC46D239FEBDB0030894A /* PSWalletEventDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSWalletEventDirection.swift; sourceTree = "<group>"; };
+		6052EADA23A236E700A23AE3 /* PSEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSEvent.swift; sourceTree = "<group>"; };
 		6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSDetailsOptions.swift; sourceTree = "<group>"; };
 		ED0C9832226462B900838924 /* Dictionary+QueryString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+QueryString.swift"; sourceTree = "<group>"; };
 		ED3AA33B2269D6FA009663CB /* PSPaymentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPaymentItem.swift; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 				604EC469239FE9C70030894A /* PSNotificationObjectType.swift */,
 				604EC46B239FE9F30030894A /* PSNotificationEventType.swift */,
 				604EC46D239FEBDB0030894A /* PSWalletEventDirection.swift */,
+				6052EADA23A236E700A23AE3 /* PSEvent.swift */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -709,6 +712,7 @@
 				ED8D17FB22E107180062EA46 /* PSAuthToken.swift in Sources */,
 				604EC46E239FEBDB0030894A /* PSWalletEventDirection.swift in Sources */,
 				1CB2D49620EB6CB4000D0B5F /* PSWallet.swift in Sources */,
+				6052EADB23A236E700A23AE3 /* PSEvent.swift in Sources */,
 				1C3E446B21C25098003FC8D3 /* PSSpot.swift in Sources */,
 				1CC2830520EB5DC5000C3962 /* PSAddress.swift in Sources */,
 				1CB2D4E420EBAA85000D0B5F /* PSCardRelation.swift in Sources */,

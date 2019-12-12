@@ -5,8 +5,6 @@ public class PSSubscriberEvent: Mappable {
     public var object: String?
     public var parameters: [String : Any]?
     
-    public var identifier: NSNumber?
-    
     public init() {}
     
     public init(event: String, object: String, parameters: [String : Any]?) {
@@ -19,7 +17,6 @@ public class PSSubscriberEvent: Mappable {
     }
     
     public func mapping(map: Map) {
-        identifier  <- map["id"]
         event       <- map["event"]
         object      <- map["object"]
         parameters  <- map["parameters"]
