@@ -4,6 +4,7 @@ public class PSTransaction: Mappable {
     public var autoConfirm: Bool?
     public var useAllowance: Bool?
     public var payments: Array<PSPayment>?
+    public var allowance: PSTransactionAllowance?
     public var key: String!
     public var status: String!
     public var project: PSProject?
@@ -19,6 +20,7 @@ public class PSTransaction: Mappable {
         autoConfirm                 <- map["auto_confirm"]
         useAllowance                <- map["use_allowance"]
         payments                    <- map["payments"]
+        allowance                   <- map["allowance"]
         key                         <- map["transaction_key"]
         status                      <- map["status"]
         project                     <- map["project"]
