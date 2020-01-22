@@ -163,8 +163,14 @@ public class BaseAsyncClient {
     }
     
     func mapError(jsonString: String, statusCode: Int) -> PSApiError {
-        let apiError = Mapper<PSApiError>().map(JSONString: jsonString) ?? PSApiError.mapping(json: jsonString)
-        apiError.statusCode = statusCode
-        return apiError
+        let error: PSApiError!
+        if statusCode >= 500, statusCode < 600 {
+            error = PSApiError.internalServerError()
+        } else {
+            error = Mapper<PSApiError>().map(JSONString: jsonString) ?? PSApiError.mapping(json: jsonString)
+        }
+        
+        error.statusCode = statusCode
+        return error
     }
 }
