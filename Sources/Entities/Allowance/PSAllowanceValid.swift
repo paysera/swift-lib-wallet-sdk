@@ -1,8 +1,8 @@
 import ObjectMapper
 
 public class PSAllowanceValid: Mappable {
-    public var `for`: Int?
-    public var until: Int?
+    public var validFor: Int?
+    public var validUntil: Int?
     
     public init() {}
     
@@ -10,7 +10,7 @@ public class PSAllowanceValid: Mappable {
     }
     
     public func mapping(map: Map) {
-        `for`           <- map["for"]
-        until           <- map["until"]
+        validFor            <- map["for"]
+        validUntil          <- map["until"]
     }
 }

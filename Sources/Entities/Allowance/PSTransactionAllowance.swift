@@ -3,7 +3,7 @@ import ObjectMapper
 public class PSTransactionAllowance: Mappable {
     public var id: Int?
     public var data: PSAllowance?
-    public var optional: Bool!
+    public var isOptional: Bool!
 
     public init() {}
     
@@ -11,8 +11,8 @@ public class PSTransactionAllowance: Mappable {
     }
     
     public func mapping(map: Map) {
-        id          <- map["id"]
-        data        <- map["data"]
-        optional    <- map["optional"]
+        id              <- map["id"]
+        data            <- map["data"]
+        isOptional      <- map["optional"]
     }
 }
