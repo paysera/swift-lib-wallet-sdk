@@ -82,8 +82,8 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.createTransactionRequest(key: key, request: request))
     }
     
-    public func get(path: String, parameters: [String: Any]? = nil) -> Promise<String> {
-        let request = createRequest(WalletApiRequestRouter.get(path: path, parameters: parameters))
+    public func get(path: String, parameters: [String: Any]? = nil, extraParameters: [String: Any]? = nil) -> Promise<String> {
+        let request = createRequest(WalletApiRequestRouter.get(path: path, parameters: parameters, extraParameters: extraParameters))
         makeRequest(apiRequest: request)
         
         return request
@@ -134,5 +134,13 @@ public class WalletAsyncClient: BaseAsyncClient {
     
     public func getCurrentUser() -> Promise<PSUser> {
         return doRequest(requestRouter: WalletApiRequestRouter.getCurrentUser())
+    }
+    
+    public func getProjects() -> Promise<[PSProject]> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjects())
+    }
+    
+    public func getProjectLocations(id: Int) -> Promise<[PSLocation]> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjectLocations(id: id))
     }
 }
