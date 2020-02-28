@@ -22,13 +22,15 @@ public class RequestSigningAdapter: RequestAdapter {
     
     
     func sign(request: URLRequest, clientID: String, macKey: String, serverTimeDiff: Double) -> URLRequest {
-        
         var request = request
         let authorizationValue = generateSignature(clientID, macKey: macKey,
                                                    timeDiff: serverTimeDiff,
                                                    body: request.httpBody,
                                                    requestURL: request.url!,
-                                                   httpMethod: request.httpMethod!)
+                                                   httpMethod: request.httpMethod!,
+                                                   extraParameters: request.value(forHTTPHeaderField: "extraParameters") ?? ""
+                                                   )
+        request.setValue(nil, forHTTPHeaderField: "extraParameters")
         request.setValue(authorizationValue, forHTTPHeaderField: "Authorization")
         return request
     }
@@ -39,15 +41,17 @@ public class RequestSigningAdapter: RequestAdapter {
         timeDiff: Double,
         body: Data?,
         requestURL: URL,
-        httpMethod: String
+        httpMethod: String,
+        extraParameters: String
     ) -> String {
         
         let port = "443"
-        let contentsHash = (body != nil) ? self.generateSHA256String(body!) : ""
+        var contentsHash = (body != nil) ? "body_hash=\(self.generateSHA256String(body!))" : ""
         let nonce = generateRandomStringOfLength(32)
         let timeStamp = String(format: "%.0f", Date().timeIntervalSince1970 + timeDiff)
         let pathRange = requestURL.absoluteString.range(of: (requestURL.path))
         let fullPath = requestURL.absoluteString.substring(from: (pathRange?.lowerBound)!)
+        contentsHash.append(extraParameters)
         let items: [String] = [timeStamp, nonce, httpMethod.uppercased(), fullPath, (requestURL.host)!, port, contentsHash, ""]
         let dataString = items.joined(separator: "\n")
         

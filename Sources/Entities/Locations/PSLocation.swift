@@ -2,10 +2,10 @@ import ObjectMapper
 
 public class PSLocation: Mappable {
     public let id: Int
-    public let projectId: Int
+    public var projectId: Int?
     public let title: String
-    public let updatedAt: TimeInterval
-    public let status: String
+    public var updatedAt: TimeInterval?
+    public var status: String?
     public var details: String?
     public var address: String?
     public var lat: Double?
@@ -14,21 +14,13 @@ public class PSLocation: Mappable {
     public var prices: [PSLocationPrice]?
     public var workingHours: [PSLocationWorkingHours]?
     public var services: [PSLocationService]?
-    public let images: PSLocationPinImages
+    public var images: PSLocationPinImages?
     public var remoteOrder: PSLocationRemoteOrder?
     
-
-    
     required public init?(map: Map) {
-        
         do {
             id = try map.value("id")
-            projectId = try map.value("project_id")
             title = try map.value("title")
-            updatedAt = try map.value("updated_at")
-            status = try map.value("status")
-            images = try map.value("images")
-            
         } catch {
             return nil
         }
@@ -45,5 +37,9 @@ public class PSLocation: Mappable {
         radius          <- map["radius"]
         prices          <- map["prices"]
         remoteOrder     <- map["remote_orders"]
+        projectId       <- map["project_id"]
+        status          <- map["status"]
+        images          <- map["images"]
+        updatedAt       <- map["updated_at"]
     }
 }

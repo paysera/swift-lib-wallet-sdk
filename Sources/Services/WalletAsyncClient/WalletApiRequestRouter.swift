@@ -1,7 +1,7 @@
 import Alamofire
 
 public enum WalletApiRequestRouter: URLRequestConvertible {
-    case get(path: String, parameters: [String: Any]?)
+    case get(path: String, parameters: [String: Any]?, extraParameters: [String: Any]?)
     case post(path: String, parameters: [String: Any]?)
     case put(path: String, parameters: [String: Any]?)
     case putWithData(path: String, data: Data, contentType: String)
@@ -18,6 +18,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getSpot(id: Int, fields: [String])
     case getTransfer(id: Int)
     case getTransaction(key: String, fields: [String])
+    case getProjects()
+    case getProjectLocations(id: Int)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -58,7 +60,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getSpot(_),
              .getTransfer(_),
              .getTransaction(_),
-             .getWallets(_):
+             .getWallets(_),
+             .getProjects(),
+             .getProjectLocations(_):
             return .get
             
         case .put(_),
@@ -136,7 +140,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getLocationCategories:
             return "/locations/pay-categories"
             
-        case .get(let path, _),
+        case .get(let path, _, _),
              .post(let path, _),
              .put(let path, _),
              .putWithData(let path, _, _),
@@ -145,6 +149,12 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .checkIn(let spotId, _):
             return "spot/\(spotId)/check-in"
+        
+        case .getProjects():
+            return "user/me/projects"
+        
+        case .getProjectLocations(_):
+            return "client/locations"
         }
     }
     
@@ -205,11 +215,24 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(_, let fields):
             return ["fields": fields.joined(separator: ",")]
 
-        case .get(_, let parameters),
+        case .get(_, let parameters, _),
              .post(_, let parameters),
              .put(_, let parameters),
              .delete(_, let parameters):
             return parameters
+            
+        default:
+            return nil
+        }
+    }
+    
+    private var extraParameters: [String: Any]? {
+        switch self {
+        case .getProjectLocations(let id):
+            return ["project_id": id]
+            
+        case .get(_, _, let extraParameters):
+            return extraParameters
             
         default:
             return nil
@@ -222,6 +245,12 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         
         var urlRequest = URLRequest(url: url.appendingPathComponent(path))
         urlRequest.httpMethod = method.rawValue
+        
+        var extraParametersString = ""
+         extraParameters?.forEach {
+             extraParametersString.append("&\($0.key)=\($0.value)")
+         }
+        urlRequest.addValue(extraParametersString, forHTTPHeaderField: "extraParameters")
         
         switch self {
             
