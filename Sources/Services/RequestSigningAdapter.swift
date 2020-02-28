@@ -30,6 +30,7 @@ public class RequestSigningAdapter: RequestAdapter {
                                                    httpMethod: request.httpMethod!,
                                                    extraParameters: request.value(forHTTPHeaderField: "extraParameters") ?? ""
                                                    )
+        request.setValue(nil, forHTTPHeaderField: "extraParameters")
         request.setValue(authorizationValue, forHTTPHeaderField: "Authorization")
         return request
     }
