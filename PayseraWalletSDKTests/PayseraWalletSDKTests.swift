@@ -16,17 +16,28 @@ class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
 
 class PayseraWalletSDKTests: XCTestCase {
     private var client: WalletAsyncClient!
+    private var authClient: OAuthAsyncClient!
     private var token: String!
     
     override func setUp() {
         super.setUp()
         
-        let credentials = PSCredentials()
-        credentials.accessToken = "change_me"
-        credentials.macKey = "change_me"
+        let userCredentials = PSCredentials()
+        userCredentials.accessToken = "change_me"
+        userCredentials.macKey = "change_me"
         
         self.client = ClientsFactory.createWalletAsyncClient(
-            credentials: credentials,
+            credentials: userCredentials,
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
+            serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
+        )
+        
+        let appCredentials = PSCredentials()
+        appCredentials.accessToken = "change_me"
+        appCredentials.macKey = "change_me"
+        
+        self.authClient = ClientsFactory.createOAuthClient(
+            credentials: appCredentials,
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
@@ -85,6 +96,24 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testLogin() {
+        var object: PSCredentials?
+        let expectation = XCTestExpectation(description: "")
+        let scopes = ["logged_in"]
+        let userData = PSUserLoginRequest()
+        userData.username = "change_me"
+        userData.password = "change_me"
+        userData.scopes = scopes
+        userData.grantType = "password"
+        authClient.loginUser(userData).done { res in
+            object = res
+        }.catch { error in
+            print(error)
+        }.finally { expectation.fulfill()}
         wait(for: [expectation], timeout: 3.0)
         XCTAssertNotNil(object)
     }
