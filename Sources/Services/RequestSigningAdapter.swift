@@ -46,7 +46,7 @@ public class RequestSigningAdapter: RequestAdapter {
     ) -> String {
         
         let port = "443"
-        var contentsHash = (body != nil) ? "body_hash=\(self.generateSHA256String(body!))" : ""
+        var contentsHash = (body != nil) ? "body_hash=\(self.generateSHA256String(body!).addPercentEncoding())" : ""
         let nonce = generateRandomStringOfLength(32)
         let timeStamp = String(format: "%.0f", Date().timeIntervalSince1970 + timeDiff)
         let pathRange = requestURL.absoluteString.range(of: (requestURL.path))
@@ -88,13 +88,10 @@ public class RequestSigningAdapter: RequestAdapter {
     }
     
     private func generateSHA256String(_ data: Data) -> String {
-        var digest = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        CC_SHA256((data as NSData).bytes, CC_LONG(data.count), &digest)
-        
-        let output = NSMutableString(capacity: Int(CC_SHA256_DIGEST_LENGTH * 2))
-        for byte in digest {
-            output.appendFormat("%02x", byte)
+        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        data.withUnsafeBytes {
+            _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
         }
-        return output as String
+        return Data(hash).base64EncodedString()
     }
 }
