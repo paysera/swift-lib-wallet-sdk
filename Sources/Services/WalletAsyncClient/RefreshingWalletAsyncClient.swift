@@ -17,7 +17,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     
     
     init(
-        sessionManager: SessionManager,
+        session: Session,
         userCredentials: PSCredentials,
         authAsyncClient: OAuthAsyncClient,
         publicWalletApiClient: PublicWalletApiClient,
@@ -31,7 +31,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         self.accessTokenRefresherDelegate = accessTokenRefresherDelegate
         
         super.init(
-            sessionManager: sessionManager,
+            session: session,
             publicWalletApiClient: publicWalletApiClient,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             logger: logger
@@ -46,7 +46,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 return
             }
             self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
-            sessionManager
+            session
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
                     var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"

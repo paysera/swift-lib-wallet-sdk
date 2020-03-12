@@ -1,7 +1,7 @@
 import Alamofire
 import CommonCrypto
 
-public class RequestSigningAdapter: RequestAdapter {
+public class RequestSigningAdapter: RequestInterceptor {
     private let credentials: PSCredentials
     private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol
     
@@ -12,27 +12,26 @@ public class RequestSigningAdapter: RequestAdapter {
         self.serverTimeSynchronizationProtocol = serverTimeSynchronizationProtocol
     }
     
-    public func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
+    public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+        guard let accessToken = credentials.accessToken, let macKey = credentials.macKey else { return }
         
-        return sign(request: urlRequest,
-                    clientID: credentials.accessToken ?? "",
-                    macKey: credentials.macKey ?? "",
-                    serverTimeDiff: serverTimeSynchronizationProtocol.getServerTimeDifference())
+        let authorizationValue = generateSignature(
+            accessToken,
+            macKey: macKey,
+            timeDiff: serverTimeSynchronizationProtocol.getServerTimeDifference(),
+            body: urlRequest.httpBody,
+            requestURL: urlRequest.url!,
+            httpMethod: urlRequest.httpMethod!,
+            extraParameters: urlRequest.value(forHTTPHeaderField: "extraParameters") ?? ""
+        )
+        var urlRequest = urlRequest
+        urlRequest.headers.add(.authorization(authorizationValue))
+        urlRequest.setValue(nil, forHTTPHeaderField: "extraParameters")
+        completion(.success(urlRequest))
     }
-    
-    
-    func sign(request: URLRequest, clientID: String, macKey: String, serverTimeDiff: Double) -> URLRequest {
-        var request = request
-        let authorizationValue = generateSignature(clientID, macKey: macKey,
-                                                   timeDiff: serverTimeDiff,
-                                                   body: request.httpBody,
-                                                   requestURL: request.url!,
-                                                   httpMethod: request.httpMethod!,
-                                                   extraParameters: request.value(forHTTPHeaderField: "extraParameters") ?? ""
-                                                   )
-        request.setValue(nil, forHTTPHeaderField: "extraParameters")
-        request.setValue(authorizationValue, forHTTPHeaderField: "Authorization")
-        return request
+        
+    public func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+        completion(.doNotRetry)
     }
     
     private func generateSignature(

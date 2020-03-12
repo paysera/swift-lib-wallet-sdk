@@ -4,7 +4,7 @@ import PromiseKit
 import PayseraCommonSDK
 
 public class BaseAsyncClient {
-    let sessionManager: SessionManager
+    let session: Session
     let publicWalletApiClient: PublicWalletApiClient?
     let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     let logger: PSLoggerProtocol?
@@ -13,19 +13,19 @@ public class BaseAsyncClient {
     var timeIsSyncing = false
     
     init(
-        sessionManager: SessionManager,
+        session: Session,
         publicWalletApiClient: PublicWalletApiClient? = nil,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol? = nil,
         logger: PSLoggerProtocol?
     ) {
-        self.sessionManager = sessionManager
+        self.session = session
         self.publicWalletApiClient = publicWalletApiClient
         self.serverTimeSynchronizationProtocol = serverTimeSynchronizationProtocol
         self.logger = logger
     }
     
     public func cancelAllOperations() {
-        sessionManager.session.getAllTasks { tasks in
+        session.session.getAllTasks { tasks in
             tasks.forEach { $0.cancel() }
         }
     }
@@ -82,7 +82,7 @@ public class BaseAsyncClient {
                 return
             }
             self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
-            sessionManager
+            session
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
                     var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
