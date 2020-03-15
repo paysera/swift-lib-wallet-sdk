@@ -10,7 +10,8 @@ public class ClientsFactory {
     ) -> WalletAsyncClient {
         let session = self.createSession(interceptor: RequestSigningAdapter(
             credentials: credentials,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
         ))
         
         return WalletAsyncClient(
@@ -29,7 +30,8 @@ public class ClientsFactory {
     ) -> OAuthAsyncClient {
         let session = self.createSession(interceptor: RequestSigningAdapter(
             credentials: credentials,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
         ))
         
         return OAuthAsyncClient(
@@ -50,7 +52,8 @@ public class ClientsFactory {
     ) -> RefreshingWalletAsyncClient {
         let session = self.createSession(interceptor: RequestSigningAdapter(
             credentials: credentials,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
         ))
         
         return RefreshingWalletAsyncClient(

@@ -1,5 +1,6 @@
 import Foundation
 import XCTest
+import PayseraCommonSDK
 import PayseraWalletSDK
 import PromiseKit
 import JWTDecode
@@ -11,6 +12,24 @@ class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
     }
 
     func serverTimeDifferenceRefreshed(diff: TimeInterval) {
+    }
+}
+
+class PrintLogger: PSLoggerProtocol {
+    func log(level: PSLoggerLevel, message: String) {
+        print("\(level) \(message)")
+    }
+    
+    func log(level: PSLoggerLevel, message: String, request: URLRequest) {
+        print("\(level) \(message)")
+    }
+    
+    func log(level: PSLoggerLevel, message: String, response: HTTPURLResponse) {
+        print("\(level) \(message)")
+    }
+    
+    func log(level: PSLoggerLevel, message: String, response: HTTPURLResponse, error: PSApiError) {
+        print("\(level) \(message)")
     }
 }
 
@@ -41,6 +60,23 @@ class PayseraWalletSDKTests: XCTestCase {
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
+    }
+
+    func testGetUser() {
+        var object: PSUser?
+        let expectation = XCTestExpectation(description: "")
+        
+        client
+            .getCurrentUser()
+            .done { user in
+                object = user
+                print(object)
+            }.catch { error in
+                print(error)
+            }.finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
     }
     
     func testGetSpotInformation() {

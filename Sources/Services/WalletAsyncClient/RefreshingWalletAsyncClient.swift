@@ -3,7 +3,6 @@ import PromiseKit
 import PayseraCommonSDK
 
 public protocol AccessTokenRefresherDelegate {
-    
     func tokenRefreshed(_ userCredentials: PSCredentials)
     func refreshTokenIsInvalid(_ error: Error)
 }
@@ -25,7 +24,6 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
         logger: PSLoggerProtocol? = nil
     ) {
-        
         self.userCredentials = userCredentials
         self.authAsyncClient = authAsyncClient
         self.accessTokenRefresherDelegate = accessTokenRefresherDelegate
@@ -39,40 +37,45 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     override func makeRequest(apiRequest: ApiRequest) {
+        guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
+        
         let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
             guard !tokenIsRefreshing else {
                 requestsQueue.append(apiRequest)
                 return
             }
-            self.logger?.log(level: .DEBUG, message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)")
+            self.logger?.log(
+                level: .DEBUG,
+                message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)",
+                request: urlRequest
+            )
+            
             session
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
-                    var logMessage = "<-- \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)"
-                    if let statusCode = response.response?.statusCode {
-                        logMessage += " (\(statusCode))"
+                    guard let urlResponse = response.response else {
+                        apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
+                        return
                     }
-                    
-                    self.logger?.log(level: .DEBUG, message: logMessage)
                     
                     if let error = response.error, error.isCancelled {
                         apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
                         return
                     }
                     
-                    guard let statusCode = response.response?.statusCode else {
-                        apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
-                        return
-                    }
+                    let statusCode = urlResponse.statusCode
+                    let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
                     
                     let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
                     if statusCode >= 200 && statusCode < 300 {
+                        self.logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
                         apiRequest.pendingPromise.resolver.fulfill(responseString)
                         return
                     }
                     
                     let error = self.mapError(jsonString: responseString, statusCode: statusCode)
+                    self.logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
                     if statusCode == 401 && error.isInvalidTimestamp() {
                         self.syncTimestamp(apiRequest, error)
                         return

@@ -1,15 +1,20 @@
 import Alamofire
 import CommonCrypto
+import PayseraCommonSDK
 
 public class RequestSigningAdapter: RequestInterceptor {
     private let credentials: PSCredentials
     private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol
+    private let logger: PSLoggerProtocol?
     
-    init(credentials: PSCredentials,
-         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol) {
-        
+    init(
+        credentials: PSCredentials,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        logger: PSLoggerProtocol? = nil
+    ) {
         self.credentials = credentials
         self.serverTimeSynchronizationProtocol = serverTimeSynchronizationProtocol
+        self.logger = logger
     }
     
     public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
@@ -43,10 +48,12 @@ public class RequestSigningAdapter: RequestInterceptor {
         httpMethod: String,
         extraParameters: String
     ) -> String {
-        
         let port = "443"
         var contentsHash = (body != nil) ? "body_hash=\(self.generateSHA256String(body!).addPercentEncoding())" : ""
-        let nonce = generateRandomStringOfLength(32)
+        
+        let nonce = randomStringOfLength(64)
+        logger?.log(level: .DEBUG, message: "Generated nonce \(nonce) for \(requestURL.absoluteURL) ")
+        
         let timeStamp = String(format: "%.0f", Date().timeIntervalSince1970 + timeDiff)
         let pathRange = requestURL.absoluteString.range(of: (requestURL.path))
         let fullPath = requestURL.absoluteString.substring(from: (pathRange?.lowerBound)!)
@@ -59,20 +66,11 @@ public class RequestSigningAdapter: RequestInterceptor {
         return String(format: "MAC id=\"%@\", ts=\"%@\", nonce=\"%@\", mac=\"%@\", ext=\"%@\"", arguments: [accessToken, timeStamp, nonce, macValue, contentsHash])
     }
     
-    private func generateRandomStringOfLength(_ lenght : Int) -> String {
-        let letters : NSString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-        
-        let randomString : NSMutableString = NSMutableString(capacity: lenght)
-        
-        for _ in 0...lenght {
-            let length = UInt32 (letters.length)
-            let rand = arc4random_uniform(length)
-            randomString.appendFormat("%C", letters.character(at: Int(rand)))
-        }
-        
-        return randomString as String
+    private func randomStringOfLength(_ length: Int) -> String {
+        let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        return String((0..<length).map{ _ in letters.randomElement()! })
     }
-    
+
     private func generateMAC(_ dataString: String, key: String) -> String {
         let secretKey = key.cString(using: String.Encoding.utf8)
         let dataToDigest = dataString.cString(using: String.Encoding.utf8)
