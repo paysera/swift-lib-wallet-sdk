@@ -153,4 +153,44 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 3.0)
         XCTAssertNotNil(object)
     }
+    
+    func testCreateProjectTransaction() {
+        var object: PSProjectTransactionRequest?
+        let expectation = XCTestExpectation(description: "")
+        let transactionRequest = PSProjectTransactionRequest()
+        transactionRequest.amount = "1"
+        transactionRequest.currency = "EUR"
+        transactionRequest.description = "aa"
+        transactionRequest.projectId = 52487221
+        transactionRequest.locationId = 7961
+        
+        
+        client.createProjectTransactionRequest(request: transactionRequest).done { psProjectTransactionRequest in
+            object = psProjectTransactionRequest
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+ 
+    }
+    
+    func testGetProjectTransactions() {
+        var parameters: [String: Any] = [:
+//            "status": "confirmed,rejected,revoked"
+        ]
+        parameters["limit"] = 100
+        
+        var object: PSProjectTransactionList?
+        let expectation = XCTestExpectation(description: "")
+        
+        client.getProjectTransactions(id: 52487221, parameters: parameters).done { transactions in
+            object = transactions
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
 }

@@ -20,6 +20,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getTransaction(key: String, fields: [String])
     case getProjects()
     case getProjectLocations(id: Int)
+    case getProjectTransactions(id: Int, parameters: [String: Any])
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -29,6 +30,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case changePassword(userId: Int, PSPasswordChangeRequest)
     case createTransaction(PSTransaction)
     case createTransactionRequest(key: String, request: PSTransactionRequest)
+    case createProjectTransactionRequest(request: PSProjectTransactionRequest)
     
     // MARK: - Put
     case verifyPhone(userId: Int, code: String)
@@ -47,7 +49,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .resetPassword(_),
              .sendPhoneVerificationCode(_),
              .createTransaction(_),
-             .createTransactionRequest(_,_):
+             .createTransactionRequest(_,_),
+             .createProjectTransactionRequest(_):
             return .post
             
         case .get(_),
@@ -62,7 +65,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getTransaction(_),
              .getWallets(_),
              .getProjects(),
-             .getProjectLocations(_):
+             .getProjectLocations(_),
+             .getProjectTransactions(_, _):
             return .get
             
         case .put(_),
@@ -88,7 +92,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(let key, _):
             return "transaction/\(key)/reserve"
             
-        case .createTransaction(_):
+        case .createTransaction(_), .createProjectTransactionRequest(_):
             return "/transaction"
         
         case .createTransactionRequest(let key, _):
@@ -155,6 +159,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         
         case .getProjectLocations(_):
             return "client/locations"
+            
+        case .getProjectTransactions(_):
+            return "/transactions"
         }
     }
     
@@ -214,6 +221,21 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .checkIn(_, let fields):
             return ["fields": fields.joined(separator: ",")]
+            
+        case .createProjectTransactionRequest(let request):
+            return [
+                "payments": [
+                    [
+                        "description": request.description,
+                        "price": request.amount,
+                        "currency": request.currency
+                    ]
+                ],
+                "auto_confirm": 0
+            ]
+        
+        case .getProjectTransactions(_, let parameters):
+            return parameters
 
         case .get(_, let parameters, _),
              .post(_, let parameters),
@@ -229,6 +251,15 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     private var extraParameters: [String: Any]? {
         switch self {
         case .getProjectLocations(let id):
+            return ["project_id": id]
+        
+        case .createProjectTransactionRequest(let request):
+            return [
+                "project_id": request.projectId,
+                "location_id": request.locationId
+            ]
+            
+        case .getProjectTransactions(let id, _):
             return ["project_id": id]
             
         case .get(_, _, let extraParameters):
