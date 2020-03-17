@@ -154,38 +154,15 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(object)
     }
     
-    func testCreateProjectTransaction() {
-        var object: PSProjectTransactionRequest?
-        let expectation = XCTestExpectation(description: "")
-        let transactionRequest = PSProjectTransactionRequest()
-        transactionRequest.amount = "1"
-        transactionRequest.currency = "EUR"
-        transactionRequest.description = "aa"
-        transactionRequest.projectId = 52487221
-        transactionRequest.locationId = 7961
-        
-        
-        client.createProjectTransactionRequest(request: transactionRequest).done { psProjectTransactionRequest in
-            object = psProjectTransactionRequest
-        }.catch { error in
-            print(error)
-        }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
-        XCTAssertNotNil(object)
- 
-    }
-    
     func testGetProjectTransactions() {
-        var parameters: [String: Any] = [:
-//            "status": "confirmed,rejected,revoked"
-        ]
+        var parameters: [String: Any] = ["status": "confirmed,rejected,revoked"]
         parameters["limit"] = 100
         
-        var object: PSProjectTransactionList?
+        var object: [PSTransaction]?
         let expectation = XCTestExpectation(description: "")
         
         client.getProjectTransactions(id: 52487221, parameters: parameters).done { transactions in
-            object = transactions
+            object = transactions.items
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
@@ -193,4 +170,56 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(object)
     }
     
+    func testCreateTransaction() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        
+        let payment = PSPayment()
+        payment.price = 1
+        payment.currency = "EUR"
+        payment.paymentDescription = "aaa"
+        let transaction = PSTransaction()
+        transaction.payments = [payment]
+        transaction.locationId = 7961
+        transaction.projectId = 52487221
+        
+        client.createTransaction(transaction: transaction).done { transaction in
+            print(transaction.key)
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testGetTransaction() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        self.client.getTransaction(byKey: "xRKxvGjjAkKQhI7tGwLVaWJhSNsmaD8A").done { transaction in
+            print(transaction)
+            object = transaction
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testConfirmTransaction() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        
+        self.client.getTransaction(byKey: "xRKxvGjjAkKQhI7tGwLVaWJhSNsmaD8A").done { transaction in
+            self.client.confirmTransaction(key: transaction.key, projectId: transaction.projectId!, locationId: transaction.locationId!).done { result in
+                print(result)
+                object = result
+            }.catch { error in
+                print(error)
+            }.finally {expectation.fulfill()}
+        }.catch { error in
+            print(error)
+        }
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(object)
+    }
 }

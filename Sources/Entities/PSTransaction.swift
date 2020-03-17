@@ -10,6 +10,11 @@ public class PSTransaction: Mappable {
     public var project: PSProject?
     public var redirectUri: String?
     public var validForPaymentCardDebit: Bool!
+    public var id: String?
+    public var projectId: Int?
+    public var locationId: Int?
+    public var createdAt: TimeInterval?
+
     
     public init() {}
     
@@ -26,5 +31,9 @@ public class PSTransaction: Mappable {
         project                     <- map["project"]
         redirectUri                 <- map["redirect_uri"]
         validForPaymentCardDebit    <- map["valid_for_payment_card_debit"]
+        id                          <- map["transaction_key"]
+        projectId                   <- map["project_id"]
+        locationId                  <- map["location_id"]
+        createdAt                   <- map["created_at"]
     }
 }
