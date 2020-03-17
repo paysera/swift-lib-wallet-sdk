@@ -71,9 +71,9 @@ class PayseraWalletSDKTests: XCTestCase {
             .done { user in
                 object = user
                 print(object)
-            }.catch { error in
-                print(error)
-            }.finally { expectation.fulfill() }
+        }.catch { error in
+            print(error)
+        }.finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 3.0)
         XCTAssertNotNil(object)
@@ -87,9 +87,9 @@ class PayseraWalletSDKTests: XCTestCase {
             .checkIn(spotId: 8488, fields: ["*", "orders.transaction"])
             .done { spot in
                 object = spot
-            }.catch { error in
-                print(error)
-            }.finally { expectation.fulfill() }
+        }.catch { error in
+            print(error)
+        }.finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 3.0)
         XCTAssertNotNil(object)
@@ -155,11 +155,10 @@ class PayseraWalletSDKTests: XCTestCase {
     }
     
     func testGetProjectTransactions() {
-        var parameters: [String: Any] = ["status": "confirmed,rejected,revoked"]
-        parameters["limit"] = 100
-        
         var object: [PSTransaction]?
         let expectation = XCTestExpectation(description: "")
+        var parameters: [String: Any] = ["status": "confirmed,rejected,revoked"]
+        parameters["limit"] = 100
         
         client.getProjectTransactions(id: 52487221, parameters: parameters).done { transactions in
             object = transactions.items
@@ -184,7 +183,7 @@ class PayseraWalletSDKTests: XCTestCase {
         transaction.projectId = 52487221
         
         client.createTransaction(transaction: transaction).done { transaction in
-            print(transaction.key)
+            object = transaction
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
@@ -196,7 +195,6 @@ class PayseraWalletSDKTests: XCTestCase {
         var object: PSTransaction?
         let expectation = XCTestExpectation(description: "")
         self.client.getTransaction(byKey: "xRKxvGjjAkKQhI7tGwLVaWJhSNsmaD8A").done { transaction in
-            print(transaction)
             object = transaction
         }.catch { error in
             print(error)
@@ -211,7 +209,6 @@ class PayseraWalletSDKTests: XCTestCase {
         
         self.client.getTransaction(byKey: "xRKxvGjjAkKQhI7tGwLVaWJhSNsmaD8A").done { transaction in
             self.client.confirmTransaction(key: transaction.key, projectId: transaction.projectId!, locationId: transaction.locationId!).done { result in
-                print(result)
                 object = result
             }.catch { error in
                 print(error)

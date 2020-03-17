@@ -183,11 +183,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
                 transaction.locationId != nil,
                 let payments = transaction.payments
             else { return transaction.toJSON() }
-
-            return [
-                "payments": payments.toJSON(),
-                "auto_confirm": 0
-            ]
+            return ["payments": payments.toJSON(), "auto_confirm": 0]
             
         case .createTransactionRequest( _, let request):
             return request.toJSON()
@@ -258,10 +254,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
                 let projectId = transaction.projectId,
                 let locationId = transaction.locationId
             else { return nil }
-            return [
-                "project_id": projectId,
-                "location_id": locationId
-            ]
+            return ["project_id": projectId, "location_id": locationId]
             
         case .getProjectTransactions(let id, _):
             return ["project_id": id]
@@ -270,10 +263,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return extraParameters
             
         case .confirmTransaction(_, let projectId, let locationId):
-            return [
-                "project_id": projectId,
-                "location_id": locationId
-            ]
+            return ["project_id": projectId, "location_id": locationId]
             
         default:
             return nil
