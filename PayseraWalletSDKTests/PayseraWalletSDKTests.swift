@@ -71,9 +71,9 @@ class PayseraWalletSDKTests: XCTestCase {
             .done { user in
                 object = user
                 print(object)
-        }.catch { error in
-            print(error)
-        }.finally { expectation.fulfill() }
+            }.catch { error in
+                print(error)
+            }.finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 3.0)
         XCTAssertNotNil(object)
@@ -87,9 +87,9 @@ class PayseraWalletSDKTests: XCTestCase {
             .checkIn(spotId: 8488, fields: ["*", "orders.transaction"])
             .done { spot in
                 object = spot
-        }.catch { error in
-            print(error)
-        }.finally { expectation.fulfill() }
+            }.catch { error in
+                print(error)
+            }.finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 3.0)
         XCTAssertNotNil(object)
