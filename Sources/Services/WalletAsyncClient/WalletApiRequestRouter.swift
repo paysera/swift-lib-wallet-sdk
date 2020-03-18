@@ -18,7 +18,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getSpot(id: Int, fields: [String])
     case getTransfer(id: Int)
     case getTransaction(key: String, fields: [String])
-    case getProjects()
+    case getProjects(fields: [String])
     case getProjectLocations(id: Int)
     case getProjectTransactions(id: Int, parameters: [String: Any])
     
@@ -63,7 +63,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getTransfer(_),
              .getTransaction(_),
              .getWallets(_),
-             .getProjects(),
+             .getProjects(_),
              .getProjectLocations(_),
              .getProjectTransactions(_, _):
             return .get
@@ -154,7 +154,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(let spotId, _):
             return "spot/\(spotId)/check-in"
         
-        case .getProjects():
+        case .getProjects(_):
             return "user/me/projects"
         
         case .getProjectLocations(_):
@@ -238,7 +238,10 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .put(_, let parameters),
              .delete(_, let parameters):
             return parameters
-            
+        
+        case .getProjects(let fields):
+            return ["fields": fields.joined(separator: ",")]
+
         default:
             return nil
         }

@@ -136,8 +136,8 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getCurrentUser())
     }
     
-    public func getProjects() -> Promise<[PSProject]> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getProjects())
+    public func getProjects(fields: [String]) -> Promise<[PSProject]> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjects(fields: fields))
     }
     
     public func getProjectLocations(id: Int) -> Promise<[PSLocation]> {

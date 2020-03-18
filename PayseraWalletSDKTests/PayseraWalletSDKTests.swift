@@ -98,8 +98,9 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGetProjects() {
         var object: [PSProject]?
         let expectation = XCTestExpectation(description: "")
+        let fields = ["*", "wallet"]
         
-        client.getProjects().done { projects in
+        client.getProjects(fields: fields).done { projects in
             object = projects
         }.catch { error in
             print(error)
