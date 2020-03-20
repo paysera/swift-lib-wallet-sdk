@@ -100,7 +100,7 @@ class PayseraWalletSDKTests: XCTestCase {
         let expectation = XCTestExpectation(description: "")
         let fields = ["*", "wallet"]
         
-        client.getProjects(fields: fields).done { projects in
+        client.getProjectsWithFields(fields).done { projects in
             object = projects
         }.catch { error in
             print(error)
@@ -170,7 +170,7 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(object)
     }
     
-    func testCreateTransaction() {
+    func testCreateTransactionInProject() {
         var object: PSTransaction?
         let expectation = XCTestExpectation(description: "")
         
@@ -180,10 +180,9 @@ class PayseraWalletSDKTests: XCTestCase {
         payment.paymentDescription = "aaa"
         let transaction = PSTransaction()
         transaction.payments = [payment]
-        transaction.locationId = 7961
-        transaction.projectId = 52487221
+        transaction.autoConfirm = false
         
-        client.createTransaction(transaction: transaction).done { transaction in
+        client.createTransactionInProject(transaction: transaction, projectId: 52487221, locationId: 7961).done { transaction in
             object = transaction
         }.catch { error in
             print(error)
@@ -195,7 +194,7 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGetTransaction() {
         var object: PSTransaction?
         let expectation = XCTestExpectation(description: "")
-        self.client.getTransaction(byKey: "xRKxvGjjAkKQhI7tGwLVaWJhSNsmaD8A").done { transaction in
+        self.client.getTransaction(byKey: "change_me").done { transaction in
             object = transaction
         }.catch { error in
             print(error)
@@ -208,7 +207,7 @@ class PayseraWalletSDKTests: XCTestCase {
         var object: PSTransaction?
         let expectation = XCTestExpectation(description: "")
         
-        self.client.getTransaction(byKey: "xRKxvGjjAkKQhI7tGwLVaWJhSNsmaD8A").done { transaction in
+        self.client.getTransaction(byKey: "change_me").done { transaction in
             self.client.confirmTransaction(key: transaction.key, projectId: transaction.projectId!, locationId: transaction.locationId!).done { result in
                 object = result
             }.catch { error in

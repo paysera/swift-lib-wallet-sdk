@@ -18,7 +18,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getSpot(id: Int, fields: [String])
     case getTransfer(id: Int)
     case getTransaction(key: String, fields: [String])
-    case getProjects(fields: [String])
+    case getProjects()
+    case getProjectsWithFields(fields: [String])
     case getProjectLocations(id: Int)
     case getProjectTransactions(id: Int, parameters: [String: Any])
     
@@ -29,6 +30,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case sendPhoneVerificationCode(userId: Int, phone: String, scopes: [String])
     case changePassword(userId: Int, PSPasswordChangeRequest)
     case createTransaction(PSTransaction)
+    case createTransactionInProject(PSTransaction, projectId: Int, locationId: Int)
     case createTransactionRequest(key: String, request: PSTransactionRequest)
     
     // MARK: - Put
@@ -49,6 +51,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .resetPassword(_),
              .sendPhoneVerificationCode(_),
              .createTransaction(_),
+             .createTransactionInProject(_, _, _),
              .createTransactionRequest(_,_):
             return .post
             
@@ -63,7 +66,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getTransfer(_),
              .getTransaction(_),
              .getWallets(_),
-             .getProjects(_),
+             .getProjects(),
+             .getProjectsWithFields(_),
              .getProjectLocations(_),
              .getProjectTransactions(_, _):
             return .get
@@ -92,7 +96,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(let key, _):
             return "transaction/\(key)/reserve"
             
-        case .createTransaction(_):
+        case .createTransaction(_), .createTransactionInProject(_, _, _):
             return "/transaction"
         
         case .createTransactionRequest(let key, _):
@@ -154,7 +158,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(let spotId, _):
             return "spot/\(spotId)/check-in"
         
-        case .getProjects(_):
+        case .getProjects(), .getProjectsWithFields(_):
             return "user/me/projects"
         
         case .getProjectLocations(_):
@@ -177,13 +181,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(_, let reservationCode):
             return ["reservation_code": reservationCode]
             
-        case .createTransaction(let transaction):
-            guard
-                transaction.projectId != nil,
-                transaction.locationId != nil,
-                let payments = transaction.payments
-            else { return transaction.toJSON() }
-            return ["payments": payments.toJSON(), "auto_confirm": 0]
+        case .createTransaction(let transaction), .createTransactionInProject(let transaction, _, _):
+            return transaction.toJSON()
             
         case .createTransactionRequest( _, let request):
             return request.toJSON()
@@ -239,7 +238,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .delete(_, let parameters):
             return parameters
         
-        case .getProjects(let fields):
+        case .getProjectsWithFields(let fields):
             return ["fields": fields.joined(separator: ",")]
 
         default:
@@ -252,11 +251,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getProjectLocations(let id):
             return ["project_id": id]
             
-        case .createTransaction(let transaction):
-            guard
-                let projectId = transaction.projectId,
-                let locationId = transaction.locationId
-            else { return nil }
+        case .createTransactionInProject(_, let projectId, let locationId):
             return ["project_id": projectId, "location_id": locationId]
             
         case .getProjectTransactions(let id, _):
