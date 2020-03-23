@@ -19,7 +19,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getTransfer(id: Int)
     case getTransaction(key: String, fields: [String])
     case getProjects()
+    case getProjectsWithFields(fields: [String])
     case getProjectLocations(id: Int)
+    case getProjectTransactions(id: Int, parameters: [String: Any])
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -28,6 +30,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case sendPhoneVerificationCode(userId: Int, phone: String, scopes: [String])
     case changePassword(userId: Int, PSPasswordChangeRequest)
     case createTransaction(PSTransaction)
+    case createTransactionInProject(PSTransaction, projectId: Int, locationId: Int)
     case createTransactionRequest(key: String, request: PSTransactionRequest)
     
     // MARK: - Put
@@ -35,6 +38,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case verifyEmail(userId: Int, code: String)
     case checkIn(spotId: Int, fields: [String])
     case reserveTransaction(key: String, reservationCode: String)
+    case confirmTransaction(key: String, projectId: Int, locationId: Int)
     
     // MARK: - Variables
     static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
@@ -47,6 +51,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .resetPassword(_),
              .sendPhoneVerificationCode(_),
              .createTransaction(_),
+             .createTransactionInProject(_, _, _),
              .createTransactionRequest(_,_):
             return .post
             
@@ -62,7 +67,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getTransaction(_),
              .getWallets(_),
              .getProjects(),
-             .getProjectLocations(_):
+             .getProjectsWithFields(_),
+             .getProjectLocations(_),
+             .getProjectTransactions(_, _):
             return .get
             
         case .put(_),
@@ -71,7 +78,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .verifyEmail(_, _),
              .changePassword(_),
              .reserveTransaction(_),
-             .checkIn(_, _):
+             .checkIn(_, _),
+             .confirmTransaction(_, _, _):
             return .put
             
         case .delete(_, _):
@@ -88,7 +96,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(let key, _):
             return "transaction/\(key)/reserve"
             
-        case .createTransaction(_):
+        case .createTransaction(_), .createTransactionInProject(_, _, _):
             return "/transaction"
         
         case .createTransactionRequest(let key, _):
@@ -150,11 +158,17 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(let spotId, _):
             return "spot/\(spotId)/check-in"
         
-        case .getProjects():
+        case .getProjects(), .getProjectsWithFields(_):
             return "user/me/projects"
         
         case .getProjectLocations(_):
             return "client/locations"
+            
+        case .getProjectTransactions(_):
+            return "/transactions"
+        
+        case .confirmTransaction(let key, _, _):
+            return "transaction/\(key)/confirm"
         }
     }
     
@@ -167,7 +181,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(_, let reservationCode):
             return ["reservation_code": reservationCode]
             
-        case .createTransaction(let transaction):
+        case .createTransaction(let transaction), .createTransactionInProject(let transaction, _, _):
             return transaction.toJSON()
             
         case .createTransactionRequest( _, let request):
@@ -214,13 +228,19 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .checkIn(_, let fields):
             return ["fields": fields.joined(separator: ",")]
+            
+        case .getProjectTransactions(_, let parameters):
+            return parameters
 
         case .get(_, let parameters, _),
              .post(_, let parameters),
              .put(_, let parameters),
              .delete(_, let parameters):
             return parameters
-            
+        
+        case .getProjectsWithFields(let fields):
+            return ["fields": fields.joined(separator: ",")]
+
         default:
             return nil
         }
@@ -231,8 +251,17 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getProjectLocations(let id):
             return ["project_id": id]
             
+        case .createTransactionInProject(_, let projectId, let locationId):
+            return ["project_id": projectId, "location_id": locationId]
+            
+        case .getProjectTransactions(let id, _):
+            return ["project_id": id]
+            
         case .get(_, _, let extraParameters):
             return extraParameters
+            
+        case .confirmTransaction(_, let projectId, let locationId):
+            return ["project_id": projectId, "location_id": locationId]
             
         default:
             return nil

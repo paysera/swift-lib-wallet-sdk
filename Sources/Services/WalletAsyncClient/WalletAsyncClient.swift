@@ -78,6 +78,10 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.createTransaction(transaction))
     }
     
+    public func createTransaction(transaction: PSTransaction, projectId: Int, locationId: Int) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.createTransactionInProject(transaction, projectId: projectId, locationId: locationId))
+    }
+    
     public func createTransactionRequest(key: String, request: PSTransactionRequest) -> Promise<PSTransactionRequest> {
         return doRequest(requestRouter: WalletApiRequestRouter.createTransactionRequest(key: key, request: request))
     }
@@ -140,7 +144,19 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getProjects())
     }
     
+    public func getProjects(_ fields: [String]) -> Promise<[PSProject]> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjectsWithFields(fields: fields))
+    }
+    
     public func getProjectLocations(id: Int) -> Promise<[PSLocation]> {
         return doRequest(requestRouter: WalletApiRequestRouter.getProjectLocations(id: id))
+    }
+    
+    public func getProjectTransactions(id: Int, parameters: [String: Any]) -> Promise<PSMetadataAwareResponse<PSTransaction>> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjectTransactions(id: id, parameters: parameters))
+    }
+    
+    public func confirmTransaction(key: String, projectId: Int, locationId: Int) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.confirmTransaction(key: key, projectId: projectId, locationId: locationId))
     }
 }

@@ -98,8 +98,9 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGetProjects() {
         var object: [PSProject]?
         let expectation = XCTestExpectation(description: "")
+        let fields = ["*", "wallet"]
         
-        client.getProjects().done { projects in
+        client.getProjects(fields).done { projects in
             object = projects
         }.catch { error in
             print(error)
@@ -151,6 +152,71 @@ class PayseraWalletSDKTests: XCTestCase {
             print(error)
         }.finally { expectation.fulfill()}
         wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testGetProjectTransactions() {
+        var object: [PSTransaction]?
+        let expectation = XCTestExpectation(description: "")
+        var parameters: [String: Any] = ["status": "confirmed,rejected,revoked"]
+        parameters["limit"] = 100
+        
+        client.getProjectTransactions(id: 52487221, parameters: parameters).done { transactions in
+            object = transactions.items
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testCreateTransactionInProject() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        
+        let payment = PSPayment()
+        payment.price = 1
+        payment.currency = "EUR"
+        payment.paymentDescription = "aaa"
+        let transaction = PSTransaction()
+        transaction.payments = [payment]
+        transaction.autoConfirm = false
+        
+        client.createTransaction(transaction: transaction, projectId: 52487221, locationId: 7961).done { transaction in
+            object = transaction
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testGetTransaction() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        self.client.getTransaction(byKey: "change_me").done { transaction in
+            object = transaction
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testConfirmTransaction() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        
+        self.client.getTransaction(byKey: "change_me").done { transaction in
+            self.client.confirmTransaction(key: transaction.key, projectId: transaction.projectId!, locationId: transaction.locationId!).done { result in
+                object = result
+            }.catch { error in
+                print(error)
+            }.finally {expectation.fulfill()}
+        }.catch { error in
+            print(error)
+        }
+        wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(object)
     }
 }
