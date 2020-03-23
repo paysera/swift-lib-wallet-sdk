@@ -100,7 +100,7 @@ class PayseraWalletSDKTests: XCTestCase {
         let expectation = XCTestExpectation(description: "")
         let fields = ["*", "wallet"]
         
-        client.getProjectsWithFields(fields).done { projects in
+        client.getProjects(fields).done { projects in
             object = projects
         }.catch { error in
             print(error)
@@ -182,7 +182,7 @@ class PayseraWalletSDKTests: XCTestCase {
         transaction.payments = [payment]
         transaction.autoConfirm = false
         
-        client.createTransactionInProject(transaction: transaction, projectId: 52487221, locationId: 7961).done { transaction in
+        client.createTransaction(transaction: transaction, projectId: 52487221, locationId: 7961).done { transaction in
             object = transaction
         }.catch { error in
             print(error)
