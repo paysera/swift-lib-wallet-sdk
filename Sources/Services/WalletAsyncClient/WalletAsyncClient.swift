@@ -152,8 +152,8 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getProjectLocations(id: id))
     }
     
-    public func getProjectTransactions(id: Int, parameters: [String: Any]) -> Promise<PSMetadataAwareResponse<PSTransaction>> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getProjectTransactions(id: id, parameters: parameters))
+    public func getProjectTransactions(id: Int, filter: PSTransactionFilter) -> Promise<PSMetadataAwareResponse<PSTransaction>> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjectTransactions(id: id, filter: filter))
     }
     
     public func confirmTransaction(key: String, projectId: Int, locationId: Int) -> Promise<PSTransaction> {

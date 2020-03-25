@@ -1,4 +1,5 @@
 import Alamofire
+import PayseraCommonSDK
 
 public enum WalletApiRequestRouter: URLRequestConvertible {
     case get(path: String, parameters: [String: Any]?, extraParameters: [String: Any]?)
@@ -21,7 +22,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getProjects()
     case getProjectsWithFields(fields: [String])
     case getProjectLocations(id: Int)
-    case getProjectTransactions(id: Int, parameters: [String: Any])
+    case getProjectTransactions(id: Int, filter: PSTransactionFilter)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -229,8 +230,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(_, let fields):
             return ["fields": fields.joined(separator: ",")]
             
-        case .getProjectTransactions(_, let parameters):
-            return parameters
+        case .getProjectTransactions(_, let filter):
+            return filter.toJSON()
 
         case .get(_, let parameters, _),
              .post(_, let parameters),

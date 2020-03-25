@@ -158,10 +158,13 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGetProjectTransactions() {
         var object: [PSTransaction]?
         let expectation = XCTestExpectation(description: "")
-        var parameters: [String: Any] = ["status": "confirmed,rejected,revoked"]
-        parameters["limit"] = 100
         
-        client.getProjectTransactions(id: 52487221, parameters: parameters).done { transactions in
+        let filter = PSTransactionFilter()
+        filter.status = "confirmed,rejected,revoked"
+        filter.from = String(format: "%.0f", Calendar.current.date(byAdding: .day, value: -14, to: Date())!.timeIntervalSince1970)
+        filter.limit = 100
+        
+        client.getProjectTransactions(id: 52487221, filter: filter).done { transactions in
             object = transactions.items
         }.catch { error in
             print(error)
