@@ -50,7 +50,7 @@ public class RequestSigningAdapter: RequestInterceptor {
         extraParameters: String
     ) -> String {
         let port = "443"
-        var contentsHash = (body != nil) ? "body_hash=\(self.generateSHA256String(body!).addPercentEncoding())" : ""
+        var contentsHash = (body != nil) ? "body_hash=\(body!.sha256().base64EncodedString().addPercentEncoding())" : ""
         
         let nonce = randomStringOfLength(64)
         logger?.log(level: .DEBUG, message: "Generated nonce \(nonce) for \(requestURL.absoluteURL) ")
@@ -75,14 +75,5 @@ public class RequestSigningAdapter: RequestInterceptor {
     private func randomStringOfLength(_ length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<length).map{ _ in letters.randomElement()! })
-    }
-
-    
-    private func generateSHA256String(_ data: Data) -> String {
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
-        }
-        return Data(hash).base64EncodedString()
     }
 }
