@@ -1,6 +1,7 @@
 import Alamofire
 import CommonCrypto
 import PayseraCommonSDK
+import CryptoSwift
 
 public class RequestSigningAdapter: RequestInterceptor {
     private let credentials: PSCredentials
@@ -61,7 +62,12 @@ public class RequestSigningAdapter: RequestInterceptor {
         let items: [String] = [timeStamp, nonce, httpMethod.uppercased(), fullPath, (requestURL.host)!, port, contentsHash, ""]
         let dataString = items.joined(separator: "\n")
         
-        let macValue = generateMAC(dataString, key: macKey)
+        guard
+            let bytes = try? HMAC(key: macKey, variant: .sha256).authenticate(dataString.bytes),
+            let macValue = bytes.toBase64()
+        else {
+            return ""
+        }
         
         return String(format: "MAC id=\"%@\", ts=\"%@\", nonce=\"%@\", mac=\"%@\", ext=\"%@\"", arguments: [accessToken, timeStamp, nonce, macValue, contentsHash])
     }
@@ -71,18 +77,6 @@ public class RequestSigningAdapter: RequestInterceptor {
         return String((0..<length).map{ _ in letters.randomElement()! })
     }
 
-    private func generateMAC(_ dataString: String, key: String) -> String {
-        let secretKey = key.cString(using: String.Encoding.utf8)
-        let dataToDigest = dataString.cString(using: String.Encoding.utf8)
-        
-        let digestLength = Int(CC_SHA256_DIGEST_LENGTH)
-        
-        var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA256), secretKey!, Int(strlen(secretKey!)), dataToDigest!, Int(strlen(dataToDigest!)), &result)
-        
-        let hmacData:Data = Data(bytes: UnsafePointer<UInt8>(result), count: digestLength)
-        return hmacData.base64EncodedString(options: .lineLength64Characters)
-    }
     
     private func generateSHA256String(_ data: Data) -> String {
         var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
