@@ -9,6 +9,8 @@ public class BaseAsyncClient {
     let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     let logger: PSLoggerProtocol?
     
+    let lockQueue = DispatchQueue(label: String(describing: BaseAsyncClient.self), attributes: [])
+    
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
     
@@ -31,8 +33,9 @@ public class BaseAsyncClient {
     }
     
     func createRequest<T: ApiRequest, R: URLRequestConvertible>(_ endpoint: R) -> T {
-        return T.init(pendingPromise: Promise<String>.pending(),
-                      requestEndPoint: endpoint
+        return T.init(
+            pendingPromise: Promise<String>.pending(),
+            requestEndPoint: endpoint
         )
     }
     
@@ -77,7 +80,6 @@ public class BaseAsyncClient {
     func makeRequest(apiRequest: ApiRequest) {
         guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
         
-        let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
         lockQueue.sync {
             guard !timeIsSyncing else {
                 requestsQueue.append(apiRequest)
@@ -102,7 +104,7 @@ public class BaseAsyncClient {
                     let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
                     
                     let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
-                    if statusCode >= 200 && statusCode < 300 {
+                    if 200 ... 299 ~= statusCode {
                         self.logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
                         apiRequest.pendingPromise.resolver.fulfill(responseString)
                         return
@@ -120,38 +122,38 @@ public class BaseAsyncClient {
     }
     
     func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSApiError) {
-        let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
+        guard let publicWalletApiClient = publicWalletApiClient else {
+            apiRequest.pendingPromise.resolver.reject(error)
+            return
+        }
+        
         lockQueue.sync {
             requestsQueue.append(apiRequest)
             guard !timeIsSyncing else {
                 return
             }
-            guard let publicWalletApiClient = self.publicWalletApiClient else {
-                apiRequest.pendingPromise.resolver.reject(error)
-                return
-            }
+            
             timeIsSyncing = true
             
             publicWalletApiClient
                 .getServerInformation()
-                .done { serverInformation in
+                .done(on: lockQueue) { serverInformation in
                     self.serverTimeSynchronizationProtocol?.serverTimeDifferenceRefreshed(diff: serverInformation.timeDiff)
-                    lockQueue.sync {
-                        self.timeIsSyncing = false
-                        self.resumeQueue()
-                    }
-                }.catch { error in
-                    lockQueue.sync {
-                        self.timeIsSyncing = false
-                        self.cancelQueue(error: error)
-                    }
-            }
+                    self.timeIsSyncing = false
+                    self.resumeQueue()
+                }
+                .catch(on: lockQueue) { error in
+                    self.timeIsSyncing = false
+                    self.cancelQueue(error: error)
+                }
         }
     }
     
     func resumeQueue() {
-        for request in requestsQueue {
-            makeRequest(apiRequest: request)
+        for request in self.requestsQueue {
+            DispatchQueue.global(qos: .userInitiated).async {
+                self.makeRequest(apiRequest: request)
+            }
         }
         requestsQueue.removeAll()
     }

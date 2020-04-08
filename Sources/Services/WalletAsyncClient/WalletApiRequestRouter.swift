@@ -11,7 +11,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     // MARK: - GET
     case getLocations(PSGetLocationsRequest)
     case getLocationCategories(locale: String)
-    case getCurrentUser()
+    case getCurrentUser
     case getUser(PSGetUserRequest)
     case getWallet(id: Int)
     case getWallets(PSWalletsFilter)
@@ -19,7 +19,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getSpot(id: Int, fields: [String])
     case getTransfer(id: Int)
     case getTransaction(key: String, fields: [String])
-    case getProjects()
+    case getProjects
     case getProjectsWithFields(fields: [String])
     case getProjectLocations(id: Int)
     case getProjectTransactions(id: Int, filter: PSTransactionFilter)
@@ -46,41 +46,41 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
 
     private var method: HTTPMethod {
         switch self {
-        case .post(_),
-             .registerClient(_),
-             .registerUser(_),
-             .resetPassword(_),
-             .sendPhoneVerificationCode(_),
-             .createTransaction(_),
-             .createTransactionInProject(_, _, _),
-             .createTransactionRequest(_,_):
+        case .post,
+             .registerClient,
+             .registerUser,
+             .resetPassword,
+             .sendPhoneVerificationCode,
+             .createTransaction,
+             .createTransactionInProject,
+             .createTransactionRequest:
             return .post
             
-        case .get(_),
-             .getLocationCategories(_),
-             .getCurrentUser(),
-             .getUser(_),
-             .getLocations(_),
-             .getWallet(_),
-             .getUserWallets(_),
-             .getSpot(_),
-             .getTransfer(_),
-             .getTransaction(_),
-             .getWallets(_),
-             .getProjects(),
-             .getProjectsWithFields(_),
-             .getProjectLocations(_),
-             .getProjectTransactions(_, _):
+        case .get,
+             .getLocationCategories,
+             .getCurrentUser,
+             .getUser,
+             .getLocations,
+             .getWallet,
+             .getUserWallets,
+             .getSpot,
+             .getTransfer,
+             .getTransaction,
+             .getWallets,
+             .getProjects,
+             .getProjectsWithFields,
+             .getProjectLocations,
+             .getProjectTransactions:
             return .get
             
-        case .put(_),
-             .putWithData(_, _, _),
-             .verifyPhone(_, _),
-             .verifyEmail(_, _),
-             .changePassword(_),
-             .reserveTransaction(_),
-             .checkIn(_, _),
-             .confirmTransaction(_, _, _):
+        case .put,
+             .putWithData,
+             .verifyPhone,
+             .verifyEmail,
+             .changePassword,
+             .reserveTransaction,
+             .checkIn,
+             .confirmTransaction:
             return .put
             
         case .delete(_, _):
@@ -97,13 +97,14 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(let key, _):
             return "transaction/\(key)/reserve"
             
-        case .createTransaction(_), .createTransactionInProject(_, _, _):
+        case .createTransaction,
+             .createTransactionInProject:
             return "/transaction"
         
         case .createTransactionRequest(let key, _):
             return "/transaction/\(key)/request"
             
-        case .getCurrentUser():
+        case .getCurrentUser:
             return "/user/me"
             
         case .verifyPhone(let userId, _):
@@ -112,8 +113,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .verifyEmail(userId: let userId, _):
             return "/user/\(userId)/email/confirm"
             
-        case .getUser(_),
-             .registerUser(_):
+        case .getUser,
+             .registerUser:
             return "/user"
             
         case .getSpot(let id, _):
@@ -122,16 +123,16 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getTransfer(let id):
             return "transfers/\(id)"
             
-        case .resetPassword(_):
+        case .resetPassword:
             return "/user/password/reset"
             
         case .getWallet(let id):
             return "/wallet/\(id)"
             
-        case .getWallets(_):
+        case .getWallets:
             return "/wallets"
             
-        case .getUserWallets(_):
+        case .getUserWallets:
             return "user/me/wallets"
             
         case .sendPhoneVerificationCode(let userId, _, _):
@@ -140,10 +141,10 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .changePassword(let userId, _):
             return "/user/\(userId)/password"
             
-        case .registerClient(_):
+        case .registerClient:
             return "/client"
             
-        case .getLocations(_):
+        case .getLocations:
             return "/locations"
             
         case .getLocationCategories:
@@ -159,13 +160,14 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(let spotId, _):
             return "spot/\(spotId)/check-in"
         
-        case .getProjects(), .getProjectsWithFields(_):
+        case .getProjects,
+             .getProjectsWithFields:
             return "user/me/projects"
         
-        case .getProjectLocations(_):
+        case .getProjectLocations:
             return "client/locations"
             
-        case .getProjectTransactions(_):
+        case .getProjectTransactions:
             return "/transactions"
         
         case .confirmTransaction(let key, _, _):
@@ -185,7 +187,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .createTransaction(let transaction), .createTransactionInProject(let transaction, _, _):
             return transaction.toJSON()
             
-        case .createTransactionRequest( _, let request):
+        case .createTransactionRequest(_, let request):
             return request.toJSON()
             
         case .getLocationCategories(let locale):

@@ -137,11 +137,11 @@ public class WalletAsyncClient: BaseAsyncClient {
     }
     
     public func getCurrentUser() -> Promise<PSUser> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getCurrentUser())
+        return doRequest(requestRouter: WalletApiRequestRouter.getCurrentUser)
     }
     
     public func getProjects() -> Promise<[PSProject]> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getProjects())
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjects)
     }
     
     public func getProjects(_ fields: [String]) -> Promise<[PSProject]> {

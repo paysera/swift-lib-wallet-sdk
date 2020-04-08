@@ -3,16 +3,15 @@ import Alamofire
 
 public enum PublicApiRequestRouter: URLRequestConvertible {
     
-    case getServerInformation()
-    case getServerConfiguration()
+    case getServerInformation
+    case getServerConfiguration
     
     static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
-    
     
     private var method: HTTPMethod {
         switch self {
             
-        case .getServerInformation():
+        case .getServerInformation:
             return .get
         case .getServerConfiguration:
             return .get
