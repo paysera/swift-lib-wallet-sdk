@@ -98,6 +98,7 @@
 		ED0C9833226462B900838924 /* Dictionary+QueryString.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0C9832226462B900838924 /* Dictionary+QueryString.swift */; };
 		ED3AA33C2269D6FA009663CB /* PSPaymentItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3AA33B2269D6FA009663CB /* PSPaymentItem.swift */; };
 		ED555BC52284057D0061B552 /* PSFacePhotoDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED555BC42284057D0061B552 /* PSFacePhotoDocument.swift */; };
+		ED6E7B942436320900D55467 /* CryptoSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED6E7B932436320900D55467 /* CryptoSwift.framework */; };
 		ED8D17F322E1027C0062EA46 /* PSSubscriber.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D17F222E1027C0062EA46 /* PSSubscriber.swift */; };
 		ED8D17F722E106600062EA46 /* PSConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D17F622E106600062EA46 /* PSConfirmation.swift */; };
 		ED8D17F922E106EE0062EA46 /* PSAuthTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D17F822E106EE0062EA46 /* PSAuthTokenResponse.swift */; };
@@ -219,6 +220,7 @@
 		ED0C9832226462B900838924 /* Dictionary+QueryString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+QueryString.swift"; sourceTree = "<group>"; };
 		ED3AA33B2269D6FA009663CB /* PSPaymentItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSPaymentItem.swift; sourceTree = "<group>"; };
 		ED555BC42284057D0061B552 /* PSFacePhotoDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSFacePhotoDocument.swift; sourceTree = "<group>"; };
+		ED6E7B932436320900D55467 /* CryptoSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CryptoSwift.framework; path = Carthage/Build/iOS/CryptoSwift.framework; sourceTree = "<group>"; };
 		ED8D17F222E1027C0062EA46 /* PSSubscriber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSSubscriber.swift; sourceTree = "<group>"; };
 		ED8D17F622E106600062EA46 /* PSConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSConfirmation.swift; sourceTree = "<group>"; };
 		ED8D17F822E106EE0062EA46 /* PSAuthTokenResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSAuthTokenResponse.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */,
 				EDB433F322B3FDBE0084A7FA /* PayseraCommonSDK.framework in Frameworks */,
 				EDF1E47421F0C49E00C848AB /* Alamofire.framework in Frameworks */,
+				ED6E7B942436320900D55467 /* CryptoSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -467,6 +470,7 @@
 		1CE7722220EA366000CD53E2 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
+				ED6E7B932436320900D55467 /* CryptoSwift.framework */,
 				EDB433F222B3FDBE0084A7FA /* PayseraCommonSDK.framework */,
 				EDF1E46F21F0C49E00C848AB /* Alamofire.framework */,
 				EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */,

@@ -1,6 +1,7 @@
 import Alamofire
 import CommonCrypto
 import PayseraCommonSDK
+import CryptoSwift
 
 public class RequestSigningAdapter: RequestInterceptor {
     private let credentials: PSCredentials
@@ -49,7 +50,7 @@ public class RequestSigningAdapter: RequestInterceptor {
         extraParameters: String
     ) -> String {
         let port = "443"
-        var contentsHash = (body != nil) ? "body_hash=\(self.generateSHA256String(body!).addPercentEncoding())" : ""
+        var contentsHash = (body != nil) ? "body_hash=\(body!.sha256().base64EncodedString().addPercentEncoding())" : ""
         
         let nonce = randomStringOfLength(64)
         logger?.log(level: .DEBUG, message: "Generated nonce \(nonce) for \(requestURL.absoluteURL) ")
@@ -61,7 +62,12 @@ public class RequestSigningAdapter: RequestInterceptor {
         let items: [String] = [timeStamp, nonce, httpMethod.uppercased(), fullPath, (requestURL.host)!, port, contentsHash, ""]
         let dataString = items.joined(separator: "\n")
         
-        let macValue = generateMAC(dataString, key: macKey)
+        guard
+            let bytes = try? HMAC(key: macKey, variant: .sha256).authenticate(dataString.bytes),
+            let macValue = bytes.toBase64()
+        else {
+            return ""
+        }
         
         return String(format: "MAC id=\"%@\", ts=\"%@\", nonce=\"%@\", mac=\"%@\", ext=\"%@\"", arguments: [accessToken, timeStamp, nonce, macValue, contentsHash])
     }
@@ -69,26 +75,5 @@ public class RequestSigningAdapter: RequestInterceptor {
     private func randomStringOfLength(_ length: Int) -> String {
         let letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return String((0..<length).map{ _ in letters.randomElement()! })
-    }
-
-    private func generateMAC(_ dataString: String, key: String) -> String {
-        let secretKey = key.cString(using: String.Encoding.utf8)
-        let dataToDigest = dataString.cString(using: String.Encoding.utf8)
-        
-        let digestLength = Int(CC_SHA256_DIGEST_LENGTH)
-        
-        var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA256), secretKey!, Int(strlen(secretKey!)), dataToDigest!, Int(strlen(dataToDigest!)), &result)
-        
-        let hmacData:Data = Data(bytes: UnsafePointer<UInt8>(result), count: digestLength)
-        return hmacData.base64EncodedString(options: .lineLength64Characters)
-    }
-    
-    private func generateSHA256String(_ data: Data) -> String {
-        var hash = [UInt8](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
-        data.withUnsafeBytes {
-            _ = CC_SHA256($0.baseAddress, CC_LONG(data.count), &hash)
-        }
-        return Data(hash).base64EncodedString()
     }
 }
