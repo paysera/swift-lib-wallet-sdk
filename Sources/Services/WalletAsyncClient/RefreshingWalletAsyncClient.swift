@@ -138,7 +138,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                     if let inactiveAccessToken = inactiveCredentials?.accessToken {
                         refreshPromise = authAsyncClient.activate(accessToken: inactiveAccessToken)
                     } else if let activeRefreshToken = activeCredentials.refreshToken {
-                        refreshPromise = authAsyncClient.refreshToken(activeRefreshToken, code: code, scopes: scopes)
+                        refreshPromise = authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                             .get(on: lockQueue) { self.updateInactiveCredentials(using: $0) }
                             .compactMap { $0.accessToken }
                             .then { inactiveAccessToken in self.authAsyncClient.activate(accessToken: inactiveAccessToken) }
