@@ -80,14 +80,14 @@ public class BaseAsyncClient {
     func makeRequest(apiRequest: ApiRequest) {
         guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
         
-        lockQueue.sync {
-            guard !timeIsSyncing else {
-                requestsQueue.append(apiRequest)
+        lockQueue.async {
+            guard !self.timeIsSyncing else {
+                self.requestsQueue.append(apiRequest)
                 return
             }
             
             self.logger?.log(level: .DEBUG, message: "--> \(urlRequest.url!.absoluteString)")
-            session
+            self.session
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
                     guard let urlResponse = response.response else {
@@ -127,22 +127,22 @@ public class BaseAsyncClient {
             return
         }
         
-        lockQueue.sync {
-            requestsQueue.append(apiRequest)
-            guard !timeIsSyncing else {
+        lockQueue.async {
+            self.requestsQueue.append(apiRequest)
+            guard !self.timeIsSyncing else {
                 return
             }
             
-            timeIsSyncing = true
+            self.timeIsSyncing = true
             
             publicWalletApiClient
                 .getServerInformation()
-                .done(on: lockQueue) { serverInformation in
+                .done(on: self.lockQueue) { serverInformation in
                     self.serverTimeSynchronizationProtocol?.serverTimeDifferenceRefreshed(diff: serverInformation.timeDiff)
                     self.timeIsSyncing = false
                     self.resumeQueue()
                 }
-                .catch(on: lockQueue) { error in
+                .catch(on: self.lockQueue) { error in
                     self.timeIsSyncing = false
                     self.cancelQueue(error: error)
                 }
@@ -150,10 +150,8 @@ public class BaseAsyncClient {
     }
     
     func resumeQueue() {
-        for request in self.requestsQueue {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.makeRequest(apiRequest: request)
-            }
+        for request in requestsQueue {
+            makeRequest(apiRequest: request)
         }
         requestsQueue.removeAll()
     }

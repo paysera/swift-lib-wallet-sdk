@@ -45,9 +45,9 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     override func makeRequest(apiRequest: ApiRequest) {
         guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
         
-        lockQueue.sync {
-            guard !tokenIsRefreshing else {
-                requestsQueue.append(apiRequest)
+        lockQueue.async {
+            guard !self.tokenIsRefreshing else {
+                self.requestsQueue.append(apiRequest)
                 return
             }
             self.logger?.log(
@@ -56,7 +56,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 request: urlRequest
             )
             
-            session
+            self.session
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
                     guard let urlResponse = response.response else {
@@ -100,46 +100,42 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     func handleExpiredAccessToken(_ apiRequest: ApiRequest, _ error: PSApiError) {
-        lockQueue.sync {
-            guard !hasRecentlyRefreshed() else {
-                DispatchQueue.global(qos: .userInitiated).async {
-                    self.makeRequest(apiRequest: apiRequest)
-                }
+        lockQueue.async {
+            guard !self.hasRecentlyRefreshed() else {
+                self.makeRequest(apiRequest: apiRequest)
                 return
             }
             
-            requestsQueue.append(apiRequest)
+            self.requestsQueue.append(apiRequest)
             
-            guard !tokenIsRefreshing else {
+            guard !self.tokenIsRefreshing else {
                 return
             }
             
-            tokenIsRefreshing = true
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.refreshToken(grantType: self.grantType)
-            }
+            self.tokenIsRefreshing = true
+            self.refreshToken(grantType: self.grantType)
         }
     }
     
     @discardableResult
     private func refreshToken(grantType: PSGrantType, code: String? = nil, scopes: [String]? = nil) -> Promise<PSCredentials> {
         return Promise<PSCredentials> { seal in
-            self.lockQueue.sync {
+            self.lockQueue.async {
                 let refreshPromise: Promise<PSCredentials>
                 
                 switch grantType {
                 case .refreshToken:
-                    if let activeRefreshToken = activeCredentials.refreshToken {
-                        refreshPromise = authAsyncClient.refreshToken(activeRefreshToken, code: code, scopes: scopes)
+                    if let activeRefreshToken = self.activeCredentials.refreshToken {
+                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, code: code, scopes: scopes)
                     } else {
                         refreshPromise = .init(error: PSApiError.unknown())
                     }
                 case .refreshTokenWithActivation:
-                    if let inactiveAccessToken = inactiveCredentials?.accessToken {
-                        refreshPromise = authAsyncClient.activate(accessToken: inactiveAccessToken)
-                    } else if let activeRefreshToken = activeCredentials.refreshToken {
-                        refreshPromise = authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
-                            .get(on: lockQueue) { self.updateInactiveCredentials(using: $0) }
+                    if let inactiveAccessToken = self.inactiveCredentials?.accessToken {
+                        refreshPromise = self.authAsyncClient.activate(accessToken: inactiveAccessToken)
+                    } else if let activeRefreshToken = self.activeCredentials.refreshToken {
+                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
+                            .get(on: self.lockQueue) { self.updateInactiveCredentials(using: $0) }
                             .compactMap { $0.accessToken }
                             .then { inactiveAccessToken in self.authAsyncClient.activate(accessToken: inactiveAccessToken) }
                     } else {
@@ -148,11 +144,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 }
                 
                 refreshPromise
-                    .done(on: lockQueue) { credentials in
+                    .done(on: self.lockQueue) { credentials in
                         self.handleSuccessfullTokenRefresh(with: credentials)
                         seal.fulfill(credentials)
                     }
-                    .catch(on: lockQueue) { error in
+                    .catch(on: self.lockQueue) { error in
                         self.handleRefreshTokenError(error)
                         seal.reject(error)
                     }
