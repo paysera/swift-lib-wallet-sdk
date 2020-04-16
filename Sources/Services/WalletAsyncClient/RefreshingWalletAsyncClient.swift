@@ -126,7 +126,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 switch grantType {
                 case .refreshToken:
                     if let activeRefreshToken = self.activeCredentials.refreshToken {
-                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, code: code, scopes: scopes)
+                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                     } else {
                         refreshPromise = .init(error: PSApiError.unknown())
                     }
