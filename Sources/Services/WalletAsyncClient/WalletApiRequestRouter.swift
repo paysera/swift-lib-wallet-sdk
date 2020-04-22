@@ -22,7 +22,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getProjects()
     case getProjectsWithFields(fields: [String])
     case getProjectLocations(id: Int)
-    case getProjectTransactions(id: Int, filter: PSTransactionFilter)
+    case getProjectTransactions(projectId: Int, locationId: Int, filter: PSTransactionFilter)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -70,7 +70,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getProjects(),
              .getProjectsWithFields(_),
              .getProjectLocations(_),
-             .getProjectTransactions(_, _):
+             .getProjectTransactions(_, _, _):
             return .get
             
         case .put(_),
@@ -230,7 +230,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn(_, let fields):
             return ["fields": fields.joined(separator: ",")]
             
-        case .getProjectTransactions(_, let filter):
+        case .getProjectTransactions(_, _, let filter):
             return filter.toJSON()
 
         case .get(_, let parameters, _),
@@ -255,8 +255,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .createTransactionInProject(_, let projectId, let locationId):
             return ["project_id": projectId, "location_id": locationId]
             
-        case .getProjectTransactions(let id, _):
-            return ["project_id": id]
+        case .getProjectTransactions(let projectId, let locationId, _):
+            return ["project_id": projectId, "location_id": locationId]
             
         case .get(_, _, let extraParameters):
             return extraParameters
