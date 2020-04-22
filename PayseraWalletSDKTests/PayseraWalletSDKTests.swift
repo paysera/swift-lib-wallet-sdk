@@ -164,7 +164,7 @@ class PayseraWalletSDKTests: XCTestCase {
         filter.from = String(format: "%.0f", Calendar.current.date(byAdding: .day, value: -14, to: Date())!.timeIntervalSince1970)
         filter.limit = 100
         
-        client.getProjectTransactions(id: 52487221, filter: filter).done { transactions in
+        client.getProjectTransactions(projectId: 0000, locationId: 0000, filter: filter).done { transactions in
             object = transactions.items
         }.catch { error in
             print(error)
