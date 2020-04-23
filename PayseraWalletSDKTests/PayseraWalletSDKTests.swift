@@ -163,8 +163,10 @@ class PayseraWalletSDKTests: XCTestCase {
         filter.status = "confirmed,rejected,revoked"
         filter.from = String(format: "%.0f", Calendar.current.date(byAdding: .day, value: -14, to: Date())!.timeIntervalSince1970)
         filter.limit = 100
+        filter.locationId = 0000
+        filter.projectId = 0000
         
-        client.getProjectTransactions(projectId: 0000, locationId: 0000, filter: filter).done { transactions in
+        client.getProjectTransactions(filter: filter).done { transactions in
             object = transactions.items
         }.catch { error in
             print(error)
