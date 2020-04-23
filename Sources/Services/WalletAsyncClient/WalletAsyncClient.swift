@@ -159,4 +159,16 @@ public class WalletAsyncClient: BaseAsyncClient {
     public func confirmTransaction(key: String, projectId: Int, locationId: Int) -> Promise<PSTransaction> {
         return doRequest(requestRouter: WalletApiRequestRouter.confirmTransaction(key: key, projectId: projectId, locationId: locationId))
     }
+    
+    public func registerSubscriber(_ psSubscriber: PSSubscriber) -> Promise<PSSubscriber> {
+        return doRequest(requestRouter: WalletApiRequestRouter.registerSubscriber(psSubscriber))
+    }
+    
+    public func updateSubscriber(_ psSubscriber: PSSubscriber, subscriberId: Int) -> Promise<PSSubscriber> {
+        return doRequest(requestRouter: WalletApiRequestRouter.updateSubscriber(psSubscriber, subscriberId: subscriberId))
+    }
+    
+    public func getEvents(filter: PSEventsFilter) -> Promise<PSMetadataAwareResponse<PSEvent>> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getEvents(filter: filter))
+    }
 }
