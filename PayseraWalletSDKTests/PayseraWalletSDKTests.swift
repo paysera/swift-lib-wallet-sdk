@@ -228,16 +228,12 @@ class PayseraWalletSDKTests: XCTestCase {
     func testDeleteTransaction() {
         var object: PSTransaction?
         let expectation = XCTestExpectation(description: "")
-
-        self.client.getTransaction(byKey: "change_me").done { transaction in
-            self.client.deleteTransaction(key: transaction.key).done { result in
-                object = result
-            }.catch { error in
-                print(error)
-            }.finally {expectation.fulfill()}
+        
+        self.client.deleteTransaction(key: "tc8Vmm6sregtdNWGdOvYJTgbatO1Ulcw").done { result in
+            object = result
         }.catch { error in
             print(error)
-        }
+        }.finally {expectation.fulfill()}
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(object)
     }
