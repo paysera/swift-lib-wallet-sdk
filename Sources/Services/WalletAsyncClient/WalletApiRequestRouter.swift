@@ -44,6 +44,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case confirmTransaction(key: String, projectId: Int, locationId: Int)
     case updateSubscriber(PSSubscriber, subscriberId: Int)
     
+    // MARK: - Delete
+    case deleteTransaction(key: String)
+    
     // MARK: - Variables
     static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
 
@@ -89,7 +92,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .updateSubscriber:
             return .put
             
-        case .delete(_, _):
+        case .delete(_, _),
+             .deleteTransaction(_):
             return .delete
         }
 
@@ -185,6 +189,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .getEvents:
             return "events"
+            
+        case .deleteTransaction(let key):
+            return "transaction/\(key)"
         }
     }
     

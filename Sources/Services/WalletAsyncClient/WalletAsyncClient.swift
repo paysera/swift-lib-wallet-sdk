@@ -160,6 +160,10 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.confirmTransaction(key: key, projectId: projectId, locationId: locationId))
     }
     
+    public func deleteTransaction(key: String) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.deleteTransaction(key: key))
+    }
+    
     public func registerSubscriber(_ psSubscriber: PSSubscriber) -> Promise<PSSubscriber> {
         return doRequest(requestRouter: WalletApiRequestRouter.registerSubscriber(psSubscriber))
     }
