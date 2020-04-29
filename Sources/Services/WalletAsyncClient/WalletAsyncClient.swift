@@ -175,4 +175,12 @@ public class WalletAsyncClient: BaseAsyncClient {
     public func getEvents(filter: PSEventsFilter) -> Promise<PSMetadataAwareResponse<PSEvent>> {
         return doRequest(requestRouter: WalletApiRequestRouter.getEvents(filter: filter))
     }
+    
+    public func deleteSubscriber(subscriberId: Int) -> Promise<PSSubscriber> {
+        return doRequest(requestRouter: WalletApiRequestRouter.deleteSubscriber(subscriberId: subscriberId))
+    }
+    
+    public func deleteSubscribers() -> Promise<[PSSubscriber]> {
+        return doRequest(requestRouter: WalletApiRequestRouter.deleteSubscribers)
+    }
 }
