@@ -309,4 +309,33 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response)
     }
+    
+    func testDeleteSubscriber() {
+        var response: PSSubscriber?
+        let expectation = XCTestExpectation(description: "After successful deletion of subscriber, disabled subscriber must be returned")
+        let subscriberId = 1337
+        
+        client
+            .deleteSubscriber(subscriberId: subscriberId)
+            .done { subscriber in response = subscriber }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testDeleteSubscribers() {
+        var response: [PSSubscriber]?
+        let expectation = XCTestExpectation(description: "After successful deletion of subscribers, disabled subscribers must be returned")
+        
+        client
+            .deleteSubscribers()
+            .done { subscribers in response = subscribers }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
 }
