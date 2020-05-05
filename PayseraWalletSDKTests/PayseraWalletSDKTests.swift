@@ -163,8 +163,10 @@ class PayseraWalletSDKTests: XCTestCase {
         filter.status = "confirmed,rejected,revoked"
         filter.from = String(format: "%.0f", Calendar.current.date(byAdding: .day, value: -14, to: Date())!.timeIntervalSince1970)
         filter.limit = 100
+        filter.locationId = 0000
+        filter.projectId = 0000
         
-        client.getProjectTransactions(id: 52487221, filter: filter).done { transactions in
+        client.getProjectTransactions(filter: filter).done { transactions in
             object = transactions.items
         }.catch { error in
             print(error)
@@ -221,5 +223,119 @@ class PayseraWalletSDKTests: XCTestCase {
         }
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(object)
+    }
+    
+    func testDeleteTransaction() {
+        var object: PSTransaction?
+        let expectation = XCTestExpectation(description: "")
+        
+        self.client.deleteTransaction(key: "tc8Vmm6sregtdNWGdOvYJTgbatO1Ulcw").done { result in
+            object = result
+        }.catch { error in
+            print(error)
+        }.finally {expectation.fulfill()}
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testRegisteringSubscriber() {
+        let expectation = XCTestExpectation(description: "PSSubscriber should be created and given some id value")
+        let subscriber = PSSubscriber()
+        let recipient = PSSubscriberRecipient()
+        recipient.identifier = "1337"
+        subscriber.recipient = recipient
+        subscriber.type = "firebase"
+        subscriber.locale = "en"
+        subscriber.privacyLevel = "low"
+        subscriber.events = []
+        
+        XCTAssertNil(subscriber.id, "Initial subscriber shouldn't have any id")
+        
+        client
+            .registerSubscriber(subscriber)
+            .done { newSubscriber in
+                XCTAssert(subscriber.recipient?.identifier == newSubscriber.recipient?.identifier, "Identifier should remain the same")
+                XCTAssertNotNil(newSubscriber.id, "New subscriber should be given an ID")
+            }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testUpdatingSubscriber() {
+        let originalLocale = "en"
+        let updatedLocale = "lt"
+        let expectation = XCTestExpectation(description: "PSSubscriber should be successfully updated")
+        let subscriber = PSSubscriber()
+        let recipient = PSSubscriberRecipient()
+        recipient.identifier = "1337"
+        subscriber.recipient = recipient
+        subscriber.type = "firebase"
+        subscriber.locale = originalLocale
+        subscriber.privacyLevel = "low"
+        subscriber.events = []
+        
+        client
+            .registerSubscriber(subscriber)
+            .compactMap { registeredSubscriber -> (PSSubscriber, Int)? in registeredSubscriber.id.map { (registeredSubscriber, $0) } }
+            .then { (registeredSubscriber, registeredSubscriberID) -> Promise<(PSSubscriber, PSSubscriber)> in
+                let modifiedSubscriber = registeredSubscriber.copy()!
+                modifiedSubscriber.locale = updatedLocale
+                return self.client.updateSubscriber(modifiedSubscriber, subscriberId: registeredSubscriberID).map { (registeredSubscriber, $0) }
+            }
+            .done { (registeredSubscriber, updatedSubscriber) in
+                XCTAssert(registeredSubscriber.locale == originalLocale, "Original subscriber should have \(originalLocale) locale")
+                XCTAssert(updatedSubscriber.locale == updatedLocale, "Updated subscriber should have new locale")
+            }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testGetEvents() {
+        var response: PSMetadataAwareResponse<PSEvent>?
+        let expectation = XCTestExpectation(description: "Events according to given filter should be returned")
+        let filter = PSEventsFilter()
+        filter.limit = 5
+        
+        client
+            .getEvents(filter: filter)
+            .done { eventsResponse in response = eventsResponse }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testDeleteSubscriber() {
+        var response: PSSubscriber?
+        let expectation = XCTestExpectation(description: "After successful deletion of subscriber, disabled subscriber must be returned")
+        let subscriberId = 1337
+        
+        client
+            .deleteSubscriber(subscriberId: subscriberId)
+            .done { subscriber in response = subscriber }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testDeleteSubscribers() {
+        var response: [PSSubscriber]?
+        let expectation = XCTestExpectation(description: "After successful deletion of subscribers, disabled subscribers must be returned")
+        
+        client
+            .deleteSubscribers()
+            .done { subscribers in response = subscribers }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
     }
 }

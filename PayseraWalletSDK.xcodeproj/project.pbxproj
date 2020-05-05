@@ -92,6 +92,7 @@
 		6052EADB23A236E700A23AE3 /* PSEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6052EADA23A236E700A23AE3 /* PSEvent.swift */; };
 		60B45A5A243639B300A54526 /* PSGrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45A59243639B300A54526 /* PSGrantType.swift */; };
 		60B45A5E243648C900A54526 /* PayseraWalletSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45A5D243648C900A54526 /* PayseraWalletSDKTests.swift */; };
+		60B778D524518FBA000E9402 /* PSEventsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B778D424518FBA000E9402 /* PSEventsFilter.swift */; };
 		6DF0048121E634A10080FD43 /* PSDetailsOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */; };
 		A71B2DFE24125C710027F737 /* String+PercentEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = A71B2DFD24125C710027F737 /* String+PercentEncoding.swift */; };
 		A7FBF4ED2429DD770075A058 /* PSTransactionFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FBF4EC2429DD770075A058 /* PSTransactionFilter.swift */; };
@@ -214,6 +215,7 @@
 		6052EADA23A236E700A23AE3 /* PSEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSEvent.swift; sourceTree = "<group>"; };
 		60B45A59243639B300A54526 /* PSGrantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSGrantType.swift; sourceTree = "<group>"; };
 		60B45A5D243648C900A54526 /* PayseraWalletSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayseraWalletSDKTests.swift; sourceTree = "<group>"; };
+		60B778D424518FBA000E9402 /* PSEventsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSEventsFilter.swift; sourceTree = "<group>"; };
 		6DF0048021E634A10080FD43 /* PSDetailsOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSDetailsOptions.swift; sourceTree = "<group>"; };
 		A71B2DFD24125C710027F737 /* String+PercentEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+PercentEncoding.swift"; sourceTree = "<group>"; };
 		A7FBF4EC2429DD770075A058 /* PSTransactionFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransactionFilter.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 		604EC464239FE8EF0030894A /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				60B778D324518FAB000E9402 /* Filter */,
 				ED8D17F222E1027C0062EA46 /* PSSubscriber.swift */,
 				604EC465239FE9390030894A /* PSSubscriberEvent.swift */,
 				604EC467239FE96D0030894A /* PSSubscriberRecipient.swift */,
@@ -571,6 +574,14 @@
 				6052EADA23A236E700A23AE3 /* PSEvent.swift */,
 			);
 			path = Events;
+			sourceTree = "<group>";
+		};
+		60B778D324518FAB000E9402 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				60B778D424518FBA000E9402 /* PSEventsFilter.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		EDA52E382260CF46002941FD /* PayseraWalletSDKTests */ = {
@@ -741,6 +752,7 @@
 				1CB2D49520EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift in Sources */,
 				1CB2D4E820EBAB0B000D0B5F /* PSCardExpiration.swift in Sources */,
 				1C8EA23620F8BB8300572BC9 /* PSUserLoginRequest.swift in Sources */,
+				60B778D524518FBA000E9402 /* PSEventsFilter.swift in Sources */,
 				1CB2D4CE20EB98B0000D0B5F /* Mappable+EnumeratedMapping.swift in Sources */,
 				ED555BC52284057D0061B552 /* PSFacePhotoDocument.swift in Sources */,
 				ED8D17FB22E107180062EA46 /* PSAuthToken.swift in Sources */,

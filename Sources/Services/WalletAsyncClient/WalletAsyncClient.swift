@@ -152,11 +152,35 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getProjectLocations(id: id))
     }
     
-    public func getProjectTransactions(id: Int, filter: PSTransactionFilter) -> Promise<PSMetadataAwareResponse<PSTransaction>> {
-        return doRequest(requestRouter: WalletApiRequestRouter.getProjectTransactions(id: id, filter: filter))
+    public func getProjectTransactions(filter: PSTransactionFilter) -> Promise<PSMetadataAwareResponse<PSTransaction>> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getProjectTransactions(filter: filter))
     }
     
     public func confirmTransaction(key: String, projectId: Int, locationId: Int) -> Promise<PSTransaction> {
         return doRequest(requestRouter: WalletApiRequestRouter.confirmTransaction(key: key, projectId: projectId, locationId: locationId))
+    }
+    
+    public func deleteTransaction(key: String) -> Promise<PSTransaction> {
+        return doRequest(requestRouter: WalletApiRequestRouter.deleteTransaction(key: key))
+    }
+    
+    public func registerSubscriber(_ psSubscriber: PSSubscriber) -> Promise<PSSubscriber> {
+        return doRequest(requestRouter: WalletApiRequestRouter.registerSubscriber(psSubscriber))
+    }
+    
+    public func updateSubscriber(_ psSubscriber: PSSubscriber, subscriberId: Int) -> Promise<PSSubscriber> {
+        return doRequest(requestRouter: WalletApiRequestRouter.updateSubscriber(psSubscriber, subscriberId: subscriberId))
+    }
+    
+    public func getEvents(filter: PSEventsFilter) -> Promise<PSMetadataAwareResponse<PSEvent>> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getEvents(filter: filter))
+    }
+    
+    public func deleteSubscriber(subscriberId: Int) -> Promise<PSSubscriber> {
+        return doRequest(requestRouter: WalletApiRequestRouter.deleteSubscriber(subscriberId: subscriberId))
+    }
+    
+    public func deleteSubscribers() -> Promise<[PSSubscriber]> {
+        return doRequest(requestRouter: WalletApiRequestRouter.deleteSubscribers)
     }
 }
