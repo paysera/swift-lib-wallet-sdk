@@ -135,7 +135,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                         refreshPromise = self.authAsyncClient.activate(accessToken: inactiveAccessToken)
                     } else if let activeRefreshToken = self.activeCredentials.refreshToken {
                         refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
-                            .get(on: self.lockQueue) { self.updateInactiveCredentials(using: $0) }
+                            .get(on: self.lockQueue) { self.updateInactiveCredentials(to: $0) }
                             .compactMap { $0.accessToken }
                             .then { inactiveAccessToken in self.authAsyncClient.activate(accessToken: inactiveAccessToken) }
                     } else {
@@ -179,17 +179,16 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     private func updateActiveCredentials(using refreshedCredentials: PSCredentials) {
-        inactiveCredentials = nil
         activeCredentials.accessToken = refreshedCredentials.accessToken
         activeCredentials.macKey = refreshedCredentials.macKey
         activeCredentials.refreshToken = refreshedCredentials.refreshToken
         activeCredentials.validUntil = refreshedCredentials.validUntil
         activeCredentials.expiresIn = refreshedCredentials.expiresIn
-        accessTokenRefresherDelegate.inactiveCredentialsDidUpdate(to: nil)
         accessTokenRefresherDelegate.activeCredentialsDidUpdate(to: refreshedCredentials)
+        updateInactiveCredentials(to: nil)
     }
     
-    private func updateInactiveCredentials(using inactiveCredentials: PSCredentials) {
+    private func updateInactiveCredentials(to inactiveCredentials: PSCredentials?) {
         self.inactiveCredentials = inactiveCredentials
         accessTokenRefresherDelegate.inactiveCredentialsDidUpdate(to: inactiveCredentials)
     }
