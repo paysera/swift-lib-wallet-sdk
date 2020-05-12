@@ -3,28 +3,34 @@ import PromiseKit
 import PayseraCommonSDK
 
 public protocol AccessTokenRefresherDelegate {
-    func tokenRefreshed(_ userCredentials: PSCredentials)
+    func activeCredentialsDidUpdate(to activeCredentials: PSCredentials)
+    func inactiveCredentialsDidUpdate(to inactiveCredentials: PSCredentials?)
     func refreshTokenIsInvalid(_ error: Error)
 }
 
 public class RefreshingWalletAsyncClient: WalletAsyncClient {
     
-    var userCredentials: PSCredentials
+    private var activeCredentials: PSCredentials
+    private var inactiveCredentials: PSCredentials?
+    private let grantType: PSGrantType
     private let accessTokenRefresherDelegate: AccessTokenRefresherDelegate
     private let authAsyncClient: OAuthAsyncClient
     private var tokenIsRefreshing = false
     
-    
     init(
         session: Session,
-        userCredentials: PSCredentials,
+        activeCredentials: PSCredentials,
+        inactiveCredentials: PSCredentials?,
+        grantType: PSGrantType,
         authAsyncClient: OAuthAsyncClient,
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
         logger: PSLoggerProtocol? = nil
     ) {
-        self.userCredentials = userCredentials
+        self.activeCredentials = activeCredentials
+        self.inactiveCredentials = inactiveCredentials
+        self.grantType = grantType
         self.authAsyncClient = authAsyncClient
         self.accessTokenRefresherDelegate = accessTokenRefresherDelegate
         
@@ -39,10 +45,9 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     override func makeRequest(apiRequest: ApiRequest) {
         guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
         
-        let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
-        lockQueue.sync {
-            guard !tokenIsRefreshing else {
-                requestsQueue.append(apiRequest)
+        lockQueue.async {
+            guard !self.tokenIsRefreshing else {
+                self.requestsQueue.append(apiRequest)
                 return
             }
             self.logger?.log(
@@ -51,7 +56,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 request: urlRequest
             )
             
-            session
+            self.session
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
                     guard let urlResponse = response.response else {
@@ -68,7 +73,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                     let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
                     
                     let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
-                    if statusCode >= 200 && statusCode < 300 {
+                    if 200 ... 299 ~= statusCode {
                         self.logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
                         apiRequest.pendingPromise.resolver.fulfill(responseString)
                         return
@@ -90,68 +95,101 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         }
     }
     
-    public func refreshToken(code: String, extensionScopes: [String]) -> Promise<PSCredentials> {
-        return refreshToken(code: code, scopes: extensionScopes)
+    public func refreshToken(grantType: PSGrantType = .refreshToken, code: String, extensionScopes: [String]) -> Promise<PSCredentials> {
+        return refreshToken(grantType: grantType, code: code, scopes: extensionScopes)
     }
     
     func handleExpiredAccessToken(_ apiRequest: ApiRequest, _ error: PSApiError) {
-        let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
-        lockQueue.sync {
-            guard !hasRecentlyRefreshed() else {
+        lockQueue.async {
+            guard !self.hasRecentlyRefreshed() else {
                 self.makeRequest(apiRequest: apiRequest)
                 return
             }
+            
             self.requestsQueue.append(apiRequest)
-            guard !tokenIsRefreshing else {
+            
+            guard !self.tokenIsRefreshing else {
                 return
             }
+            
             self.tokenIsRefreshing = true
-            refreshToken()
+            self.refreshToken(grantType: self.grantType)
         }
     }
     
-    private func refreshToken(code: String? = nil, scopes: [String]? = nil) -> Promise<PSCredentials> {
-        let lockQueue = DispatchQueue(label: String(describing: self), attributes: [])
-        return Promise<PSCredentials> { value in
-            lockQueue.sync {
-                guard let refreshToken = userCredentials.refreshToken else {
-                    value.reject(PSApiError.unknown())
-                    return
+    @discardableResult
+    private func refreshToken(grantType: PSGrantType, code: String? = nil, scopes: [String]? = nil) -> Promise<PSCredentials> {
+        return Promise<PSCredentials> { seal in
+            self.lockQueue.async {
+                let refreshPromise: Promise<PSCredentials>
+                
+                switch grantType {
+                case .refreshToken:
+                    if let activeRefreshToken = self.activeCredentials.refreshToken {
+                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
+                    } else {
+                        refreshPromise = .init(error: PSApiError.unknown())
+                    }
+                case .refreshTokenWithActivation:
+                    if let inactiveAccessToken = self.inactiveCredentials?.accessToken {
+                        refreshPromise = self.authAsyncClient.activate(accessToken: inactiveAccessToken)
+                    } else if let activeRefreshToken = self.activeCredentials.refreshToken {
+                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
+                            .get(on: self.lockQueue) { self.updateInactiveCredentials(to: $0) }
+                            .compactMap { $0.accessToken }
+                            .then { inactiveAccessToken in self.authAsyncClient.activate(accessToken: inactiveAccessToken) }
+                    } else {
+                        refreshPromise = .init(error: PSApiError.unknown())
+                    }
                 }
-                authAsyncClient.refreshToken(refreshToken, code: code, scopes: scopes).done { refreshedCredentials in
-                        lockQueue.sync {
-                            self.updateCredentials(with: refreshedCredentials)
-                            self.tokenIsRefreshing = false
-                            self.resumeQueue()
-                            self.accessTokenRefresherDelegate.tokenRefreshed(self.userCredentials)
-                            value.fulfill(refreshedCredentials)
-                        }
-                    }.catch { error in
-                        lockQueue.sync {
-                            self.tokenIsRefreshing = false
-                            if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
-                                self.accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
-                            }
-                            self.cancelQueue(error: error)
-                            value.reject(error)
-                        }
-                }
+                
+                refreshPromise
+                    .done(on: self.lockQueue) { credentials in
+                        self.handleSuccessfullTokenRefresh(with: credentials)
+                        seal.fulfill(credentials)
+                    }
+                    .catch(on: self.lockQueue) { error in
+                        self.handleRefreshTokenError(error)
+                        seal.reject(error)
+                    }
             }
         }
+    }
+    
+    private func handleSuccessfullTokenRefresh(with credentials: PSCredentials) {
+        updateActiveCredentials(using: credentials)
+        tokenIsRefreshing = false
+        resumeQueue()
+    }
+    
+    private func handleRefreshTokenError(_ error: Error) {
+        tokenIsRefreshing = false
+        if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
+            accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
+        }
+        cancelQueue(error: error)
     }
     
     private func hasRecentlyRefreshed() -> Bool {
-        guard let validUntil = userCredentials.validUntil,
-            let expiresIn = userCredentials.expiresIn else {
-                return false
-        }
+        guard
+            let validUntil = activeCredentials.validUntil,
+            let expiresIn = activeCredentials.expiresIn
+        else { return false }
         return abs(expiresIn - validUntil.timeIntervalSinceNow) < 15
     }
     
-    private func updateCredentials(with refreshedCredentials: PSCredentials) {
-        userCredentials.accessToken = refreshedCredentials.accessToken
-        userCredentials.macKey = refreshedCredentials.macKey
-        userCredentials.refreshToken = refreshedCredentials.refreshToken
-        userCredentials.validUntil = refreshedCredentials.validUntil
+    private func updateActiveCredentials(using refreshedCredentials: PSCredentials) {
+        activeCredentials.accessToken = refreshedCredentials.accessToken
+        activeCredentials.macKey = refreshedCredentials.macKey
+        activeCredentials.refreshToken = refreshedCredentials.refreshToken
+        activeCredentials.validUntil = refreshedCredentials.validUntil
+        activeCredentials.expiresIn = refreshedCredentials.expiresIn
+        accessTokenRefresherDelegate.activeCredentialsDidUpdate(to: refreshedCredentials)
+        updateInactiveCredentials(to: nil)
+    }
+    
+    private func updateInactiveCredentials(to inactiveCredentials: PSCredentials?) {
+        self.inactiveCredentials = inactiveCredentials
+        accessTokenRefresherDelegate.inactiveCredentialsDidUpdate(to: inactiveCredentials)
     }
 }

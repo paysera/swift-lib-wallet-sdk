@@ -43,7 +43,9 @@ public class ClientsFactory {
     }
     
     public static func createRefreshingWalletAsyncClient(
-        credentials: PSCredentials,
+        activeCredentials: PSCredentials,
+        inactiveCredentials: PSCredentials?,
+        grantType: PSGrantType = .refreshToken,
         authAsyncClient: OAuthAsyncClient,
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
@@ -51,14 +53,16 @@ public class ClientsFactory {
         logger: PSLoggerProtocol? = nil
     ) -> RefreshingWalletAsyncClient {
         let session = self.createSession(interceptor: RequestSigningAdapter(
-            credentials: credentials,
+            credentials: activeCredentials,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             logger: logger
         ))
         
         return RefreshingWalletAsyncClient(
             session: session,
-            userCredentials: credentials,
+            activeCredentials: activeCredentials,
+            inactiveCredentials: inactiveCredentials,
+            grantType: grantType,
             authAsyncClient: authAsyncClient,
             publicWalletApiClient: publicWalletApiClient,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
