@@ -164,9 +164,13 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     
     private func handleRefreshTokenError(_ error: Error) {
         tokenIsRefreshing = false
+        
         if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
             accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
+        } else if let statusCode = (error as? PSApiError)?.statusCode, 400...499 ~= statusCode {
+            updateInactiveCredentials(to: nil)
         }
+        
         cancelQueue(error: error)
     }
     
