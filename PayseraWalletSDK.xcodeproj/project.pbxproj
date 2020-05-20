@@ -109,11 +109,8 @@
 		ED8D180322E18B130062EA46 /* PSGetWalletsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED8D180222E18B130062EA46 /* PSGetWalletsResponse.swift */; };
 		EDA52E3C2260CF46002941FD /* PayseraWalletSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CD8617320EA1F32003E6195 /* PayseraWalletSDK.framework */; };
 		EDB433F322B3FDBE0084A7FA /* PayseraCommonSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDB433F222B3FDBE0084A7FA /* PayseraCommonSDK.framework */; };
-		EDF1E44621F0B0DC00C848AB /* backup-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = EDF1E44421F0B0D800C848AB /* backup-certificate.der */; };
-		EDF1E44721F0B0DE00C848AB /* main-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = EDF1E44521F0B0D800C848AB /* main-certificate.der */; };
 		EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */; };
 		EDF1E47221F0C49E00C848AB /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46D21F0C49E00C848AB /* ObjectMapper.framework */; };
-		EDF1E47321F0C49E00C848AB /* CommonCrypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */; };
 		EDF1E47421F0C49E00C848AB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E46F21F0C49E00C848AB /* Alamofire.framework */; };
 		EDF1E47521F0C49E00C848AB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDF1E47021F0C49E00C848AB /* PromiseKit.framework */; };
 /* End PBXBuildFile section */
@@ -233,11 +230,8 @@
 		EDA52E372260CF45002941FD /* PayseraWalletSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PayseraWalletSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDA52E3B2260CF46002941FD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDB433F222B3FDBE0084A7FA /* PayseraCommonSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PayseraCommonSDK.framework; path = Carthage/Build/iOS/PayseraCommonSDK.framework; sourceTree = "<group>"; };
-		EDF1E44421F0B0D800C848AB /* backup-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "backup-certificate.der"; sourceTree = "<group>"; };
-		EDF1E44521F0B0D800C848AB /* main-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "main-certificate.der"; sourceTree = "<group>"; };
 		EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JWTDecode.framework; path = Carthage/Build/iOS/JWTDecode.framework; sourceTree = "<group>"; };
 		EDF1E46D21F0C49E00C848AB /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
-		EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CommonCrypto.framework; path = Carthage/Build/iOS/CommonCrypto.framework; sourceTree = "<group>"; };
 		EDF1E46F21F0C49E00C848AB /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		EDF1E47021F0C49E00C848AB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -248,7 +242,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDF1E47221F0C49E00C848AB /* ObjectMapper.framework in Frameworks */,
-				EDF1E47321F0C49E00C848AB /* CommonCrypto.framework in Frameworks */,
 				EDF1E47521F0C49E00C848AB /* PromiseKit.framework in Frameworks */,
 				EDF1E47121F0C49E00C848AB /* JWTDecode.framework in Frameworks */,
 				EDB433F322B3FDBE0084A7FA /* PayseraCommonSDK.framework in Frameworks */,
@@ -460,7 +453,6 @@
 		1CE7721E20EA353100CD53E2 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				EDF1E44321F0B0B600C848AB /* Resources */,
 				1CE7724620EA55D300CD53E2 /* Entities */,
 				1CB2D4CF20EBA5A8000D0B5F /* Enums */,
 				1CE7722E20EA396C00CD53E2 /* Extensions */,
@@ -475,7 +467,6 @@
 				ED6E7B932436320900D55467 /* CryptoSwift.framework */,
 				EDB433F222B3FDBE0084A7FA /* PayseraCommonSDK.framework */,
 				EDF1E46F21F0C49E00C848AB /* Alamofire.framework */,
-				EDF1E46E21F0C49E00C848AB /* CommonCrypto.framework */,
 				EDF1E46C21F0C49E00C848AB /* JWTDecode.framework */,
 				EDF1E46D21F0C49E00C848AB /* ObjectMapper.framework */,
 				EDF1E47021F0C49E00C848AB /* PromiseKit.framework */,
@@ -593,15 +584,6 @@
 			path = PayseraWalletSDKTests;
 			sourceTree = "<group>";
 		};
-		EDF1E44321F0B0B600C848AB /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				EDF1E44421F0B0D800C848AB /* backup-certificate.der */,
-				EDF1E44521F0B0D800C848AB /* main-certificate.der */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 		EDF1E45721F0C1F700C848AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -700,9 +682,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDF1E44721F0B0DE00C848AB /* main-certificate.der in Resources */,
 				1CE7723220EA3CF300CD53E2 /* Cartfile in Resources */,
-				EDF1E44621F0B0DC00C848AB /* backup-certificate.der in Resources */,
 				1CE7723420EA3D5700CD53E2 /* Cartfile.resolved in Resources */,
 				1C126983217F477100BADC39 /* PayseraWalletSDK.plist in Resources */,
 			);

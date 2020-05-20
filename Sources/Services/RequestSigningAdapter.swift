@@ -1,5 +1,4 @@
 import Alamofire
-import CommonCrypto
 import PayseraCommonSDK
 import CryptoSwift
 
