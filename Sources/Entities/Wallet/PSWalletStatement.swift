@@ -9,10 +9,10 @@ public class PSWalletStatement: Mappable {
     public var date: Int!
     public var amount: Int!
     public var direction: String!
-    public var details: String!
+    public var details: String?
     public var type: String!
     public var currency: String!
-    public var otherParty: PSWalletStatementOtherParty!
+    public var otherParty: PSWalletStatementOtherParty?
     
     required public init?(map: Map) { }
     
