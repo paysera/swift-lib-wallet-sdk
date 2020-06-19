@@ -351,7 +351,6 @@
 		1CB2D4E220EBAA4E000D0B5F /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
-				74B9822E249C948100D27D65 /* Filter */,
 				1CC2830D20EB66BD000C3962 /* PSWalletIdentifier.swift */,
 				1CB2D48920EB6CB4000D0B5F /* PSWallet.swift */,
 				1CEF872C2164ADCD00A0FA1D /* PSWalletBalance.swift */,
@@ -581,13 +580,6 @@
 			isa = PBXGroup;
 			children = (
 				60B778D424518FBA000E9402 /* PSEventsFilter.swift */,
-			);
-			path = Filter;
-			sourceTree = "<group>";
-		};
-		74B9822E249C948100D27D65 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Filter;
 			sourceTree = "<group>";
