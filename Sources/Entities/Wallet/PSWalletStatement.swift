@@ -7,9 +7,9 @@ public class PSWalletStatement: Mappable {
     public var accountNumber: String!
     public var amountDecimal: String!
     public var date: Int!
-    public var amount: Double!
+    public var amount: Int!
     public var direction: String!
-    public var details: String?
+    public var details: String!
     public var type: String!
     public var currency: String!
     public var otherParty: PSWalletStatementOtherParty!
