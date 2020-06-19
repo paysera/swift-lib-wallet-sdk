@@ -184,19 +184,7 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.deleteSubscribers)
     }
     
-    public func getWalletStatements(
-        id: Int,
-        from: Int,
-        to: Int,
-        limit: Int
-    ) -> Promise<PSMetadataAwareResponse<PSWalletStatement>> {
-        doRequest(
-            requestRouter: WalletApiRequestRouter.getWalletStatements(
-                id: id,
-                from: from,
-                to: to,
-                limit: limit
-            )
-        )
+    public func getStatements(filter: PSStatementFilter) -> Promise<PSMetadataAwareResponse<PSStatement>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getStatements(filter: filter))
     }
 }

@@ -1,6 +1,7 @@
 import ObjectMapper
+import PayseraCommonSDK
 
-public class PSWalletStatement: Mappable {
+public class PSStatement: Mappable {
     
     public var id: Int!
     public var transferId: Int!
@@ -12,7 +13,7 @@ public class PSWalletStatement: Mappable {
     public var details: String?
     public var type: String!
     public var currency: String!
-    public var otherParty: PSWalletStatementOtherParty?
+    public var otherParty: PSOtherParty?
     
     required public init?(map: Map) { }
     
@@ -28,6 +29,10 @@ public class PSWalletStatement: Mappable {
         type <- map["type"]
         currency <- map["currency"]
         otherParty <- map["other_party"]
+    }
+    
+    public func getAmountMoney() -> PSMoney {
+        PSMoney(amount: amountDecimal, currency: currency)
     }
 }
 
