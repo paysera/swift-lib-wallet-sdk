@@ -24,6 +24,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getProjectLocations(id: Int)
     case getProjectTransactions(filter: PSTransactionFilter)
     case getEvents(filter: PSEventsFilter)
+    case getWalletStatements(id: Int, from: Int, to: Int, limit: Int)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -80,7 +81,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .getProjectsWithFields,
              .getProjectLocations,
              .getProjectTransactions,
-             .getEvents:
+             .getEvents,
+             .getWalletStatements:
             return .get
             
         case .put,
@@ -148,6 +150,9 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .getUserWallets:
             return "user/me/wallets"
+            
+        case .getWalletStatements(let id, _, _, _):
+            return "/wallet/\(id)/statements"
             
         case .sendPhoneVerificationCode(let userId, _, _):
             return "/user/\(userId)/phone"
@@ -235,6 +240,13 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getUserWallets(let inactiveIncluded):
             return ["inactive_included" : inactiveIncluded]
             
+        case .getWalletStatements(_, let from, let to, let limit):
+            return [
+                "from": from,
+                "to": to,
+                "limit": limit
+            ]
+            
         case .registerUser(let userRequest):
             return userRequest.toJSON()
             
@@ -319,7 +331,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              extraParametersString.append("&\($0.key)=\($0.value)")
          }
         urlRequest.addValue(extraParametersString, forHTTPHeaderField: "extraParameters")
-        
+        debugPrint("parameters: \(parameters)")
         switch self {
             
         case .putWithData(_, let data, let contentType):
