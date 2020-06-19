@@ -331,7 +331,6 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              extraParametersString.append("&\($0.key)=\($0.value)")
          }
         urlRequest.addValue(extraParametersString, forHTTPHeaderField: "extraParameters")
-        debugPrint("parameters: \(parameters)")
         switch self {
             
         case .putWithData(_, let data, let contentType):
