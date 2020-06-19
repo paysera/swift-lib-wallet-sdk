@@ -2,10 +2,10 @@ import ObjectMapper
 
 public class PSOtherParty: Mappable {
     
-    public var displayName: String!
-    public var walletId: Int!
-    public var accountNumber: String!
-    public var userId: Int!
+    public var displayName: String?
+    public var walletId: Int?
+    public var accountNumber: String?
+    public var userId: Int?
     
     required public init?(map: Map) { }
     

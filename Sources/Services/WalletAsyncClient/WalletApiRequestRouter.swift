@@ -24,7 +24,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case getProjectLocations(id: Int)
     case getProjectTransactions(filter: PSTransactionFilter)
     case getEvents(filter: PSEventsFilter)
-    case getStatements(filter: PSStatementFilter)
+    case getStatements(walletId:Int, filter: PSStatementFilter?)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -151,8 +151,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getUserWallets:
             return "user/me/wallets"
             
-        case .getStatements(let filter):
-            return "/wallet/\(filter.walletId)/statements"
+        case .getStatements(let walletId, _):
+            return "/wallet/\(walletId)/statements"
             
         case .sendPhoneVerificationCode(let userId, _, _):
             return "/user/\(userId)/phone"
@@ -240,8 +240,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .getUserWallets(let inactiveIncluded):
             return ["inactive_included" : inactiveIncluded]
             
-        case .getStatements(let filter):
-            return filter.toJSON()
+        case .getStatements(_, let filter):
+            return filter?.toJSON()
             
         case .registerUser(let userRequest):
             return userRequest.toJSON()

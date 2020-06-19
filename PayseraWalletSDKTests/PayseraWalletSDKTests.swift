@@ -338,21 +338,19 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response)
     }
-    
+
     func testGetWalletStatements() {
         var response = 0
         let expectation = XCTestExpectation(description: "Statements must be non nil")
         let expectedStatementCount = 0 //insert me
         
-        let filter = PSStatementFilter(
-            walletId: 0, //insert me
-            fromDate: 0, //insert me
-            toDate: 0, //insert me
-            limit: 0 //insert me
-        )
-        
+        let walletId = 0 //insert me
+        let filter = PSStatementFilter()
+        filter.from = nil //insert me
+        filter.to = nil //insert me
+        filter.limit = 0 //insert me
         client
-            .getStatements(filter: filter)
+            .getStatements(walletId: walletId, filter: filter)
             .done { response = $0.items.count }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
