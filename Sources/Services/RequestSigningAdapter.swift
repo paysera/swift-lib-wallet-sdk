@@ -18,7 +18,10 @@ public class RequestSigningAdapter: RequestInterceptor {
     }
     
     public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
-        guard let accessToken = credentials.accessToken, let macKey = credentials.macKey else { return }
+        guard let accessToken = credentials.accessToken, let macKey = credentials.macKey else {
+            completion(.failure(PSApiError.unknown()))
+            return
+        }
         
         let authorizationValue = generateSignature(
             accessToken,
