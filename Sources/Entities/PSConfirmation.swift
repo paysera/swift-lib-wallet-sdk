@@ -24,7 +24,7 @@ public class PSConfirmationProperties: Mappable {
     public var code: String!
     public var type: String!
     public var isAcceptanceRequired: Bool!
-    public var parameters: PSConfirmationTranslationParameters?
+    public var translationParameters: PSConfirmationTranslationParameters?
     
     required public init?(map: Map) {
     }
@@ -34,7 +34,7 @@ public class PSConfirmationProperties: Mappable {
         code                  <- map["code"]
         type                  <- map["type"]
         isAcceptanceRequired  <- map["acceptance_required"]
-        parameters            <- map["translation_parameters"]
+        translationParameters            <- map["translation_parameters"]
     }
 }
 
