@@ -24,7 +24,7 @@ public class PSConfirmationProperties: Mappable {
     public var code: String!
     public var type: String!
     public var isAcceptanceRequired: Bool!
-    public var parameters: PSConfirmationParameters?
+    public var parameters: PSConfirmationTranslationParameters?
     
     required public init?(map: Map) {
     }
@@ -38,7 +38,7 @@ public class PSConfirmationProperties: Mappable {
     }
 }
 
-public class PSConfirmationParameters: Mappable {
+public class PSConfirmationTranslationParameters: Mappable {
     public var phone: String?
     public var email: String?
     public var transfersMoneySums: [PSMoney]?
