@@ -34,7 +34,7 @@ public class PSConfirmationProperties: Mappable {
         code                  <- map["code"]
         type                  <- map["type"]
         isAcceptanceRequired  <- map["acceptance_required"]
-        translationParameters            <- map["translation_parameters"]
+        translationParameters <- map["translation_parameters"]
     }
 }
 
@@ -51,7 +51,7 @@ public class PSConfirmationTranslationParameters: Mappable {
     public func mapping(map: Map) {
         phone                 <- map["%phone%"]
         email                 <- map["%email%"]
-        transfersMoneySums     <- map["transfers_money_sums"]
+        transfersMoneySums    <- map["transfers_money_sums"]
         beneficiaryAccount    <- map["beneficiary_account"]
         transfersCount        <- map["transfers_count"]
     }
