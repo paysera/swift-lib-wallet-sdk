@@ -7,6 +7,11 @@ public class PSConfirmation: Mappable {
     public var identifier: String!
     public var status: String!
     public var properties: PSConfirmationProperties!
+    public var ip: String?
+    public var countryCode: String?
+    public var city: String?
+    public var browser: String?
+    public var os: String?
     
     required public init?(map: Map) {
     }
@@ -16,6 +21,11 @@ public class PSConfirmation: Mappable {
         identifier    <- map["identifier"]
         status        <- map["status"]
         properties    <- map["properties"]
+        ip            <- map["ip"]
+        countryCode   <- map["country_code"]
+        city          <- map["city"]
+        browser       <- map["browser"]
+        os            <- map["os"]
     }
 }
 
