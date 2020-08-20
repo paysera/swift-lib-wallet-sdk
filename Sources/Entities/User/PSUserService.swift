@@ -6,13 +6,13 @@ public class PSUserService: Mappable {
     public let title: String
     public let actions: [String]
     public var enabledTime: TimeInterval?
-    public let url: String
+    public var url: String?
     
     required public init?(map: Map) {
         do {
             name = try map.value("service")
             status = try map.value("status")
-            url = try map.value("url")
+            url = try? map.value("url")
             title = try map.value("title")
             actions = try map.value("actions")
         } catch {

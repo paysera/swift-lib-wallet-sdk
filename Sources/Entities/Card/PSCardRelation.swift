@@ -1,9 +1,11 @@
 import ObjectMapper
 
 public class PSCardRelation: Mappable {
-    public let redirectUri: String
+    public var redirectUri: String!
     public var redirectBackUri: String?
     public var locale: String?
+    
+    public init() {}
     
     required public init?(map: Map) {
         do {
