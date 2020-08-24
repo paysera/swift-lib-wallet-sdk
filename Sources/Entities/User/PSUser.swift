@@ -11,7 +11,7 @@ public class PSUser: Mappable {
     public var identificationLevel: String?
     public var defaultCurrency: String?
     public var wallets = [Int]()
-    
+    public var dob: String?
     
     required public init?(map: Map) {
         do {
@@ -34,5 +34,6 @@ public class PSUser: Mappable {
         identificationLevel <- map["identification_level"]
         defaultCurrency     <- map["options.default_currency"]
         wallets             <- map["wallets"]
+        dob                 <- map["dob"]
     }
 }
