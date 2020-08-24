@@ -9,7 +9,7 @@ public class PSReservationStatement: Mappable {
     public var date: Date!
     public var otherParty: PSOtherParty?
     public var transferId: Int?
-    
+    public var direction: String?
 
     public init() {}
     
@@ -24,6 +24,7 @@ public class PSReservationStatement: Mappable {
         date                <- (map["date"], DateTransform())
         otherParty          <- map["other_party"]
         transferId          <- map["transfer_id"]
+        direction           <- map["direction"]
     }
 }
 
