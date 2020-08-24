@@ -424,6 +424,20 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNil(response?.accountInformation.accountDescription, "Wallet description should be nil")
     }
     
+    func testGetTransfer() {
+        var response: PSTransfer?
+        let expectation = XCTestExpectation(description: "Transfer should be returned")
+        
+        client
+            .getTransfer(transferId: 346600911)
+            .done { response = $0 }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
     func testTransferReservation() {
         var response: PSTransfer?
         let expectation = XCTestExpectation(description: "Transfer should be reserved")

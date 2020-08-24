@@ -207,6 +207,10 @@ public class WalletAsyncClient: BaseAsyncClient {
     public func deleteWalletDescription(walletId: Int) -> Promise<PSWallet> {
         doRequest(requestRouter: WalletApiRequestRouter.deleteWalletDescription(walletId: walletId))
     }
+    
+    public func getTransfer(transferId: Int) -> Promise<PSTransfer> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getTransfer(id: transferId))
+    }
 
     public func reserveTransfer(transferId: Int) -> Promise<PSTransfer> {
         doRequest(requestRouter: WalletApiRequestRouter.reserveTransfer(transferId: transferId))
