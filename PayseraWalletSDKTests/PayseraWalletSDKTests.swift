@@ -380,6 +380,21 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(response)
     }
     
+    func testGetWallet() {
+        var response: PSWallet?
+        let expectation = XCTestExpectation(description: "Wallet according to given filter should be returned")
+        let filter = PSWalletFilter()
+        filter.userId = 1
+        
+        client.getWallet(filter: filter)
+            .done { response = $0 }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNotNil(response)
+    }
+    
     func testWalletDescriptionChange() {
         var response: PSWallet?
         let expectation = XCTestExpectation(description: "Wallet description should change")

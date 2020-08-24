@@ -47,6 +47,10 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getWallet(id: id))
     }
     
+    public func getWallet(filter: PSWalletFilter) -> Promise<PSWallet> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getWalletByFilter(filter: filter))
+    }
+    
     public func getWallets(filter: PSWalletsFilter) -> Promise<PSGetWalletsResponse> {
         return doRequest(requestRouter: WalletApiRequestRouter.getWallets(filter))
     }
