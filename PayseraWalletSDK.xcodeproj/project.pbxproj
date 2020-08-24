@@ -94,6 +94,7 @@
 		60B45A5A243639B300A54526 /* PSGrantType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45A59243639B300A54526 /* PSGrantType.swift */; };
 		60B45A5E243648C900A54526 /* PayseraWalletSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45A5D243648C900A54526 /* PayseraWalletSDKTests.swift */; };
 		60B778D524518FBA000E9402 /* PSEventsFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B778D424518FBA000E9402 /* PSEventsFilter.swift */; };
+		60DDA03B24F435F700185F1B /* PSTransferFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60DDA03A24F435F700185F1B /* PSTransferFilter.swift */; };
 		60E903BF24ECF5D400043F46 /* PSCurrencyConversion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E903BE24ECF5D400043F46 /* PSCurrencyConversion.swift */; };
 		60E903C124ECFB7E00043F46 /* PSCurrencyConversionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E903C024ECFB7E00043F46 /* PSCurrencyConversionResponse.swift */; };
 		60E903C324ED022700043F46 /* PSGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E903C224ED022700043F46 /* PSGenerator.swift */; };
@@ -232,6 +233,7 @@
 		60B45A59243639B300A54526 /* PSGrantType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSGrantType.swift; sourceTree = "<group>"; };
 		60B45A5D243648C900A54526 /* PayseraWalletSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PayseraWalletSDKTests.swift; sourceTree = "<group>"; };
 		60B778D424518FBA000E9402 /* PSEventsFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSEventsFilter.swift; sourceTree = "<group>"; };
+		60DDA03A24F435F700185F1B /* PSTransferFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSTransferFilter.swift; sourceTree = "<group>"; };
 		60E903BE24ECF5D400043F46 /* PSCurrencyConversion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCurrencyConversion.swift; sourceTree = "<group>"; };
 		60E903C024ECFB7E00043F46 /* PSCurrencyConversionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSCurrencyConversionResponse.swift; sourceTree = "<group>"; };
 		60E903C224ED022700043F46 /* PSGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PSGenerator.swift; sourceTree = "<group>"; };
@@ -355,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				1CB2D4D820EBA661000D0B5F /* PSBeneficiary.swift */,
+				60DDA03A24F435F700185F1B /* PSTransferFilter.swift */,
 				1CB2D4D620EBA661000D0B5F /* PSBeneficiaryBankAccount.swift */,
 				1CB2D4D420EBA661000D0B5F /* PSBeneficiaryPayseraAccount.swift */,
 				1CB2D4D320EBA661000D0B5F /* PSBeneficiaryTaxAccount.swift */,
@@ -843,6 +846,7 @@
 				1C3E446A21C25098003FC8D3 /* PSSpotPlace.swift in Sources */,
 				1C7FA2C521074F1F009F588B /* PSPasswordResetRequest.swift in Sources */,
 				1CB2D4A320EB7A63000D0B5F /* PSPurpose.swift in Sources */,
+				60DDA03B24F435F700185F1B /* PSTransferFilter.swift in Sources */,
 				1C8EA23320F8BB8300572BC9 /* PSUserRegistrationRequest.swift in Sources */,
 				1CEF872D2164ADCD00A0FA1D /* PSWalletBalance.swift in Sources */,
 				1CB2D49520EB6CB4000D0B5F /* PSIdentificationRequestsFilter.swift in Sources */,
