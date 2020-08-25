@@ -903,7 +903,7 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGetTransfers() {
         let expectation = XCTestExpectation(description: "Transfers according to the given filter should be returned")
         var response: PSMetadataAwareResponse<PSTransfer>?
-        let filter = PSTransferFilter()
+        let filter = PayseraWalletSDK.PSTransferFilter()
         filter.creditAccountNumber = "EVPXXXXXXXXXXX"
         filter.limit = 20
         

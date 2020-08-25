@@ -6,6 +6,8 @@ public class PSStatementFilter: PSBaseFilter {
     public var from: Date?
     public var to: Date?
     public var currency: String?
+    public var before: String?
+    public var after: String?
     
     public func toJSON() -> [String : Any] {
         var parameters = super.toJSON()
@@ -18,6 +20,9 @@ public class PSStatementFilter: PSBaseFilter {
         if let value = currency {
             parameters["currency"] = value
         }
+        
+        parameters["before"] = before
+        parameters["after"] = after
         return parameters
     }
 }
