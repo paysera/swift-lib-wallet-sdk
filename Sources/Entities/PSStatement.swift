@@ -14,6 +14,7 @@ public class PSStatement: Mappable {
     public var type: String!
     public var currency: String!
     public var otherParty: PSOtherParty?
+    public var referenceNumber: String?
     
     required public init?(map: Map) { }
     
@@ -29,6 +30,7 @@ public class PSStatement: Mappable {
         type <- map["type"]
         currency <- map["currency"]
         otherParty <- map["other_party"]
+        referenceNumber <- map["reference_number"]
     }
     
     public func getAmountMoney() -> PSMoney {
