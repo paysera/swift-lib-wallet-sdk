@@ -84,7 +84,7 @@ public class BaseAsyncClient {
         return request
             .pendingPromise
             .promise
-            .map { _ in}
+            .asVoid()
     }
     
     func makeRequest(apiRequest: ApiRequest) {

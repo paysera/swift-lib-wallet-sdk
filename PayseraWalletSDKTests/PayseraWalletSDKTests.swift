@@ -402,14 +402,11 @@ class PayseraWalletSDKTests: XCTestCase {
         let newDescription = "I'm your father"
         
         client.getWallet(byId: walletId)
-            .map { wallet -> String? in
+            .get { wallet in
                 let oldDescription = wallet.accountInformation.accountDescription
                 XCTAssertNotEqual(oldDescription, newDescription, "New wallet description should be different")
-                return oldDescription
             }
-            .then { oldDescription -> Promise<PSWallet> in
-                self.client.changeWalletDescription(walletId: walletId, description: newDescription)
-            }
+            .then { _ in self.client.changeWalletDescription(walletId: walletId, description: newDescription) }
             .done { updatedWallet in response = updatedWallet }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
@@ -424,12 +421,8 @@ class PayseraWalletSDKTests: XCTestCase {
         let walletId = 1
         
         client.getWallet(byId: walletId)
-            .get { wallet in
-                XCTAssertNotNil(wallet.accountInformation.accountDescription, "Wallet should have a description")
-            }
-            .then { _ -> Promise<PSWallet> in
-                self.client.deleteWalletDescription(walletId: walletId)
-            }
+            .get { wallet in XCTAssertNotNil(wallet.accountInformation.accountDescription, "Wallet should have a description") }
+            .then { _ in self.client.deleteWalletDescription(walletId: walletId) }
             .done { updatedWallet in response = updatedWallet }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
@@ -888,7 +881,7 @@ class PayseraWalletSDKTests: XCTestCase {
     }
     
     func testDeleteCard() {
-        let expectation = XCTestExpectation(description: "Card should be returned")
+        let expectation = XCTestExpectation(description: "Card should be deleted")
         let cardId = 1164879
         
         client
@@ -941,9 +934,7 @@ class PayseraWalletSDKTests: XCTestCase {
         client
             .enableUserService(userId: userId, service: service)
             .done { response = $0 }
-            .catch { error in
-                XCTFail(error.localizedDescription)
-            }
+            .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 5.0)
