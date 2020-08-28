@@ -77,6 +77,16 @@ public class BaseAsyncClient {
             .then(createPromise)
     }
     
+    func doRequest<RC: URLRequestConvertible>(requestRouter: RC) -> Promise<Void> {
+        let request = createRequest(requestRouter)
+        makeRequest(apiRequest: request)
+        
+        return request
+            .pendingPromise
+            .promise
+            .asVoid()
+    }
+    
     func makeRequest(apiRequest: ApiRequest) {
         guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
         

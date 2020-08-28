@@ -1,9 +1,10 @@
 import ObjectMapper
 
 public class PSCardAccount: Mappable {
-    public let number: String
-    public let order: Int
+    public var number: String!
+    public var order: Int!
     
+    public init() {}
     
     required public init?(map: Map) {
         do {
@@ -16,5 +17,7 @@ public class PSCardAccount: Mappable {
     }
     
     public func mapping(map: Map) {
+        number  <- map["number"]
+        order   <- map["order"]
     }
 }

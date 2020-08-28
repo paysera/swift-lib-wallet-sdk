@@ -3,6 +3,7 @@ import Alamofire
 import ObjectMapper
 import PromiseKit
 import PayseraCommonSDK
+import PayseraAccountsSDK
 
 public class WalletAsyncClient: BaseAsyncClient {
     
@@ -46,6 +47,10 @@ public class WalletAsyncClient: BaseAsyncClient {
         return doRequest(requestRouter: WalletApiRequestRouter.getWallet(id: id))
     }
     
+    public func getWallet(filter: PSWalletFilter) -> Promise<PSWallet> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getWalletByFilter(filter: filter))
+    }
+    
     public func getWallets(filter: PSWalletsFilter) -> Promise<PSGetWalletsResponse> {
         return doRequest(requestRouter: WalletApiRequestRouter.getWallets(filter))
     }
@@ -60,6 +65,10 @@ public class WalletAsyncClient: BaseAsyncClient {
     
     public func sendPhoneVerificationCode(userId: Int, phone: String, scopes: [String]) -> Promise<PSUser> {
         return doRequest(requestRouter: WalletApiRequestRouter.sendPhoneVerificationCode(userId: userId, phone: phone, scopes: scopes))
+    }
+    
+    public func sendEmailVerificationCode(userId: Int, email: String) -> Promise<PSUser> {
+        return doRequest(requestRouter: WalletApiRequestRouter.sendEmailVerificationCode(userId: userId, email: email))
     }
     
     public func changePassword(userId: Int, changePasswordRequest: PSPasswordChangeRequest) -> Promise<PSUser> {
@@ -189,5 +198,191 @@ public class WalletAsyncClient: BaseAsyncClient {
         filter: PSStatementFilter? = nil
     ) -> Promise<PSMetadataAwareResponse<PSStatement>> {
         doRequest(requestRouter: WalletApiRequestRouter.getStatements(walletId: walletId, filter: filter))
+    }
+    
+    public func getCards(filter: PSCardFilter) -> Promise<PSMetadataAwareResponse<PSCard>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getCards(filter: filter))
+    }
+    
+    public func changeWalletDescription(walletId: Int, description: String) -> Promise<PSWallet> {
+        doRequest(requestRouter: WalletApiRequestRouter.changeWalletDescription(walletId: walletId, description: description))
+    }
+    
+    public func deleteWalletDescription(walletId: Int) -> Promise<PSWallet> {
+        doRequest(requestRouter: WalletApiRequestRouter.deleteWalletDescription(walletId: walletId))
+    }
+    
+    public func getTransfer(transferId: Int) -> Promise<PSTransfer> {
+        return doRequest(requestRouter: WalletApiRequestRouter.getTransfer(id: transferId))
+    }
+
+    public func reserveTransfer(transferId: Int) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.reserveTransfer(transferId: transferId))
+    }
+    
+    public func signTransfer(transferId: Int) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.signTransfer(transferId: transferId))
+    }
+    
+    public func cancelTransfer(transferId: Int) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.cancelTransfer(transferId: transferId))
+    }
+    
+    public func unlockTransfer(transferId: Int, password: String) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.unlockTransfer(transferId: transferId, password: password))
+    }
+    
+    public func getPendingPayments(walletId: Int, filter: PSBaseFilter? = nil) -> Promise<PSMetadataAwareResponse<PSPendingPayment>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getPendingPayments(walletId: walletId, filter: filter))
+    }
+    
+    public func getReservationStatements(walletId: Int, filter: PSBaseFilter? = nil) -> Promise<PSMetadataAwareResponse<PSReservationStatement>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getReservationStatements(walletId: walletId, filter: filter))
+    }
+    
+    public func cancelPendingPayment(walletId: Int, pendingPaymentId: Int) -> Promise<PSPendingPayment> {
+        doRequest(requestRouter: WalletApiRequestRouter.cancelPendingPayment(walletId: walletId, pendingPaymentId: pendingPaymentId))
+    }
+    
+    public func generateCode(scopes: [String]) -> Promise<PSGeneratorResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.generateCode(scopes: scopes))
+    }
+    
+    public func createGenerator(code: String) -> Promise<PSGenerator> {
+        doRequest(requestRouter: WalletApiRequestRouter.createGenerator(code: code))
+    }
+    
+    public func getGenerator(generatorId: Int) -> Promise<PSGenerator> {
+        doRequest(requestRouter: WalletApiRequestRouter.getGenerator(generatorId: generatorId))
+    }
+    
+    public func provideUserPosition(_ position: PSUserPosition) -> Promise<PSUserPosition> {
+        doRequest(requestRouter: WalletApiRequestRouter.provideUserPosition(position: position))
+    }
+    
+    public func getIdentificationRequests(filter: PSIdentificationRequestsFilter) -> Promise<PSMetadataAwareResponse<PSIdentificationRequest>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getIdentificationRequests(filter: filter))
+    }
+    
+    public func createContactBook(request: PSContactBookRequest) -> Promise<PSContactBookResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.createContactBook(request))
+    }
+    
+    public func appendContactBook(contactBookId: Int, request: PSContactBookRequest) -> Promise<PSContactBookResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.appendContactBook(contactBookId: contactBookId, request: request))
+    }
+    
+    public func deleteFromContactBook(contactBookId: Int, request: PSContactBookRequest) -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.deleteFromContactBook(contactBookId: contactBookId, request: request))
+    }
+    
+    public func calculateCurrencyConversion(request: PSCurrencyConversion) -> Promise<PSCurrencyConversion> {
+        doRequest(requestRouter: WalletApiRequestRouter.calculateCurrencyConversion(request))
+    }
+    
+    public func convertCurrency(request: PSCurrencyConversion) -> Promise<PSCurrencyConversionResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.convertCurrency(request))
+    }
+    
+    public func getCodeInformation(code: String) -> Promise<PSCodeInformation> {
+        doRequest(requestRouter: WalletApiRequestRouter.getCodeInformation(code: code))
+    }
+    
+    public func createCard(userId: Int, request: PSCardAccountRequest) -> Promise<PSCard> {
+        doRequest(requestRouter: WalletApiRequestRouter.createCard(userId: userId, request: request))
+    }
+    
+    public func getCard(cardId: Int) -> Promise<PSCard> {
+        doRequest(requestRouter: WalletApiRequestRouter.getCard(cardId: cardId))
+    }
+    
+    public func deleteCard(cardId: Int) -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.deleteCard(cardId: cardId))
+    }
+    
+    public func getTransfers(filter: PSTransferFilter) -> Promise<PSMetadataAwareResponse<PSTransfer>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getTransfers(filter: filter))
+    }
+    
+    public func getUserServices(userId: Int) -> Promise<PSUserServiceResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.getUserServices(userId: userId))
+    }
+    
+    public func enableUserService(userId: Int, service: String) -> Promise<PSUserService> {
+        doRequest(requestRouter: WalletApiRequestRouter.enableUserService(userId: userId, service: service))
+    }
+    
+    public func getConfirmations(filter: PSConfirmationFilter) -> Promise<PSMetadataAwareResponse<PSConfirmation>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getConfirmations(filter: filter))
+    }
+    
+    public func getConfirmation(identifier: String) -> Promise<PSConfirmation> {
+        doRequest(requestRouter: WalletApiRequestRouter.getConfirmation(identifier: identifier))
+    }
+    
+    public func rejectConfirmation(identifier: String) -> Promise<PSConfirmation> {
+        doRequest(requestRouter: WalletApiRequestRouter.rejectConfirmation(identifier: identifier))
+    }
+    
+    public func confirmConfirmation(identifier: String) -> Promise<PSConfirmation> {
+        doRequest(requestRouter: WalletApiRequestRouter.confirmConfirmation(identifier: identifier))
+    }
+    
+    public func createIdentificationRequest(userId: Int) -> Promise<PSIdentificationRequest> {
+        doRequest(requestRouter: WalletApiRequestRouter.createIdentificationRequest(userId: userId))
+    }
+    
+    public func createIdentityDocument(request: PSIdentificationDocumentRequest) -> Promise<PSIdentityDocument> {
+        doRequest(requestRouter: WalletApiRequestRouter.createIdentityDocument(request: request))
+    }
+    
+    public func uploadAvatar(imageData: Data, contentType: String) -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.uploadAvatar(imageData: imageData, contentType: contentType))
+    }
+    
+    public func submitFacePhoto(requestId: Int, order: Int, data: Data, contentType: String) -> Promise<Void> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.submitFacePhoto(
+                requestId: requestId,
+                order: order,
+                data: data,
+                contentType: contentType
+            )
+        )
+    }
+    
+    public func submitDocumentPhoto(documentId: Int, order: Int, data: Data, contentType: String) -> Promise<Void> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.submitDocumentPhoto(
+                documentId: documentId,
+                order: order,
+                data: data,
+                contentType: contentType
+            )
+        )
+    }
+    
+    public func submitIdentificationRequest(requestId: Int) -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.submitIdentificationRequest(requestId: requestId))
+    }
+    
+    public func deleteAvatar() -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.deleteAvatar)
+    }
+    
+    public func createAuthToken() -> Promise<PSAuthTokenResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.createAuthToken)
+    }
+    
+    public func createTransfer(_ transfer: PSTransfer) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.createTransfer(transfer))
+    }
+    
+    public func createSimulatedTransfer(_ transfer: PSTransfer) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.createSimulatedTransfer(transfer))
+    }
+    
+    public func issueFirebaseToken() -> Promise<PSFirebaseTokenResponse> {
+        doRequest(requestRouter: WalletApiRequestRouter.issueFirebaseToken)
     }
 }
