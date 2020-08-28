@@ -336,16 +336,30 @@ public class WalletAsyncClient: BaseAsyncClient {
         doRequest(requestRouter: WalletApiRequestRouter.createIdentityDocument(request: request))
     }
     
-    public func uploadAvatar(imageData: Data) -> Promise<Void> {
-        doRequest(requestRouter: WalletApiRequestRouter.uploadAvatar(imageData: imageData))
+    public func uploadAvatar(imageData: Data, contentType: String) -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.uploadAvatar(imageData: imageData, contentType: contentType))
     }
     
-    public func submitFacePhoto(requestId: Int, order: Int, data: Data) -> Promise<Void> {
-        doRequest(requestRouter: WalletApiRequestRouter.submitFacePhoto(requestId: requestId, order: order, data: data))
+    public func submitFacePhoto(requestId: Int, order: Int, data: Data, contentType: String) -> Promise<Void> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.submitFacePhoto(
+                requestId: requestId,
+                order: order,
+                data: data,
+                contentType: contentType
+            )
+        )
     }
     
-    public func submitDocumentPhoto(documentId: Int, order: Int, data: Data) -> Promise<Void> {
-        doRequest(requestRouter: WalletApiRequestRouter.submitDocumentPhoto(documentId: documentId, order: order, data: data))
+    public func submitDocumentPhoto(documentId: Int, order: Int, data: Data, contentType: String) -> Promise<Void> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.submitDocumentPhoto(
+                documentId: documentId,
+                order: order,
+                data: data,
+                contentType: contentType
+            )
+        )
     }
     
     public func submitIdentificationRequest(requestId: Int) -> Promise<Void> {

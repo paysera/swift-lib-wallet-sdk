@@ -1050,7 +1050,7 @@ class PayseraWalletSDKTests: XCTestCase {
         let imageData = Data()
         
         client
-            .submitFacePhoto(requestId: requestId, order: order, data: imageData)
+            .submitFacePhoto(requestId: requestId, order: order, data: imageData, contentType: "image/jpeg")
             .done { _ in }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
@@ -1065,7 +1065,7 @@ class PayseraWalletSDKTests: XCTestCase {
         let imageData = Data()
         
         client
-            .submitDocumentPhoto(documentId: documentId, order: order, data: imageData)
+            .submitDocumentPhoto(documentId: documentId, order: order, data: imageData, contentType: "image/jpeg")
             .done { _ in }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
@@ -1091,7 +1091,7 @@ class PayseraWalletSDKTests: XCTestCase {
         let imageData = Data()
         
         client
-            .uploadAvatar(imageData: imageData)
+            .uploadAvatar(imageData: imageData, contentType: "image/jpeg")
             .done { _ in }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }

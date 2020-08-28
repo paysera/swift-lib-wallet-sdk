@@ -77,10 +77,10 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case appendContactBook(contactBookId: Int, request: PSContactBookRequest)
     case enableUserService(userId: Int, service: String)
     case confirmConfirmation(identifier: String)
-    case submitFacePhoto(requestId: Int, order: Int, data: Data)
-    case submitDocumentPhoto(documentId: Int, order: Int, data: Data)
+    case submitFacePhoto(requestId: Int, order: Int, data: Data, contentType: String)
+    case submitDocumentPhoto(documentId: Int, order: Int, data: Data, contentType: String)
     case submitIdentificationRequest(requestId: Int)
-    case uploadAvatar(imageData: Data)
+    case uploadAvatar(imageData: Data, contentType: String)
     
     // MARK: - DELETE
     case deleteTransaction(key: String)
@@ -396,10 +396,10 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .createIdentityDocument(let request):
             return "identification-request/\(request.id!)/identity-document"
         
-        case .submitFacePhoto(let requestId, let order, _):
+        case .submitFacePhoto(let requestId, let order, _, _):
             return "identification-request/\(requestId)/face-photo/image/\(order)"
             
-        case .submitDocumentPhoto(let documentId, let order, _):
+        case .submitDocumentPhoto(let documentId, let order, _, _):
             return "identity-document/\(documentId)/image/\(order)"
             
         case .submitIdentificationRequest(let requestId):
@@ -613,20 +613,16 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         urlRequest.addValue(extraParametersString, forHTTPHeaderField: "extraParameters")
         switch self {
             
-        case .putWithData(_, let data, let contentType):
+        case .putWithData(_, let data, let contentType),
+             .uploadAvatar(let data, let contentType),
+             .submitFacePhoto(_, _, let data, let contentType),
+             .submitDocumentPhoto(_, _, let data, let contentType):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = data
             
         case .checkIn:
             urlRequest.url = try! "\(urlRequest.url!.absoluteString)?\(parameters!.queryString)".asURL()
-            
-        case .uploadAvatar(let data),
-             .submitFacePhoto(_, _, let data),
-             .submitDocumentPhoto(_, _, let data):
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
-            urlRequest.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
-            urlRequest.httpBody = data
             
         case (_) where method == .get,
              (_) where method == .delete:
