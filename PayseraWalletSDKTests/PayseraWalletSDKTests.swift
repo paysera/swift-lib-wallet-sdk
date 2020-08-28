@@ -1144,7 +1144,7 @@ class PayseraWalletSDKTests: XCTestCase {
         transfer.purpose?.details = "Hello internet"
 
         client
-            .createTransfer(transfer, isSimulated: false)
+            .createTransfer(transfer)
             .done { response = $0 }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }

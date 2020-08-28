@@ -374,8 +374,12 @@ public class WalletAsyncClient: BaseAsyncClient {
         doRequest(requestRouter: WalletApiRequestRouter.createAuthToken)
     }
     
-    public func createTransfer(_ transfer: PSTransfer, isSimulated: Bool) -> Promise<PSTransfer> {
-        doRequest(requestRouter: WalletApiRequestRouter.createTransfer(transfer, isSimulated: isSimulated))
+    public func createTransfer(_ transfer: PSTransfer) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.createTransfer(transfer))
+    }
+    
+    public func createSimulatedTransfer(_ transfer: PSTransfer) -> Promise<PSTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.createSimulatedTransfer(transfer))
     }
     
     public func issueFirebaseToken() -> Promise<PSFirebaseTokenResponse> {

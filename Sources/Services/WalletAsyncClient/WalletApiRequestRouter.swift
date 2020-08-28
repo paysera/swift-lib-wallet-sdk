@@ -59,7 +59,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case createIdentificationRequest(userId: Int)
     case createIdentityDocument(request: PSIdentificationDocumentRequest)
     case createAuthToken
-    case createTransfer(PSTransfer, isSimulated: Bool)
+    case createTransfer(PSTransfer)
+    case createSimulatedTransfer(PSTransfer)
     case issueFirebaseToken
     
     // MARK: - PUT
@@ -118,6 +119,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
              .createIdentityDocument,
              .createAuthToken,
              .createTransfer,
+             .createSimulatedTransfer,
              .issueFirebaseToken:
             return .post
             
@@ -412,8 +414,11 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .createAuthToken:
             return "auth-token/token"
             
-        case .createTransfer(_, let isSimulated):
-            return isSimulated ? "simulated-transfers" : "transfers"
+        case .createTransfer:
+            return "transfers"
+            
+        case .createSimulatedTransfer:
+            return "simulated-transfers"
             
         case .issueFirebaseToken:
             return "mobile-application-integration/firebase/tokens"
@@ -572,7 +577,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .createIdentityDocument(let request):
             return request.toJSON()
             
-        case .createTransfer(let transfer, _):
+        case .createTransfer(let transfer),
+             .createSimulatedTransfer(let transfer):
             return transfer.toJSON()
         
         default:
