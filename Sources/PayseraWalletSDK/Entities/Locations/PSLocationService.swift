@@ -4,6 +4,7 @@ public class PSLocationService: Mappable {
     public let name: String
     public let available: Bool
     public var categories: [Int]?
+    public var types: [String] = []
     
     required public init?(map: Map) {
         do {
@@ -16,6 +17,7 @@ public class PSLocationService: Mappable {
     
     // Mappable
     public func mapping(map: Map) {
-        categories      <- map["categories"]
+        categories  <- map["categories"]
+        types       <- map["types"]
     }
 }
