@@ -7,6 +7,13 @@ public protocol AccessTokenRefresherDelegate {
     func activeCredentialsDidUpdate(to activeCredentials: PSCredentials)
     func inactiveCredentialsDidUpdate(to inactiveCredentials: PSCredentials?)
     func refreshTokenIsInvalid(_ error: Error)
+    func shouldRefreshTokenBeforeRequest(with activeCredentials: PSCredentials) -> Bool
+}
+
+public extension AccessTokenRefresherDelegate {
+    func shouldRefreshTokenBeforeRequest(with activeCredentials: PSCredentials) -> Bool {
+        false
+    }
 }
 
 public class RefreshingWalletAsyncClient: WalletAsyncClient {
@@ -48,9 +55,13 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         
         lockQueue.async {
             guard !self.tokenIsRefreshing else {
-                self.requestsQueue.append(apiRequest)
-                return
+                return self.requestsQueue.append(apiRequest)
             }
+            
+            if self.accessTokenRefresherDelegate.shouldRefreshTokenBeforeRequest(with: self.activeCredentials) {
+                return self.handleExpiredAccessToken(with: apiRequest)
+            }
+            
             self.logger?.log(
                 level: .DEBUG,
                 message: "--> \(apiRequest.requestEndPoint.urlRequest!.url!.absoluteString)",
@@ -61,13 +72,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 .request(apiRequest.requestEndPoint)
                 .responseData { response in
                     guard let urlResponse = response.response else {
-                        apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
-                        return
+                        return apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
                     }
                     
                     if let error = response.error, error.isCancelled {
-                        apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
-                        return
+                        return apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
                     }
                     
                     let statusCode = urlResponse.statusCode
@@ -76,19 +85,16 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                     let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
                     if 200 ... 299 ~= statusCode {
                         self.logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
-                        apiRequest.pendingPromise.resolver.fulfill(responseString)
-                        return
+                        return apiRequest.pendingPromise.resolver.fulfill(responseString)
                     }
                     
                     let error = self.mapError(jsonString: responseString, statusCode: statusCode)
                     self.logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
                     if statusCode == 401 && error.isInvalidTimestamp() {
-                        self.syncTimestamp(apiRequest, error)
-                        return
+                        return self.syncTimestamp(apiRequest, error)
                     }
                     if statusCode == 400 && error.isTokenExpired() {
-                        self.handleExpiredAccessToken(apiRequest, error)
-                        return
+                        return self.handleExpiredAccessToken(with: apiRequest)
                     }
                     
                     apiRequest.pendingPromise.resolver.reject(error)
@@ -100,11 +106,10 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         return refreshToken(grantType: grantType, code: code, scopes: extensionScopes)
     }
     
-    func handleExpiredAccessToken(_ apiRequest: ApiRequest, _ error: PSApiError) {
+    func handleExpiredAccessToken(with apiRequest: ApiRequest) {
         lockQueue.async {
             guard !self.hasRecentlyRefreshed() else {
-                self.makeRequest(apiRequest: apiRequest)
-                return
+                return self.makeRequest(apiRequest: apiRequest)
             }
             
             self.requestsQueue.append(apiRequest)
@@ -176,11 +181,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     private func hasRecentlyRefreshed() -> Bool {
-        guard
-            let validUntil = activeCredentials.validUntil,
-            let expiresIn = activeCredentials.expiresIn
-        else { return false }
-        return abs(expiresIn - validUntil.timeIntervalSinceNow) < 15
+        guard let validUntil = activeCredentials.validUntil else {
+            return false
+        }
+        
+        return abs(validUntil.timeIntervalSinceNow) < 15
     }
     
     private func updateActiveCredentials(using refreshedCredentials: PSCredentials) {
