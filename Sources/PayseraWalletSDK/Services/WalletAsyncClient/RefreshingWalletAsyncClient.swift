@@ -181,11 +181,12 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     private func hasRecentlyRefreshed() -> Bool {
-        guard let validUntil = activeCredentials.validUntil else {
-            return false
-        }
+        guard
+            let validUntil = activeCredentials.validUntil,
+            let expiresIn = activeCredentials.expiresIn
+        else { return false }
         
-        return abs(validUntil.timeIntervalSinceNow) < 15
+        return expiresIn - validUntil.timeIntervalSinceNow <= 15
     }
     
     private func updateActiveCredentials(using refreshedCredentials: PSCredentials) {
