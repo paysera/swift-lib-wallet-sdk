@@ -107,6 +107,14 @@ extension PSSubscriber {
         }
     }
     
+    public func getSuccessfulCardTransactionEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.transactionSuccessful.rawValue &&
+            $0.object == PSNotificationObjectType.card.rawValue
+        }
+    }
+    
     private func isWalletObject(_ object: String?) -> Bool {
         return object == PSNotificationObjectType.pendingPayment.rawValue ||
                object == PSNotificationObjectType.statement.rawValue

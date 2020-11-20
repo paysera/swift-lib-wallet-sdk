@@ -7,4 +7,5 @@ public enum PSNotificationObjectType: String {
     case pendingPayment = "pending_payment"
     case information
     case user
+    case card
 }
