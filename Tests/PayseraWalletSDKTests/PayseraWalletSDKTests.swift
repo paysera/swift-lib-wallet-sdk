@@ -1076,14 +1076,18 @@ class PayseraWalletSDKTests: XCTestCase {
     func testSubmittingIdentificationRequest() {
         let expectation = XCTestExpectation(description: "Identification request should be submitted")
         let requestId = 4884446
+        var response: PSIdentificationRequest?
         
         client
             .submitIdentificationRequest(requestId: requestId)
-            .done { _ in }
+            .done { psIdentificationRequest in
+                response = psIdentificationRequest
+            }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
     }
     
     func testUploadAvatar() {
