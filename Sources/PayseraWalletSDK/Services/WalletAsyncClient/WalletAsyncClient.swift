@@ -362,7 +362,7 @@ public class WalletAsyncClient: BaseAsyncClient {
         )
     }
     
-    public func submitIdentificationRequest(requestId: Int) -> Promise<Void> {
+    public func submitIdentificationRequest(requestId: Int) -> Promise<PSIdentificationRequest> {
         doRequest(requestRouter: WalletApiRequestRouter.submitIdentificationRequest(requestId: requestId))
     }
     
