@@ -80,6 +80,6 @@ public class ClientsFactory {
     }
     
     private static func createSession(with interceptor: RequestInterceptor? = nil) -> Session {
-        return Session(interceptor: interceptor)
+        Session(interceptor: interceptor)
     }
 }
