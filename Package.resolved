@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/paysera/swift-lib-accounts-sdk",
         "state": {
           "branch": null,
-          "revision": "aa04b989dbe4f0b72c46cceded6cb7160df22158",
-          "version": "7.0.0"
+          "revision": "f96b4b736dd86d994838171e9a2583fe13373251",
+          "version": "7.2.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/paysera/swift-lib-common-sdk",
         "state": {
           "branch": null,
-          "revision": "90bcdfd1ccdf8730cc29175c207f97b47db35633",
-          "version": "3.0.1"
+          "revision": "09b2c5d4281b58e2e5753053657ed76e900f57d9",
+          "version": "4.0.0"
         }
       }
     ]

@@ -79,10 +79,7 @@ public class ClientsFactory {
         return PublicWalletApiClient(session: session, logger: logger)
     }
     
-    private static func createSession(with interceptor: RequestInterceptor? = nil) -> PSTrustedSession {
-        return PSTrustedSession(
-            interceptor: interceptor,
-            hosts: ["wallet-api.paysera.com"]
-        )
+    private static func createSession(with interceptor: RequestInterceptor? = nil) -> Session {
+        Session(interceptor: interceptor)
     }
 }
