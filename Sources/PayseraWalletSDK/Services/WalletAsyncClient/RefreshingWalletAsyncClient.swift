@@ -6,7 +6,7 @@ import PayseraCommonSDK
 public protocol AccessTokenRefresherDelegate {
     func activeCredentialsDidUpdate(to activeCredentials: PSCredentials)
     func inactiveCredentialsDidUpdate(to inactiveCredentials: PSCredentials?)
-    func refreshTokenIsInvalid(_ error: Error)
+    func refreshTokenIsInvalid(_ error: Error, refreshToken: String?)
     func shouldRefreshTokenBeforeRequest(with activeCredentials: PSCredentials) -> Bool
 }
 
@@ -128,10 +128,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         return Promise<PSCredentials> { seal in
             self.lockQueue.async {
                 let refreshPromise: Promise<PSCredentials>
+                let activeRefreshToken = self.activeCredentials.refreshToken
                 
                 switch grantType {
                 case .refreshToken:
-                    if let activeRefreshToken = self.activeCredentials.refreshToken {
+                    if let activeRefreshToken = activeRefreshToken {
                         refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                     } else {
                         refreshPromise = .init(error: PSApiError.unknown())
@@ -139,7 +140,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 case .refreshTokenWithActivation:
                     if let inactiveAccessToken = self.inactiveCredentials?.accessToken {
                         refreshPromise = self.authAsyncClient.activate(accessToken: inactiveAccessToken)
-                    } else if let activeRefreshToken = self.activeCredentials.refreshToken {
+                    } else if let activeRefreshToken = activeRefreshToken {
                         refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                             .get(on: self.lockQueue) { self.updateInactiveCredentials(to: $0) }
                             .compactMap { $0.accessToken }
@@ -155,7 +156,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                         seal.fulfill(credentials)
                     }
                     .catch(on: self.lockQueue) { error in
-                        self.handleRefreshTokenError(error)
+                        self.handleRefreshTokenError(error, refreshToken: activeRefreshToken)
                         seal.reject(error)
                     }
             }
@@ -168,11 +169,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         resumeQueue()
     }
     
-    private func handleRefreshTokenError(_ error: Error) {
+    private func handleRefreshTokenError(_ error: Error, refreshToken: String?) {
         tokenIsRefreshing = false
         
         if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
-            accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
+            accessTokenRefresherDelegate.refreshTokenIsInvalid(error, refreshToken: refreshToken)
         } else if let statusCode = (error as? PSApiError)?.statusCode, 400...499 ~= statusCode {
             updateInactiveCredentials(to: nil)
         }
