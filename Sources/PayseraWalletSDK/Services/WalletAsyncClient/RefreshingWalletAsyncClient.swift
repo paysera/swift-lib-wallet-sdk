@@ -6,7 +6,7 @@ import PromiseKit
 public protocol AccessTokenRefresherDelegate {
     func activeCredentialsDidUpdate(to activeCredentials: PSCredentials)
     func inactiveCredentialsDidUpdate(to inactiveCredentials: PSCredentials?)
-    func refreshTokenIsInvalid(_ error: Error)
+    func refreshTokenIsInvalid(_ error: Error, refreshToken: String?)
     func shouldRefreshTokenBeforeRequest(with activeCredentials: PSCredentials) -> Bool
 }
 
@@ -146,7 +146,9 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         scopes: [String]? = nil
     ) -> Promise<PSCredentials> {
         Promise { seal in
+            let activeRefreshToken = activeCredentials.refreshToken
             let refreshPromise = createRefreshPromise(
+                activeRefreshToken: activeRefreshToken,
                 grantType: grantType,
                 code: code,
                 scopes: scopes
@@ -158,20 +160,21 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                     seal.fulfill(credentials)
                 }
                 .catch(on: workQueue) { error in
-                    self.handleRefreshTokenError(error)
+                    self.handleRefreshTokenError(error, refreshToken: activeRefreshToken)
                     seal.reject(error)
                 }
         }
     }
     
     private func createRefreshPromise(
+        activeRefreshToken: String?,
         grantType: PSGrantType,
         code: String?,
         scopes: [String]?
     ) -> Promise<PSCredentials> {
         switch grantType {
         case .refreshToken:
-            if let activeRefreshToken = activeCredentials.refreshToken {
+            if let activeRefreshToken = activeRefreshToken {
                 return authAsyncClient.refreshToken(
                     activeRefreshToken,
                     grantType: grantType,
@@ -184,7 +187,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         case .refreshTokenWithActivation:
             if let inactiveAccessToken = inactiveCredentials?.accessToken {
                 return authAsyncClient.activate(accessToken: inactiveAccessToken)
-            } else if let activeRefreshToken = activeCredentials.refreshToken {
+            } else if let activeRefreshToken = activeRefreshToken {
                 return authAsyncClient
                     .refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                     .get(on: workQueue) { self.updateInactiveCredentials(to: $0) }
@@ -204,11 +207,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         resumeQueue()
     }
     
-    private func handleRefreshTokenError(_ error: Error) {
+    private func handleRefreshTokenError(_ error: Error, refreshToken: String?) {
         tokenIsRefreshing = false
         
         if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
-            accessTokenRefresherDelegate.refreshTokenIsInvalid(error)
+            accessTokenRefresherDelegate.refreshTokenIsInvalid(error, refreshToken: refreshToken)
         } else if let statusCode = (error as? PSApiError)?.statusCode, 400...499 ~= statusCode {
             updateInactiveCredentials(to: nil)
         }
