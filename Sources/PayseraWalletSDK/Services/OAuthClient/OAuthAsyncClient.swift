@@ -1,12 +1,9 @@
-import Foundation
-import Alamofire
-import ObjectMapper
 import PromiseKit
 
 public class OAuthAsyncClient: BaseAsyncClient {
     
     public func loginUser(_ userLoginData: PSUserLoginRequest) -> Promise<PSCredentials> {
-        return doRequest(requestRouter: OAuthApiRequestRouter.login(userLoginData))
+        doRequest(requestRouter: OAuthApiRequestRouter.login(userLoginData))
     }
     
     public func refreshToken(
@@ -15,7 +12,6 @@ public class OAuthAsyncClient: BaseAsyncClient {
         code: String? = nil,
         scopes: [String]? = nil
     ) -> Promise<PSCredentials> {
-        
         let refreshTokenRequest = PSRefreshTokenRequest()
         
         refreshTokenRequest.grantType = grantType.rawValue
@@ -27,10 +23,10 @@ public class OAuthAsyncClient: BaseAsyncClient {
     }
     
     public func revoke(accessToken: String) -> Promise<PSBeneficiaryPayseraAccount> {
-        return doRequest(requestRouter: OAuthApiRequestRouter.revoke(accessToken: accessToken))
+        doRequest(requestRouter: OAuthApiRequestRouter.revoke(accessToken: accessToken))
     }
     
     public func activate(accessToken: String) -> Promise<PSCredentials>{
-        return doRequest(requestRouter: OAuthApiRequestRouter.activate(accessToken: accessToken))
+        doRequest(requestRouter: OAuthApiRequestRouter.activate(accessToken: accessToken))
     }
 }

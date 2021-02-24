@@ -1,5 +1,5 @@
-import Foundation
 import Alamofire
+import Foundation
 
 enum OAuthApiRequestRouter: URLRequestConvertible {
 
@@ -13,11 +13,9 @@ enum OAuthApiRequestRouter: URLRequestConvertible {
     // MARK: - Delete
     case revoke(accessToken: String)
 
-    static var baseURLString = "https://wallet-api.paysera.com"
-    
+    static let baseURL = URL(string: "https://wallet-api.paysera.com")!
     
     private var method: HTTPMethod {
-        
         switch self {
         case .login,
              .refreshToken:
@@ -32,15 +30,14 @@ enum OAuthApiRequestRouter: URLRequestConvertible {
     }
     
     private var path: String {
-        
         switch self {
         case .login,
              .refreshToken,
              .revoke:
-            return "/oauth/v1/token"
+            return "oauth/v1/token"
             
         case .activate(let accessToken):
-            return "/oauth/v1/tokens/\(accessToken)/activate"
+            return "oauth/v1/tokens/\(accessToken)/activate"
         }
     }
     
@@ -61,10 +58,9 @@ enum OAuthApiRequestRouter: URLRequestConvertible {
     }
     
     func asURLRequest() throws -> URLRequest {
-        let url = try! OAuthApiRequestRouter.baseURLString.asURL()
-        
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = method.rawValue
+        let url = Self.baseURL.appendingPathComponent(path)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.method = method
         
         switch self {
         case .refreshToken,

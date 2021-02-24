@@ -1,7 +1,7 @@
-import Foundation
 import Alamofire
-import PayseraCommonSDK
 import CryptoSwift
+import Foundation
+import PayseraCommonSDK
 
 public class RequestSigningAdapter: RequestInterceptor {
     private let credentials: PSCredentials
@@ -18,10 +18,13 @@ public class RequestSigningAdapter: RequestInterceptor {
         self.logger = logger
     }
     
-    public func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+    public func adapt(
+        _ urlRequest: URLRequest,
+        for session: Session,
+        completion: @escaping (Result<URLRequest, Error>) -> Void
+    ) {
         guard let accessToken = credentials.accessToken, let macKey = credentials.macKey else {
-            completion(.failure(PSApiError.unknown()))
-            return
+            return completion(.failure(PSApiError.unauthorized()))
         }
         
         let authorizationValue = generateSignature(
@@ -39,7 +42,12 @@ public class RequestSigningAdapter: RequestInterceptor {
         completion(.success(urlRequest))
     }
         
-    public func retry(_ request: Request, for session: Session, dueTo error: Error, completion: @escaping (RetryResult) -> Void) {
+    public func retry(
+        _ request: Request,
+        for session: Session,
+        dueTo error: Error,
+        completion: @escaping (RetryResult) -> Void
+    ) {
         completion(.doNotRetry)
     }
     

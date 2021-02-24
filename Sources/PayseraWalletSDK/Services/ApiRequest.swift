@@ -2,12 +2,13 @@ import Alamofire
 import PromiseKit
 
 class ApiRequest {
-
-    var pendingPromise: (promise: Promise<String>, resolver: Resolver<String>)
-    var requestEndPoint: URLRequestConvertible
+    let pendingPromise: (promise: Promise<String>, resolver: Resolver<String>)
+    let requestEndPoint: URLRequestConvertible
     
-    required init<T: URLRequestConvertible>(pendingPromise: (promise: Promise<String>, resolver: Resolver<String>), requestEndPoint: T) {
-        
+    required init<T: URLRequestConvertible>(
+        pendingPromise: (promise: Promise<String>, resolver: Resolver<String>),
+        requestEndPoint: T
+    ) {
         self.pendingPromise = pendingPromise
         self.requestEndPoint = requestEndPoint
     }

@@ -1,16 +1,15 @@
-import Foundation
 import Alamofire
+import Foundation
 
 public enum PublicApiRequestRouter: URLRequestConvertible {
     
     case getServerInformation
     case getServerConfiguration
     
-    static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
+    static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
     
     private var method: HTTPMethod {
         switch self {
-            
         case .getServerInformation:
             return .get
         case .getServerConfiguration:
@@ -20,23 +19,21 @@ public enum PublicApiRequestRouter: URLRequestConvertible {
     
     private var path: String {
         switch self {
-            
         case .getServerInformation:
-            return "/server"
+            return "server"
         case .getServerConfiguration:
-            return "/configuration"
+            return "configuration"
         }
     }
     
     public func asURLRequest() throws -> URLRequest {
-        let url = try! PublicApiRequestRouter.baseURLString.asURL()
-        
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = method.rawValue
+        let url = Self.baseURL.appendingPathComponent(path)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.method = method
         
         switch self {
-            
-        default:
+        case .getServerConfiguration,
+             .getServerInformation:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: nil)
         }
         
