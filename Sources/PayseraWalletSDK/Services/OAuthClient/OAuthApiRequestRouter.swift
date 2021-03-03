@@ -1,7 +1,7 @@
 import Alamofire
 import Foundation
 
-enum OAuthApiRequestRouter: URLRequestConvertible {
+enum OAuthApiRequestRouter {
 
     // MARK: - POST
     case login(PSUserLoginRequest)
@@ -13,7 +13,7 @@ enum OAuthApiRequestRouter: URLRequestConvertible {
     // MARK: - Delete
     case revoke(accessToken: String)
 
-    static let baseURL = URL(string: "https://wallet-api.paysera.com")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com")!
     
     private var method: HTTPMethod {
         switch self {
@@ -56,7 +56,9 @@ enum OAuthApiRequestRouter: URLRequestConvertible {
             return nil
         }
     }
-    
+}
+
+extension OAuthApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)
@@ -72,5 +74,4 @@ enum OAuthApiRequestRouter: URLRequestConvertible {
         
         return urlRequest
     }
-    
 }

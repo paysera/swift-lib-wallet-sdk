@@ -1,12 +1,12 @@
 import Alamofire
 import Foundation
 
-public enum PublicApiRequestRouter: URLRequestConvertible {
+enum PublicApiRequestRouter {
     
     case getServerInformation
     case getServerConfiguration
     
-    static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
     
     private var method: HTTPMethod {
         switch self {
@@ -25,8 +25,10 @@ public enum PublicApiRequestRouter: URLRequestConvertible {
             return "configuration"
         }
     }
-    
-    public func asURLRequest() throws -> URLRequest {
+}
+
+extension PublicApiRequestRouter: URLRequestConvertible {
+    func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)
         urlRequest.method = method
@@ -39,5 +41,4 @@ public enum PublicApiRequestRouter: URLRequestConvertible {
         
         return urlRequest
     }
-    
 }

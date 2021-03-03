@@ -3,8 +3,6 @@ import PayseraAccountsSDK
 import PayseraCommonSDK
 import PayseraWalletSDK
 import PromiseKit
-import JWTDecode
-import ObjectMapper
 
 class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
     func getServerTimeDifference() -> TimeInterval {

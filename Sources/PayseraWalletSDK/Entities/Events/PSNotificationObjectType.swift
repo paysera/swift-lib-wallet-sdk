@@ -1,5 +1,3 @@
-import Foundation
-
 public enum PSNotificationObjectType: String {
     case confirmation
     case statement

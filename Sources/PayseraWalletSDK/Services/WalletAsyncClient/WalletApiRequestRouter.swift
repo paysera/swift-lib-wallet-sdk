@@ -1,9 +1,9 @@
-import Foundation
 import Alamofire
-import PayseraCommonSDK
+import Foundation
 import PayseraAccountsSDK
+import PayseraCommonSDK
 
-public enum WalletApiRequestRouter: URLRequestConvertible {
+enum WalletApiRequestRouter {
     case get(path: String, parameters: [String: Any]?, extraParameters: [String: Any]?)
     case post(path: String, parameters: [String: Any]?)
     case put(path: String, parameters: [String: Any]?)
@@ -97,7 +97,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case deleteAvatar
     
     // MARK: - Variables
-    static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
 
     private var method: HTTPMethod {
         switch self {
@@ -606,9 +606,11 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return nil
         }
     }
-    
-    // MARK: - Method
-    public func asURLRequest() throws -> URLRequest {
+}
+
+
+extension WalletApiRequestRouter: URLRequestConvertible {
+    func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)
         urlRequest.method = method
@@ -645,5 +647,4 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         
         return urlRequest
     }
-            
 }
