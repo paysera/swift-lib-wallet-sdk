@@ -73,7 +73,12 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
             self.session
                 .request(apiRequest.requestEndPoint)
                 .responseData(queue: self.workQueue) { response in
-                    self.handleResponse(response, for: apiRequest, with: urlRequest)
+                    self.handleResponse(
+                        response,
+                        for: apiRequest,
+                        with: urlRequest,
+                        expiredTokenHandler: self.handleExpiredAccessToken
+                    )
                 }
         }
     }
@@ -105,38 +110,6 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         
         tokenIsRefreshing = true
         refreshToken(grantType: grantType)
-    }
-    
-    private func handleResponse(
-        _ response: AFDataResponse<Data>,
-        for apiRequest: ApiRequest,
-        with urlRequest: URLRequest
-    ) {
-        guard let urlResponse = response.response else {
-            return handleMissingUrlResponse(for: apiRequest, with: response.error)
-        }
-        
-        let statusCode = urlResponse.statusCode
-        let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
-        
-        let responseString = String(data: response.data ?? Data(), encoding: .utf8) ?? ""
-        if 200 ... 299 ~= statusCode {
-            logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
-            return apiRequest.pendingPromise.resolver.fulfill(responseString)
-        }
-        
-        let error = mapError(jsonString: responseString, statusCode: statusCode)
-        logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
-        
-        if statusCode == 401 && error.isInvalidTimestamp() {
-            return syncTimestamp(apiRequest, error)
-        }
-        
-        if statusCode == 400 && error.isTokenExpired() {
-            return handleExpiredAccessToken(with: apiRequest)
-        }
-        
-        apiRequest.pendingPromise.resolver.reject(error)
     }
     
     @discardableResult

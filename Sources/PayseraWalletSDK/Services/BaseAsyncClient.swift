@@ -98,7 +98,91 @@ public class BaseAsyncClient {
         }
     }
     
-    func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSApiError) {
+    func resumeQueue() {
+        requestsQueue.forEach(executeRequest)
+        requestsQueue.removeAll()
+    }
+    
+    func cancelQueue(error: Error) {
+        requestsQueue.forEach { request in
+            request.pendingPromise.resolver.reject(error)
+        }
+        requestsQueue.removeAll()
+    }
+    
+    func handleResponse(
+        _ response: AFDataResponse<Data>,
+        for apiRequest: ApiRequest,
+        with urlRequest: URLRequest,
+        expiredTokenHandler: ((ApiRequest) -> Void)? = nil
+    ) {
+        guard let urlResponse = response.response else {
+            return handleMissingUrlResponse(for: apiRequest, with: response.error)
+        }
+        
+        let statusCode = urlResponse.statusCode
+        let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
+        
+        let responseString = String(data: response.data ?? Data(), encoding: .utf8) ?? ""
+        if 200 ... 299 ~= statusCode {
+            logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
+            return apiRequest.pendingPromise.resolver.fulfill(responseString)
+        }
+        
+        let error = mapError(jsonString: responseString, statusCode: statusCode)
+        logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
+        
+        if statusCode == 401 && error.isInvalidTimestamp() {
+            return syncTimestamp(apiRequest, error)
+        }
+        
+        if
+            statusCode == 400,
+            error.isTokenExpired(),
+            let expiredTokenHandler = expiredTokenHandler
+        {
+            return expiredTokenHandler(apiRequest)
+        }
+        
+        apiRequest.pendingPromise.resolver.reject(error)
+    }
+    
+    private func mapError(jsonString: String, statusCode: Int) -> PSApiError {
+        let error: PSApiError
+        
+        if 500 ... 600 ~= statusCode {
+            error = PSApiError.internalServerError()
+        } else {
+            error = Mapper<PSApiError>().map(JSONString: jsonString)
+                ?? PSApiError.mapping(json: jsonString)
+        }
+        
+        error.statusCode = statusCode
+        return error
+    }
+    
+    private func handleMissingUrlResponse(
+        for apiRequest: ApiRequest,
+        with afError: AFError?
+    ) {
+        let error: PSApiError
+        
+        switch afError {
+        case .explicitlyCancelled:
+            error = .cancelled()
+        case .sessionTaskFailed(let e as URLError) where
+                e.code == .notConnectedToInternet ||
+                e.code == .networkConnectionLost ||
+                e.code == .dataNotAllowed:
+            error = .noInternet()
+        default:
+            error = .unknown()
+        }
+        
+        apiRequest.pendingPromise.resolver.reject(error)
+    }
+    
+    private func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSApiError) {
         guard let publicWalletApiClient = publicWalletApiClient else {
             return apiRequest.pendingPromise.resolver.reject(error)
         }
@@ -125,83 +209,10 @@ public class BaseAsyncClient {
             }
     }
     
-    func resumeQueue() {
-        requestsQueue.forEach(executeRequest)
-        requestsQueue.removeAll()
-    }
-    
-    func cancelQueue(error: Error) {
-        requestsQueue.forEach { request in
-            request.pendingPromise.resolver.reject(error)
-        }
-        requestsQueue.removeAll()
-    }
-    
-    func mapError(jsonString: String, statusCode: Int) -> PSApiError {
-        let error: PSApiError
-        
-        if 500 ... 600 ~= statusCode {
-            error = PSApiError.internalServerError()
-        } else {
-            error = Mapper<PSApiError>().map(JSONString: jsonString)
-                ?? PSApiError.mapping(json: jsonString)
-        }
-        
-        error.statusCode = statusCode
-        return error
-    }
-    
-    func handleMissingUrlResponse(
-        for apiRequest: ApiRequest,
-        with afError: AFError?
-    ) {
-        let error: PSApiError
-        
-        switch afError {
-        case .explicitlyCancelled:
-            error = .cancelled()
-        case .sessionTaskFailed(let e as URLError) where
-                e.code == .notConnectedToInternet ||
-                e.code == .networkConnectionLost ||
-                e.code == .dataNotAllowed:
-            error = .noInternet()
-        default:
-            error = .unknown()
-        }
-        
-        apiRequest.pendingPromise.resolver.reject(error)
-    }
-    
     private func createRequest<RC: URLRequestConvertible>(_ endpoint: RC) -> ApiRequest {
         ApiRequest(
             pendingPromise: Promise<String>.pending(),
             requestEndPoint: endpoint
         )
-    }
-    
-    private func handleResponse(
-        _ response: AFDataResponse<Data>,
-        for apiRequest: ApiRequest,
-        with urlRequest: URLRequest
-    ) {
-        guard let urlResponse = response.response else {
-            return handleMissingUrlResponse(for: apiRequest, with: response.error)
-        }
-        
-        let statusCode = urlResponse.statusCode
-        let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
-        
-        let responseString = String(data: response.data ?? Data(), encoding: .utf8) ?? ""
-        if 200 ... 299 ~= statusCode {
-            logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
-            return apiRequest.pendingPromise.resolver.fulfill(responseString)
-        }
-        
-        let error = mapError(jsonString: responseString, statusCode: statusCode)
-        logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
-        if statusCode == 401 && error.isInvalidTimestamp() {
-            return syncTimestamp(apiRequest, error)
-        }
-        apiRequest.pendingPromise.resolver.reject(error)
     }
 }
