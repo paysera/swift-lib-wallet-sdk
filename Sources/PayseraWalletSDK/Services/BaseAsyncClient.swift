@@ -6,13 +6,14 @@ import PromiseKit
 
 public class BaseAsyncClient {
     let session: Session
-    let publicWalletApiClient: PublicWalletApiClient?
-    let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     let logger: PSLoggerProtocol?
     
     let workQueue = DispatchQueue(label: String(describing: BaseAsyncClient.self))
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
+    
+    private let publicWalletApiClient: PublicWalletApiClient?
+    private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     
     init(
         session: Session,
