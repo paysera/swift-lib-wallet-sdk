@@ -1,7 +1,7 @@
-import Foundation
 import Alamofire
-import PromiseKit
+import Foundation
 import PayseraCommonSDK
+import PromiseKit
 
 public protocol AccessTokenRefresherDelegate {
     func activeCredentialsDidUpdate(to activeCredentials: PSCredentials)
@@ -50,10 +50,12 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         )
     }
     
-    override func makeRequest(apiRequest: ApiRequest) {
-        guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
-        
-        lockQueue.async {
+    override func executeRequest(_ apiRequest: ApiRequest) {
+        workQueue.async {
+            guard let urlRequest = apiRequest.requestEndPoint.urlRequest else {
+                return apiRequest.pendingPromise.resolver.reject(PSApiError.unknown())
+            }
+            
             guard !self.tokenIsRefreshing else {
                 return self.requestsQueue.append(apiRequest)
             }
@@ -70,95 +72,104 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
             
             self.session
                 .request(apiRequest.requestEndPoint)
-                .responseData { response in
-                    guard let urlResponse = response.response else {
-                        return apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
-                    }
-                    
-                    if let error = response.error, error.isCancelled {
-                        return apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
-                    }
-                    
-                    let statusCode = urlResponse.statusCode
-                    let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
-                    
-                    let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
-                    if 200 ... 299 ~= statusCode {
-                        self.logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
-                        return apiRequest.pendingPromise.resolver.fulfill(responseString)
-                    }
-                    
-                    let error = self.mapError(jsonString: responseString, statusCode: statusCode)
-                    self.logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
-                    if statusCode == 401 && error.isInvalidTimestamp() {
-                        return self.syncTimestamp(apiRequest, error)
-                    }
-                    if statusCode == 400 && error.isTokenExpired() {
-                        return self.handleExpiredAccessToken(with: apiRequest)
-                    }
-                    
-                    apiRequest.pendingPromise.resolver.reject(error)
+                .responseData(queue: self.workQueue) { response in
+                    self.handleResponse(
+                        response,
+                        for: apiRequest,
+                        with: urlRequest,
+                        expiredTokenHandler: self.handleExpiredAccessToken
+                    )
+                }
+        }
+    }
+    
+    public func refreshToken(
+        grantType: PSGrantType = .refreshToken,
+        code: String,
+        extensionScopes: [String]
+    ) -> Promise<PSCredentials> {
+        Promise { seal in
+            workQueue.async {
+                self.refreshToken(grantType: grantType, code: code, scopes: extensionScopes)
+                    .done(on: self.workQueue, seal.fulfill)
+                    .catch(on: self.workQueue, seal.reject)
             }
         }
     }
     
-    public func refreshToken(grantType: PSGrantType = .refreshToken, code: String, extensionScopes: [String]) -> Promise<PSCredentials> {
-        return refreshToken(grantType: grantType, code: code, scopes: extensionScopes)
-    }
-    
-    func handleExpiredAccessToken(with apiRequest: ApiRequest) {
-        lockQueue.async {
-            guard !self.hasRecentlyRefreshed() else {
-                return self.makeRequest(apiRequest: apiRequest)
-            }
-            
-            self.requestsQueue.append(apiRequest)
-            
-            guard !self.tokenIsRefreshing else {
-                return
-            }
-            
-            self.tokenIsRefreshing = true
-            self.refreshToken(grantType: self.grantType)
+    private func handleExpiredAccessToken(with apiRequest: ApiRequest) {
+        guard !hasRecentlyRefreshed() else {
+            return executeRequest(apiRequest)
         }
+        
+        requestsQueue.append(apiRequest)
+        
+        guard !tokenIsRefreshing else {
+            return
+        }
+        
+        tokenIsRefreshing = true
+        refreshToken(grantType: grantType)
     }
     
     @discardableResult
-    private func refreshToken(grantType: PSGrantType, code: String? = nil, scopes: [String]? = nil) -> Promise<PSCredentials> {
-        return Promise<PSCredentials> { seal in
-            self.lockQueue.async {
-                let refreshPromise: Promise<PSCredentials>
-                let activeRefreshToken = self.activeCredentials.refreshToken
-                
-                switch grantType {
-                case .refreshToken:
-                    if let activeRefreshToken = activeRefreshToken {
-                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
-                    } else {
-                        refreshPromise = .init(error: PSApiError.unknown())
-                    }
-                case .refreshTokenWithActivation:
-                    if let inactiveAccessToken = self.inactiveCredentials?.accessToken {
-                        refreshPromise = self.authAsyncClient.activate(accessToken: inactiveAccessToken)
-                    } else if let activeRefreshToken = activeRefreshToken {
-                        refreshPromise = self.authAsyncClient.refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
-                            .get(on: self.lockQueue) { self.updateInactiveCredentials(to: $0) }
-                            .compactMap { $0.accessToken }
-                            .then { inactiveAccessToken in self.authAsyncClient.activate(accessToken: inactiveAccessToken) }
-                    } else {
-                        refreshPromise = .init(error: PSApiError.unknown())
-                    }
+    private func refreshToken(
+        grantType: PSGrantType,
+        code: String? = nil,
+        scopes: [String]? = nil
+    ) -> Promise<PSCredentials> {
+        Promise { seal in
+            let activeRefreshToken = activeCredentials.refreshToken
+            let refreshPromise = createRefreshPromise(
+                activeRefreshToken: activeRefreshToken,
+                grantType: grantType,
+                code: code,
+                scopes: scopes
+            )
+            
+            refreshPromise
+                .done(on: workQueue) { credentials in
+                    self.handleSuccessfullTokenRefresh(with: credentials)
+                    seal.fulfill(credentials)
                 }
-                
-                refreshPromise
-                    .done(on: self.lockQueue) { credentials in
-                        self.handleSuccessfullTokenRefresh(with: credentials)
-                        seal.fulfill(credentials)
+                .catch(on: workQueue) { error in
+                    self.handleRefreshTokenError(error, refreshToken: activeRefreshToken)
+                    seal.reject(error)
+                }
+        }
+    }
+    
+    private func createRefreshPromise(
+        activeRefreshToken: String?,
+        grantType: PSGrantType,
+        code: String?,
+        scopes: [String]?
+    ) -> Promise<PSCredentials> {
+        switch grantType {
+        case .refreshToken:
+            if let activeRefreshToken = activeRefreshToken {
+                return authAsyncClient.refreshToken(
+                    activeRefreshToken,
+                    grantType: grantType,
+                    code: code,
+                    scopes: scopes
+                )
+            } else {
+                return .init(error: PSApiError.unknown())
+            }
+        case .refreshTokenWithActivation:
+            if let inactiveAccessToken = inactiveCredentials?.accessToken {
+                return authAsyncClient.activate(accessToken: inactiveAccessToken)
+            } else if let activeRefreshToken = activeRefreshToken {
+                return authAsyncClient
+                    .refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
+                    .get(on: workQueue) { self.updateInactiveCredentials(to: $0) }
+                    .compactMap(on: workQueue) { $0.accessToken }
+                    .then(on: workQueue) { inactiveAccessToken in
+                        self.authAsyncClient.activate(accessToken: inactiveAccessToken)
                     }
-                    .catch(on: self.lockQueue) { error in
-                        self.handleRefreshTokenError(error, refreshToken: activeRefreshToken)
-                        seal.reject(error)
-                    }
+            } else {
+                return .init(error: PSApiError.unknown())
             }
         }
     }

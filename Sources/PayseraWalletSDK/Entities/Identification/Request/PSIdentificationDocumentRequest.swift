@@ -1,5 +1,4 @@
 import Foundation
-import Foundation
 import ObjectMapper
 
 public class PSIdentificationDocumentRequest: Mappable {

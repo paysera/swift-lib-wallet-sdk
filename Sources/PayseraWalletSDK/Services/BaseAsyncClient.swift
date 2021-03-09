@@ -1,19 +1,19 @@
-import Foundation
 import Alamofire
+import Foundation
 import ObjectMapper
-import PromiseKit
 import PayseraCommonSDK
+import PromiseKit
 
 public class BaseAsyncClient {
     let session: Session
-    let publicWalletApiClient: PublicWalletApiClient?
-    let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     let logger: PSLoggerProtocol?
     
-    let lockQueue = DispatchQueue(label: String(describing: BaseAsyncClient.self), attributes: [])
-    
+    let workQueue = DispatchQueue(label: String(describing: BaseAsyncClient.self))
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
+    
+    private let publicWalletApiClient: PublicWalletApiClient?
+    private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     
     init(
         session: Session,
@@ -28,59 +28,51 @@ public class BaseAsyncClient {
     }
     
     public func cancelAllOperations() {
-        session.session.getAllTasks { tasks in
-            tasks.forEach { $0.cancel() }
-        }
-    }
-    
-    func createRequest<T: ApiRequest, R: URLRequestConvertible>(_ endpoint: R) -> T {
-        return T.init(
-            pendingPromise: Promise<String>.pending(),
-            requestEndPoint: endpoint
-        )
-    }
-    
-    func createPromise<T: Mappable>(jsonString: String) -> Promise<T> {
-        guard let object = Mapper<T>().map(JSONString: jsonString) else {
-            return Promise(error: PSApiError.mapping(json: jsonString))
-        }
-        return Promise.value(object)
-    }
-    
-    private func createPromiseWithArrayResult<T: Mappable>(jsonString: String) -> Promise<[T]> {
-        guard let objects = Mapper<T>().mapArray(JSONString: jsonString) else {
-            return Promise(error: PSApiError.mapping(json: jsonString))
-        }
-        return Promise.value(objects)
-    }
-    
-    func createPromise(body: Any) -> Promise<String> {
-        return Promise.value(body as! String)
+        session.cancelAllRequests()
     }
     
     func doRequest<RC: URLRequestConvertible, E: Mappable>(requestRouter: RC) -> Promise<[E]> {
         let request = createRequest(requestRouter)
-        makeRequest(apiRequest: request)
+        executeRequest(request)
         
         return request
             .pendingPromise
             .promise
-            .then(createPromiseWithArrayResult)
+            .map(on: workQueue) { jsonString in
+                guard let objects = Mapper<E>().mapArray(JSONString: jsonString) else {
+                    throw PSApiError.mapping(json: jsonString)
+                }
+                return objects
+            }
     }
     
     func doRequest<RC: URLRequestConvertible, E: Mappable>(requestRouter: RC) -> Promise<E> {
         let request = createRequest(requestRouter)
-        makeRequest(apiRequest: request)
+        executeRequest(request)
         
         return request
             .pendingPromise
             .promise
-            .then(createPromise)
+            .map(on: workQueue) { jsonString in
+                guard let object = Mapper<E>().map(JSONString: jsonString) else {
+                    throw PSApiError.mapping(json: jsonString)
+                }
+                return object
+            }
+    }
+    
+    func doRequest<RC: URLRequestConvertible>(requestRouter: RC) -> Promise<String> {
+        let request = createRequest(requestRouter)
+        executeRequest(request)
+        
+        return request
+            .pendingPromise
+            .promise
     }
     
     func doRequest<RC: URLRequestConvertible>(requestRouter: RC) -> Promise<Void> {
         let request = createRequest(requestRouter)
-        makeRequest(apiRequest: request)
+        executeRequest(request)
         
         return request
             .pendingPromise
@@ -88,101 +80,140 @@ public class BaseAsyncClient {
             .asVoid()
     }
     
-    func makeRequest(apiRequest: ApiRequest) {
-        guard let urlRequest = apiRequest.requestEndPoint.urlRequest else { return }
-        
-        lockQueue.async {
+    func executeRequest(_ apiRequest: ApiRequest) {
+        workQueue.async {
+            guard let urlRequest = apiRequest.requestEndPoint.urlRequest else {
+                return apiRequest.pendingPromise.resolver.reject(PSApiError.unknown())
+            }
+            
             guard !self.timeIsSyncing else {
-                self.requestsQueue.append(apiRequest)
-                return
+                return self.requestsQueue.append(apiRequest)
             }
             
             self.logger?.log(level: .DEBUG, message: "--> \(urlRequest.url!.absoluteString)")
             self.session
                 .request(apiRequest.requestEndPoint)
-                .responseData { response in
-                    guard let urlResponse = response.response else {
-                        apiRequest.pendingPromise.resolver.reject(PSApiError.noInternet())
-                        return
-                    }
-                    
-                    if let error = response.error, error.isCancelled {
-                        apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
-                        return
-                    }
-                    
-                    let statusCode = urlResponse.statusCode
-                    let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
-                    
-                    let responseString: String! = String(data: response.data ?? Data(), encoding: .utf8)
-                    if 200 ... 299 ~= statusCode {
-                        self.logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
-                        apiRequest.pendingPromise.resolver.fulfill(responseString)
-                        return
-                    }
-                    let error = self.mapError(jsonString: responseString, statusCode: statusCode)
-                    self.logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
-                    if statusCode == 401 && error.isInvalidTimestamp() {
-                        self.syncTimestamp(apiRequest, error)
-                        return
-                    }
-                    apiRequest.pendingPromise.resolver.reject(error)
-            }
-        }
-        
-    }
-    
-    func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSApiError) {
-        guard let publicWalletApiClient = publicWalletApiClient else {
-            apiRequest.pendingPromise.resolver.reject(error)
-            return
-        }
-        
-        lockQueue.async {
-            self.requestsQueue.append(apiRequest)
-            guard !self.timeIsSyncing else {
-                return
-            }
-            
-            self.timeIsSyncing = true
-            
-            publicWalletApiClient
-                .getServerInformation()
-                .done(on: self.lockQueue) { serverInformation in
-                    self.serverTimeSynchronizationProtocol?.serverTimeDifferenceRefreshed(diff: serverInformation.timeDiff)
-                    self.timeIsSyncing = false
-                    self.resumeQueue()
-                }
-                .catch(on: self.lockQueue) { error in
-                    self.timeIsSyncing = false
-                    self.cancelQueue(error: error)
+                .responseData(queue: self.workQueue) { response in
+                    self.handleResponse(response, for: apiRequest, with: urlRequest)
                 }
         }
     }
     
     func resumeQueue() {
-        for request in requestsQueue {
-            makeRequest(apiRequest: request)
-        }
+        requestsQueue.forEach(executeRequest)
         requestsQueue.removeAll()
     }
     
     func cancelQueue(error: Error) {
-        for requests in requestsQueue {
-            requests.pendingPromise.resolver.reject(error)
+        requestsQueue.forEach { request in
+            request.pendingPromise.resolver.reject(error)
         }
         requestsQueue.removeAll()
     }
     
-    func mapError(jsonString: String, statusCode: Int) -> PSApiError {
-        let error: PSApiError!
-        if statusCode >= 500, statusCode < 600 {
+    func handleResponse(
+        _ response: AFDataResponse<Data>,
+        for apiRequest: ApiRequest,
+        with urlRequest: URLRequest,
+        expiredTokenHandler: ((ApiRequest) -> Void)? = nil
+    ) {
+        guard let urlResponse = response.response else {
+            return handleMissingUrlResponse(for: apiRequest, with: response.error)
+        }
+        
+        let statusCode = urlResponse.statusCode
+        let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
+        
+        let responseString = String(data: response.data ?? Data(), encoding: .utf8) ?? ""
+        if 200 ... 299 ~= statusCode {
+            logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
+            return apiRequest.pendingPromise.resolver.fulfill(responseString)
+        }
+        
+        let error = mapError(jsonString: responseString, statusCode: statusCode)
+        logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
+        
+        if statusCode == 401 && error.isInvalidTimestamp() {
+            return syncTimestamp(apiRequest, error)
+        }
+        
+        if
+            statusCode == 400,
+            error.isTokenExpired(),
+            let expiredTokenHandler = expiredTokenHandler
+        {
+            return expiredTokenHandler(apiRequest)
+        }
+        
+        apiRequest.pendingPromise.resolver.reject(error)
+    }
+    
+    private func mapError(jsonString: String, statusCode: Int) -> PSApiError {
+        let error: PSApiError
+        
+        if 500 ... 600 ~= statusCode {
             error = PSApiError.internalServerError()
         } else {
-            error = Mapper<PSApiError>().map(JSONString: jsonString) ?? PSApiError.mapping(json: jsonString)
+            error = Mapper<PSApiError>().map(JSONString: jsonString)
+                ?? PSApiError.mapping(json: jsonString)
         }
         
         error.statusCode = statusCode
         return error
+    }
+    
+    private func handleMissingUrlResponse(
+        for apiRequest: ApiRequest,
+        with afError: AFError?
+    ) {
+        let error: PSApiError
+        
+        switch afError {
+        case .explicitlyCancelled:
+            error = .cancelled()
+        case .sessionTaskFailed(let e as URLError) where
+                e.code == .notConnectedToInternet ||
+                e.code == .networkConnectionLost ||
+                e.code == .dataNotAllowed:
+            error = .noInternet()
+        default:
+            error = .unknown()
+        }
+        
+        apiRequest.pendingPromise.resolver.reject(error)
+    }
+    
+    private func syncTimestamp(_ apiRequest: ApiRequest, _ error: PSApiError) {
+        guard let publicWalletApiClient = publicWalletApiClient else {
+            return apiRequest.pendingPromise.resolver.reject(error)
+        }
+        
+        requestsQueue.append(apiRequest)
+        guard !timeIsSyncing else {
+            return
+        }
+        
+        timeIsSyncing = true
+        
+        publicWalletApiClient
+            .getServerInformation()
+            .done(on: workQueue) { serverInformation in
+                self.serverTimeSynchronizationProtocol?.serverTimeDifferenceRefreshed(
+                    diff: serverInformation.timeDiff
+                )
+                self.timeIsSyncing = false
+                self.resumeQueue()
+            }
+            .catch(on: workQueue) { error in
+                self.timeIsSyncing = false
+                self.cancelQueue(error: error)
+            }
+    }
+    
+    private func createRequest<RC: URLRequestConvertible>(_ endpoint: RC) -> ApiRequest {
+        ApiRequest(
+            pendingPromise: Promise<String>.pending(),
+            requestEndPoint: endpoint
+        )
     }
 }

@@ -1,5 +1,3 @@
-import Foundation
-
 enum TransferStatus: CustomStringConvertible {
     case signed
     case unsigned

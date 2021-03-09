@@ -1,9 +1,9 @@
-import Foundation
 import Alamofire
-import PayseraCommonSDK
+import Foundation
 import PayseraAccountsSDK
+import PayseraCommonSDK
 
-public enum WalletApiRequestRouter: URLRequestConvertible {
+enum WalletApiRequestRouter {
     case get(path: String, parameters: [String: Any]?, extraParameters: [String: Any]?)
     case post(path: String, parameters: [String: Any]?)
     case put(path: String, parameters: [String: Any]?)
@@ -97,7 +97,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
     case deleteAvatar
     
     // MARK: - Variables
-    static var baseURLString = "https://wallet-api.paysera.com/rest/v1"
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
 
     private var method: HTTPMethod {
         switch self {
@@ -205,23 +205,23 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             
         case .createTransaction,
              .createTransactionInProject:
-            return "/transaction"
+            return "transaction"
         
         case .createTransactionRequest(let key, _):
-            return "/transaction/\(key)/request"
+            return "transaction/\(key)/request"
             
         case .getCurrentUser:
-            return "/user/me"
+            return "user/me"
             
         case .verifyPhone(let userId, _):
-            return "/user/\(userId)/phone/confirm"
+            return "user/\(userId)/phone/confirm"
             
         case .verifyEmail(userId: let userId, _):
-            return "/user/\(userId)/email/confirm"
+            return "user/\(userId)/email/confirm"
             
         case .getUser,
              .registerUser:
-            return "/user"
+            return "user"
             
         case .getSpot(let id, _):
             return "spot/\(id)"
@@ -230,40 +230,40 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return "transfers/\(id)"
             
         case .resetPassword:
-            return "/user/password/reset"
+            return "user/password/reset"
         
         case .getWalletByFilter:
             return "wallet"
             
         case .getWallet(let id):
-            return "/wallet/\(id)"
+            return "wallet/\(id)"
             
         case .getWallets:
-            return "/wallets"
+            return "wallets"
             
         case .getUserWallets:
             return "user/me/wallets"
             
         case .getStatements(let walletId, _):
-            return "/wallet/\(walletId)/statements"
+            return "wallet/\(walletId)/statements"
             
         case .sendPhoneVerificationCode(let userId, _, _):
-            return "/user/\(userId)/phone"
+            return "user/\(userId)/phone"
             
         case .sendEmailVerificationCode(let userId, _):
-            return "/user/\(userId)/email"
+            return "user/\(userId)/email"
             
         case .changePassword(let userId, _):
-            return "/user/\(userId)/password"
+            return "user/\(userId)/password"
             
         case .registerClient:
-            return "/client"
+            return "client"
             
         case .getLocations:
-            return "/locations"
+            return "locations"
             
         case .getLocationCategories:
-            return "/locations/pay-categories"
+            return "locations/pay-categories"
             
         case .get(let path, _, _),
              .post(let path, _),
@@ -283,7 +283,7 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return "client/locations"
             
         case .getProjectTransactions:
-            return "/transactions"
+            return "transactions"
         
         case .confirmTransaction(let key, _, _):
             return "transaction/\(key)/confirm"
@@ -436,7 +436,8 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .reserveTransaction(_, let reservationCode):
             return ["reservation_code": reservationCode]
             
-        case .createTransaction(let transaction), .createTransactionInProject(let transaction, _, _):
+        case .createTransaction(let transaction),
+             .createTransactionInProject(let transaction, _, _):
             return transaction.toJSON()
             
         case .createTransactionRequest(_, let request):
@@ -605,21 +606,22 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
             return nil
         }
     }
-    
-    // MARK: - Method
-    public func asURLRequest() throws -> URLRequest {
-        let url = try! WalletApiRequestRouter.baseURLString.asURL()
-        
-        var urlRequest = URLRequest(url: url.appendingPathComponent(path))
-        urlRequest.httpMethod = method.rawValue
+}
+
+
+extension WalletApiRequestRouter: URLRequestConvertible {
+    func asURLRequest() throws -> URLRequest {
+        let url = Self.baseURL.appendingPathComponent(path)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.method = method
         
         var extraParametersString = ""
         extraParameters?.forEach {
             extraParametersString.append("&\($0.key)=\($0.value)")
         }
         urlRequest.addValue(extraParametersString, forHTTPHeaderField: "extraParameters")
+        
         switch self {
-            
         case .putWithData(_, let data, let contentType),
              .uploadAvatar(let data, let contentType),
              .submitFacePhoto(_, _, let data, let contentType),
@@ -631,12 +633,12 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         case .checkIn:
             urlRequest.url = try! "\(urlRequest.url!.absoluteString)?\(parameters!.queryString)".asURL()
             
-        case (_) where method == .get,
-             (_) where method == .delete:
+        case _ where method == .get,
+             _ where method == .delete:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             
-        case (_) where method == .post,
-             (_) where method == .put:
+        case _ where method == .post,
+             _ where method == .put:
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
 
         default:
@@ -645,5 +647,4 @@ public enum WalletApiRequestRouter: URLRequestConvertible {
         
         return urlRequest
     }
-            
 }
