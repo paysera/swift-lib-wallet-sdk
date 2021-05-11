@@ -16,6 +16,7 @@ public class PSCreateClientInfoRequest: Mappable {
     public var simCarrier: String?
     public var webviewUserAgent: String?
     public var deviceHash: String?
+    public var appVersion: String?
     
     required public init?(map: Map) {
     }
@@ -39,5 +40,6 @@ public class PSCreateClientInfoRequest: Mappable {
         simCarrier        <- map["sim_carrier"]
         webviewUserAgent  <- map["webview_user_agent"]
         deviceHash        <- map["device_hash"]
+        appVersion        <- map["app_version"]
     }
 }
