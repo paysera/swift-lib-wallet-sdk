@@ -198,7 +198,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
             let expiresIn = activeCredentials.expiresIn
         else { return false }
         
-        return expiresIn - validUntil.timeIntervalSinceNow <= 15
+        return abs(expiresIn - validUntil.timeIntervalSinceNow) < 15
     }
     
     private func updateActiveCredentials(using refreshedCredentials: PSCredentials) {
