@@ -24,6 +24,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     private let accessTokenRefresherDelegate: AccessTokenRefresherDelegate
     private let authAsyncClient: OAuthAsyncClient
     private var tokenIsRefreshing = false
+    private var tokenRefreshAttempt = 0
     
     init(
         session: Session,
@@ -175,21 +176,38 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
     }
     
     private func handleSuccessfullTokenRefresh(with credentials: PSCredentials) {
+        tokenRefreshAttempt = 0
         updateActiveCredentials(using: credentials)
         tokenIsRefreshing = false
         resumeQueue()
     }
     
     private func handleRefreshTokenError(_ error: Error, refreshToken: String?) {
-        tokenIsRefreshing = false
-        
         if let walletApiError = error as? PSApiError, walletApiError.isRefreshTokenExpired() {
             accessTokenRefresherDelegate.refreshTokenIsInvalid(error, refreshToken: refreshToken)
+            tokenIsRefreshing = false
         } else if let statusCode = (error as? PSApiError)?.statusCode, 400...499 ~= statusCode {
             updateInactiveCredentials(to: nil)
+            scheduleEndOfTokenRefresh()
+        } else if let statusCode = (error as? PSApiError)?.statusCode, 500...599 ~= statusCode {
+            scheduleEndOfTokenRefresh()
         }
         
         cancelQueue(error: error)
+    }
+    
+    private func scheduleEndOfTokenRefresh() {
+        if tokenRefreshAttempt + 1 <= 4 {
+            tokenRefreshAttempt += 1
+        }
+        
+        let baseDelay = pow(Double(tokenRefreshAttempt), 3)
+        let randomDelay = Double.random(in: 0..<ceil(baseDelay / 2))
+        let finalDelay = baseDelay + randomDelay
+        
+        workQueue.asyncAfter(deadline: .now() + finalDelay) {
+            self.tokenIsRefreshing = false
+        }
     }
     
     private func hasRecentlyRefreshed() -> Bool {
