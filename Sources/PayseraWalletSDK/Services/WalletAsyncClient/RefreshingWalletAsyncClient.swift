@@ -51,6 +51,11 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         )
     }
     
+    public override func cancelAllOperations() {
+        super.cancelAllOperations()
+        tokenRefreshAttempt = 0
+    }
+    
     override func executeRequest(_ apiRequest: ApiRequest) {
         workQueue.async {
             guard let urlRequest = apiRequest.requestEndPoint.urlRequest else {
