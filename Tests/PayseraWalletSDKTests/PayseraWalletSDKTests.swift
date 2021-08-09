@@ -595,7 +595,7 @@ class PayseraWalletSDKTests: XCTestCase {
         parameters.action = "authentication"
         
         client
-            .generateCode(scopes: ["confirmed_log_in"])
+            .generateCode(scopes: ["confirmed_log_in"], parameters: parameters)
             .done { response = $0 }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
