@@ -342,8 +342,16 @@ public class WalletAsyncClient: BaseAsyncClient {
         )
     }
     
-    public func generateCode(scopes: [String]) -> Promise<PSGeneratorResponse> {
-        doRequest(requestRouter: WalletApiRequestRouter.generateCode(scopes: scopes))
+    public func generateCode(
+        scopes: [String],
+        parameters: PSGenerateCodeRequestParameters?
+    ) -> Promise<PSGeneratorResponse> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.generateCode(
+                scopes: scopes,
+                parameters: parameters
+            )
+        )
     }
     
     public func createGenerator(code: String) -> Promise<PSGenerator> {

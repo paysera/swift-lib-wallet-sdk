@@ -587,9 +587,15 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGenerateCode() {
         var response: PSGeneratorResponse?
         let expectation = XCTestExpectation(description: "Generator should return a valid response")
+        let parameters = PSGenerateCodeRequestParameters()
+        let context = PSGenerateCodeRequestContext()
+        context.os = "iOS"
+        context.osVersion = "14.5"
+        parameters.context = context
+        parameters.action = "authentication"
         
         client
-            .generateCode(scopes: ["confirmed_log_in"])
+            .generateCode(scopes: ["confirmed_log_in"], parameters: parameters)
             .done { response = $0 }
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }

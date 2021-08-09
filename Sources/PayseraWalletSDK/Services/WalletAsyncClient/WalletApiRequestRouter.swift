@@ -52,7 +52,7 @@ enum WalletApiRequestRouter {
     case createTransactionInProject(PSTransaction, projectId: Int, locationId: Int)
     case createTransactionRequest(key: String, request: PSTransactionRequest)
     case registerSubscriber(PSSubscriber)
-    case generateCode(scopes: [String])
+    case generateCode(scopes: [String], parameters: PSGenerateCodeRequestParameters?)
     case createGenerator(code: String)
     case createContactBook(PSContactBookRequest)
     case convertCurrency(PSCurrencyConversion)
@@ -528,8 +528,10 @@ enum WalletApiRequestRouter {
              .getReservationStatements(_, let filter):
             return filter?.toJSON()
         
-        case .generateCode(let scopes):
-            return ["scopes": scopes]
+        case .generateCode(let scopes, let parameters):
+            var json = parameters?.toJSON() ?? [:]
+            json["scopes"] = scopes
+            return json
         
         case .createGenerator(let code):
             return ["code": code]
