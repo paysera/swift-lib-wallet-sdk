@@ -74,13 +74,16 @@ public class RequestSigningAdapter: RequestInterceptor {
         let dataString = items.joined(separator: "\n")
         
         guard
-            let bytes = try? HMAC(key: macKey, variant: .sha256).authenticate(dataString.bytes),
-            let macValue = bytes.toBase64()
+            let bytes = try? HMAC(key: macKey, variant: .sha256).authenticate(dataString.bytes)
         else {
             return ""
         }
         
-        return String(format: "MAC id=\"%@\", ts=\"%@\", nonce=\"%@\", mac=\"%@\", ext=\"%@\"", arguments: [accessToken, timeStamp, nonce, macValue, contentsHash])
+        let macValue = bytes.toBase64()
+        return String(
+            format: "MAC id=\"%@\", ts=\"%@\", nonce=\"%@\", mac=\"%@\", ext=\"%@\"",
+            arguments: [accessToken, timeStamp, nonce, macValue, contentsHash]
+        )
     }
     
     private func randomStringOfLength(_ length: Int) -> String {
