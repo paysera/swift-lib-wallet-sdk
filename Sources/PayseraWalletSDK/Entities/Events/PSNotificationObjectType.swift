@@ -6,4 +6,5 @@ public enum PSNotificationObjectType: String {
     case information
     case user
     case card
+    case identityDocument = "identity_document"
 }

@@ -3,4 +3,8 @@ public enum PSNotificationEventType: String {
     case alert
     case registered
     case transactionSuccessful = "transaction_successful"
+    case reviewStatusValid = "review_status_valid"
+    case reviewStatusDenied = "review_status_denied"
+    case canceled
+    case expired
 }
