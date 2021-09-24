@@ -61,10 +61,26 @@ extension PSSubscriber {
         }
     }
     
-    public func getTransactionRequestEvent() -> PSSubscriberEvent? {
+    public func getTransactionRequestCreatedEvent() -> PSSubscriberEvent? {
         guard let events = events else { return nil }
         return events.first {
             $0.event == PSNotificationEventType.created.rawValue &&
+            $0.object == PSNotificationObjectType.transactionRequest.rawValue
+        }
+    }
+    
+    public func getTransactionRequestExpiredEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.expired.rawValue &&
+            $0.object == PSNotificationObjectType.transactionRequest.rawValue
+        }
+    }
+    
+    public func getTransactionRequestCanceledEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.canceled.rawValue &&
             $0.object == PSNotificationObjectType.transactionRequest.rawValue
         }
     }
@@ -112,6 +128,22 @@ extension PSSubscriber {
         return events.first {
             $0.event == PSNotificationEventType.transactionSuccessful.rawValue &&
             $0.object == PSNotificationObjectType.card.rawValue
+        }
+    }
+    
+    public func getIdentityDocumentReviewStatusValidEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.reviewStatusValid.rawValue &&
+            $0.object == PSNotificationObjectType.identityDocument.rawValue
+        }
+    }
+    
+    public func getIdentityDocumentReviewStatusDeniedEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.reviewStatusDenied.rawValue &&
+            $0.object == PSNotificationObjectType.identityDocument.rawValue
         }
     }
     
