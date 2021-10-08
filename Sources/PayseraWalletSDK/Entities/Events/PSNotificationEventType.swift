@@ -7,4 +7,6 @@ public enum PSNotificationEventType: String {
     case reviewStatusDenied = "review_status_denied"
     case canceled
     case expired
+    case failed
+    case done
 }
