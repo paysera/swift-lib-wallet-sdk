@@ -147,6 +147,22 @@ extension PSSubscriber {
         }
     }
     
+    public func getRecurrenceTransferDoneEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.done.rawValue &&
+            $0.object == PSNotificationObjectType.recurrenceTransfer.rawValue
+        }
+    }
+    
+    public func getRecurrenceTransferFailedEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.failed.rawValue &&
+            $0.object == PSNotificationObjectType.recurrenceTransfer.rawValue
+        }
+    }
+    
     private func isWalletObject(_ object: String?) -> Bool {
         return object == PSNotificationObjectType.pendingPayment.rawValue ||
                object == PSNotificationObjectType.statement.rawValue
