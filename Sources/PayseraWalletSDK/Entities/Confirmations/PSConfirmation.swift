@@ -53,15 +53,17 @@ public class PSConfirmationTranslationParameters: Mappable {
     public var transfersMoneySums: [PSMoney]?
     public var beneficiaryAccount: String?
     public var transfersCount: Int?
+    public var cardLastFourDigits: String?
     
     required public init?(map: Map) {
     }
     
     public func mapping(map: Map) {
-        phone                 <- map["%phone%"]
-        email                 <- map["%email%"]
-        transfersMoneySums    <- map["transfers_money_sums"]
-        beneficiaryAccount    <- map["beneficiary_account"]
-        transfersCount        <- map["transfers_count"]
+        phone                   <- map["%phone%"]
+        email                   <- map["%email%"]
+        transfersMoneySums      <- map["transfers_money_sums"]
+        beneficiaryAccount      <- map["beneficiary_account"]
+        transfersCount          <- map["transfers_count"]
+        cardLastFourDigits      <- map["card_last_4_digits"]
     }
 }
