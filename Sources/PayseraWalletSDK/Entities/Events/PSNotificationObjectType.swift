@@ -8,4 +8,5 @@ public enum PSNotificationObjectType: String {
     case card
     case identityDocument = "identity_document"
     case recurrenceTransfer = "recurrence_transfer"
+    case savingsAccountPayment = "savings_account_payment"
 }

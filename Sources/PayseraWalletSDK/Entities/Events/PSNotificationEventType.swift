@@ -9,4 +9,7 @@ public enum PSNotificationEventType: String {
     case expired
     case failed
     case done
+    case filled
+    case withdrew
+    case automatedFillMade = "automated_fill_made"
 }

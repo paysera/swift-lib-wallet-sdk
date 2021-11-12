@@ -163,6 +163,30 @@ extension PSSubscriber {
         }
     }
     
+    public func getSavingsAccountPaymentFilledEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.filled.rawValue &&
+            $0.object == PSNotificationObjectType.savingsAccountPayment.rawValue
+        }
+    }
+    
+    public func getSavingsAccountPaymentWithdrewEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.withdrew.rawValue &&
+            $0.object == PSNotificationObjectType.savingsAccountPayment.rawValue
+        }
+    }
+    
+    public func getSavingsAccountPaymentAutomatedFillMadeEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.automatedFillMade.rawValue &&
+            $0.object == PSNotificationObjectType.savingsAccountPayment.rawValue
+        }
+    }
+    
     private func isWalletObject(_ object: String?) -> Bool {
         return object == PSNotificationObjectType.pendingPayment.rawValue ||
                object == PSNotificationObjectType.statement.rawValue
