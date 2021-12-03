@@ -4,6 +4,12 @@ import PayseraCommonSDK
 import PayseraWalletSDK
 import PromiseKit
 
+class RateLimitUnlocker: RateLimitUnlockerDelegate {
+    func unlock(url: URL, siteKey: String, completion: (Bool) -> Void) {
+        completion(false)
+    }
+}
+
 class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
     func getServerTimeDifference() -> TimeInterval {
         return 0
@@ -39,13 +45,17 @@ class PayseraWalletSDKTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
+        let rateLimitUnlocker = RateLimitUnlocker()
         let userCredentials = PSCredentials()
         userCredentials.accessToken = "change_me"
         userCredentials.macKey = "change_me"
         
         self.client = ClientsFactory.createWalletAsyncClient(
             credentials: userCredentials,
-            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(
+                rateLimitUnlockerDelegate: rateLimitUnlocker
+            ),
+            rateLimitUnlockerDelegate: rateLimitUnlocker,
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
         
@@ -55,7 +65,10 @@ class PayseraWalletSDKTests: XCTestCase {
         
         self.authClient = ClientsFactory.createOAuthClient(
             credentials: appCredentials,
-            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(
+                rateLimitUnlockerDelegate: rateLimitUnlocker
+            ),
+            rateLimitUnlockerDelegate: rateLimitUnlocker,
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
     }
@@ -74,6 +87,31 @@ class PayseraWalletSDKTests: XCTestCase {
             }.finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 3.0)
+        XCTAssertNotNil(object)
+    }
+    
+    func testRegisterUser() {
+        var object: PSUser?
+        let expectation = XCTestExpectation(description: "Successful registration should return user")
+        
+        let request = PSUserRegistrationRequest()
+        request.phone = "+change_me"
+        request.locale = "lt"
+        request.credentialsType = "change_me"
+        request.password = "change_me"
+        request.scopes = ["change_me"]
+
+        client
+            .registerUser(request)
+            .done { user in
+                object = user
+            }
+            .catch { error in
+                XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 10.0)
         XCTAssertNotNil(object)
     }
     

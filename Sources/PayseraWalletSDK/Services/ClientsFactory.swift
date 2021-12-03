@@ -5,6 +5,7 @@ public class ClientsFactory {
     public static func createWalletAsyncClient(
         credentials: PSCredentials,
         publicWalletApiClient: PublicWalletApiClient,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         logger: PSLoggerProtocol? = nil
     ) -> WalletAsyncClient {
@@ -18,6 +19,7 @@ public class ClientsFactory {
         return WalletAsyncClient(
             session: session,
             publicWalletApiClient: publicWalletApiClient,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             logger: logger
         )
@@ -26,6 +28,7 @@ public class ClientsFactory {
     public static func createOAuthClient(
         credentials: PSCredentials,
         publicWalletApiClient: PublicWalletApiClient,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         logger: PSLoggerProtocol? = nil
     ) -> OAuthAsyncClient {
@@ -39,6 +42,7 @@ public class ClientsFactory {
         return OAuthAsyncClient(
             session: session,
             publicWalletApiClient: publicWalletApiClient,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             logger: logger
         )
@@ -52,6 +56,7 @@ public class ClientsFactory {
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate,
         logger: PSLoggerProtocol? = nil
     ) -> RefreshingWalletAsyncClient {
         let interceptor = RequestSigningAdapter(
@@ -70,13 +75,21 @@ public class ClientsFactory {
             publicWalletApiClient: publicWalletApiClient,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             accessTokenRefresherDelegate: accessTokenRefresherDelegate,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
             logger: logger
         )
     }
     
-    public static func createPublicWalletApiClient(logger: PSLoggerProtocol? = nil) -> PublicWalletApiClient {
+    public static func createPublicWalletApiClient(
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate,
+        logger: PSLoggerProtocol? = nil
+    ) -> PublicWalletApiClient {
         let session = createSession()
-        return PublicWalletApiClient(session: session, logger: logger)
+        return PublicWalletApiClient(
+            session: session,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
+            logger: logger
+        )
     }
     
     private static func createSession(with interceptor: RequestInterceptor? = nil) -> Session {
