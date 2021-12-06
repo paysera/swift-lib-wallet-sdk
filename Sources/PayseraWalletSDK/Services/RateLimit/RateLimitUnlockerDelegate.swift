@@ -9,5 +9,5 @@ public protocol RateLimitUnlockerDelegate {
     ///   - siteKey: Site key used to display the challenge
     ///   - completion: Completion handler which indicates if the challenge was successfully solved. The completion handler is
     ///   called on **the internal work queue**.
-    func unlock(url: URL, siteKey: String, completion: (Bool) -> Void)
+    func unlock(url: URL, siteKey: String, completion: @escaping (Bool) -> Void)
 }

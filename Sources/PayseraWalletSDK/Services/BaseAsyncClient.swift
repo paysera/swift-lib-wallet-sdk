@@ -183,8 +183,12 @@ public class BaseAsyncClient {
     ) {
         hasReachedRetryLimit = true
         requestsQueue.append(apiRequest)
-        rateLimitUnlockerDelegate.unlock(url: unlockURL, siteKey: siteKey) { didUnlock in
-            workQueue.async {
+        rateLimitUnlockerDelegate.unlock(url: unlockURL, siteKey: siteKey) { [weak self] didUnlock in
+            guard let self = self else {
+                return
+            }
+            
+            self.workQueue.async {
                 if didUnlock {
                     self.hasReachedRetryLimit = false
                     self.resumeQueue()
