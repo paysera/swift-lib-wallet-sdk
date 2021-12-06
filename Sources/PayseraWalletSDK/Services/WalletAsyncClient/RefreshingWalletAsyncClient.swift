@@ -34,7 +34,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
-        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
         logger: PSLoggerProtocol? = nil
     ) {
         self.activeCredentials = activeCredentials

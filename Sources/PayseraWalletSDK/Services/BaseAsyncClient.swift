@@ -14,13 +14,13 @@ public class BaseAsyncClient {
     
     var hasReachedRetryLimit = false
     private let publicWalletApiClient: PublicWalletApiClient?
-    private let rateLimitUnlockerDelegate: RateLimitUnlockerDelegate
+    private let rateLimitUnlockerDelegate: RateLimitUnlockerDelegate?
     private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     
     init(
         session: Session,
         publicWalletApiClient: PublicWalletApiClient? = nil,
-        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol? = nil,
         logger: PSLoggerProtocol?
     ) {
@@ -166,6 +166,7 @@ public class BaseAsyncClient {
             expiredTokenHandler(apiRequest)
         } else if
             urlResponse.statusCode == 429,
+            rateLimitUnlockerDelegate != nil,
             let siteKey = urlResponse.value(forHTTPHeaderField: ReCAPTCHAHeader.siteKey.rawValue),
             let unlockURLString = urlResponse.value(forHTTPHeaderField: ReCAPTCHAHeader.unlockURL.rawValue),
             let unlockURL = URL(string: unlockURLString)
@@ -183,7 +184,7 @@ public class BaseAsyncClient {
     ) {
         hasReachedRetryLimit = true
         requestsQueue.append(apiRequest)
-        rateLimitUnlockerDelegate.unlock(url: unlockURL, siteKey: siteKey) { [weak self] didUnlock in
+        rateLimitUnlockerDelegate?.unlock(url: unlockURL, siteKey: siteKey) { [weak self] didUnlock in
             guard let self = self else {
                 return
             }

@@ -4,12 +4,6 @@ import PayseraCommonSDK
 import PayseraWalletSDK
 import PromiseKit
 
-class RateLimitUnlocker: RateLimitUnlockerDelegate {
-    func unlock(url: URL, siteKey: String, completion: (Bool) -> Void) {
-        completion(false)
-    }
-}
-
 class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
     func getServerTimeDifference() -> TimeInterval {
         return 0
@@ -45,17 +39,13 @@ class PayseraWalletSDKTests: XCTestCase {
     override func setUp() {
         super.setUp()
         
-        let rateLimitUnlocker = RateLimitUnlocker()
         let userCredentials = PSCredentials()
         userCredentials.accessToken = "change_me"
         userCredentials.macKey = "change_me"
         
         self.client = ClientsFactory.createWalletAsyncClient(
             credentials: userCredentials,
-            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(
-                rateLimitUnlockerDelegate: rateLimitUnlocker
-            ),
-            rateLimitUnlockerDelegate: rateLimitUnlocker,
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
         
@@ -65,10 +55,7 @@ class PayseraWalletSDKTests: XCTestCase {
         
         self.authClient = ClientsFactory.createOAuthClient(
             credentials: appCredentials,
-            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(
-                rateLimitUnlockerDelegate: rateLimitUnlocker
-            ),
-            rateLimitUnlockerDelegate: rateLimitUnlocker,
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
     }
