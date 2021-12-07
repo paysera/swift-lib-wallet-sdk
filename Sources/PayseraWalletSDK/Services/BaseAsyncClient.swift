@@ -12,23 +12,28 @@ public class BaseAsyncClient {
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
     
+    var hasReachedRetryLimit = false
     private let publicWalletApiClient: PublicWalletApiClient?
+    private let rateLimitUnlockerDelegate: RateLimitUnlockerDelegate?
     private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
     
     init(
         session: Session,
         publicWalletApiClient: PublicWalletApiClient? = nil,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol? = nil,
         logger: PSLoggerProtocol?
     ) {
         self.session = session
         self.publicWalletApiClient = publicWalletApiClient
+        self.rateLimitUnlockerDelegate = rateLimitUnlockerDelegate
         self.serverTimeSynchronizationProtocol = serverTimeSynchronizationProtocol
         self.logger = logger
     }
     
     public func cancelAllOperations() {
         session.cancelAllRequests()
+        cancelQueue(error: PSApiError.cancelled())
     }
     
     func doRequest<RC: URLRequestConvertible, E: Mappable>(requestRouter: RC) -> Promise<[E]> {
@@ -86,7 +91,7 @@ public class BaseAsyncClient {
                 return apiRequest.pendingPromise.resolver.reject(PSApiError.unknown())
             }
             
-            guard !self.timeIsSyncing else {
+            guard !self.timeIsSyncing && !self.hasReachedRetryLimit else {
                 return self.requestsQueue.append(apiRequest)
             }
             
@@ -123,29 +128,77 @@ public class BaseAsyncClient {
         
         let statusCode = urlResponse.statusCode
         let logMessage = "<-- \(urlRequest.url!.absoluteString) \(statusCode)"
-        
         let responseString = String(data: response.data ?? Data(), encoding: .utf8) ?? ""
-        if 200 ... 299 ~= statusCode {
+        
+        switch statusCode {
+        case 200...299:
             logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
-            return apiRequest.pendingPromise.resolver.fulfill(responseString)
+            handleSuccessfulResponse(for: apiRequest, with: responseString)
+        default:
+            let error = mapError(jsonString: responseString, statusCode: statusCode)
+            logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
+            handleErrorResponse(
+                apiRequest: apiRequest,
+                urlResponse: urlResponse,
+                error: error,
+                expiredTokenHandler: expiredTokenHandler
+            )
         }
-        
-        let error = mapError(jsonString: responseString, statusCode: statusCode)
-        logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
-        
-        if statusCode == 401 && error.isInvalidTimestamp() {
-            return syncTimestamp(apiRequest, error)
-        }
-        
-        if
-            statusCode == 400,
+    }
+    
+    private func handleSuccessfulResponse(for apiRequest: ApiRequest, with response: String) {
+        apiRequest.pendingPromise.resolver.fulfill(response)
+    }
+    
+    private func handleErrorResponse(
+        apiRequest: ApiRequest,
+        urlResponse: HTTPURLResponse,
+        error: PSApiError,
+        expiredTokenHandler: ((ApiRequest) -> Void)?
+    ) {
+        if urlResponse.statusCode == 401 && error.isInvalidTimestamp() {
+            syncTimestamp(apiRequest, error)
+        } else if
+            urlResponse.statusCode == 400,
             error.isTokenExpired(),
             let expiredTokenHandler = expiredTokenHandler
         {
-            return expiredTokenHandler(apiRequest)
+            expiredTokenHandler(apiRequest)
+        } else if
+            urlResponse.statusCode == 429,
+            rateLimitUnlockerDelegate != nil,
+            let siteKey = urlResponse.value(forHTTPHeaderField: ReCAPTCHAHeader.siteKey.rawValue),
+            let unlockURLString = urlResponse.value(forHTTPHeaderField: ReCAPTCHAHeader.unlockURL.rawValue),
+            let unlockURL = URL(string: unlockURLString)
+        {
+            handleRetryLimitReached(apiRequest: apiRequest, unlockURL: unlockURL, siteKey: siteKey)
+        } else {
+            apiRequest.pendingPromise.resolver.reject(error)
         }
-        
-        apiRequest.pendingPromise.resolver.reject(error)
+    }
+    
+    private func handleRetryLimitReached(
+        apiRequest: ApiRequest,
+        unlockURL: URL,
+        siteKey: String
+    ) {
+        hasReachedRetryLimit = true
+        requestsQueue.append(apiRequest)
+        rateLimitUnlockerDelegate?.unlock(url: unlockURL, siteKey: siteKey) { [weak self] didUnlock in
+            guard let self = self else {
+                return
+            }
+            
+            self.workQueue.async {
+                if didUnlock {
+                    self.hasReachedRetryLimit = false
+                    self.resumeQueue()
+                } else {
+                    self.cancelQueue(error: PSApiError.cancelled())
+                    self.hasReachedRetryLimit = false
+                }
+            }
+        }
     }
     
     private func mapError(jsonString: String, statusCode: Int) -> PSApiError {

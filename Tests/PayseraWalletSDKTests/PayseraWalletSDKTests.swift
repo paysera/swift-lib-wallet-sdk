@@ -77,6 +77,31 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(object)
     }
     
+    func testRegisterUser() {
+        var object: PSUser?
+        let expectation = XCTestExpectation(description: "Successful registration should return user")
+        
+        let request = PSUserRegistrationRequest()
+        request.phone = "+change_me"
+        request.locale = "lt"
+        request.credentialsType = "change_me"
+        request.password = "change_me"
+        request.scopes = ["change_me"]
+
+        client
+            .registerUser(request)
+            .done { user in
+                object = user
+            }
+            .catch { error in
+                XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNotNil(object)
+    }
+    
     func testGetSpotInformation() {
         var object: PSSpot?
         let expectation = XCTestExpectation(description: "")

@@ -17,7 +17,6 @@ public extension AccessTokenRefresherDelegate {
 }
 
 public class RefreshingWalletAsyncClient: WalletAsyncClient {
-    
     private var activeCredentials: PSCredentials
     private var inactiveCredentials: PSCredentials?
     private let grantType: PSGrantType
@@ -35,6 +34,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
         logger: PSLoggerProtocol? = nil
     ) {
         self.activeCredentials = activeCredentials
@@ -46,6 +46,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         super.init(
             session: session,
             publicWalletApiClient: publicWalletApiClient,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             logger: logger
         )
@@ -62,7 +63,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 return apiRequest.pendingPromise.resolver.reject(PSApiError.unknown())
             }
             
-            guard !self.tokenIsRefreshing else {
+            guard !self.tokenIsRefreshing && !self.hasReachedRetryLimit else {
                 return self.requestsQueue.append(apiRequest)
             }
             
