@@ -68,7 +68,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .getCurrentUser()
             .done { user in
                 object = user
-                print(object)
+                print(user)
             }.catch { error in
                 print(error)
             }.finally { expectation.fulfill() }

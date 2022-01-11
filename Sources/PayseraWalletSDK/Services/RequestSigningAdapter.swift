@@ -74,7 +74,8 @@ public class RequestSigningAdapter: RequestInterceptor {
         let dataString = items.joined(separator: "\n")
         
         guard
-            let bytes = try? HMAC(key: macKey, variant: .sha256).authenticate(dataString.bytes)
+            let bytes = try? HMAC(key: macKey, variant: .sha2(.sha256))
+                .authenticate(dataString.bytes)
         else {
             return ""
         }
