@@ -12,4 +12,5 @@ public enum PSNotificationEventType: String {
     case filled
     case withdrew
     case automatedFillMade = "automated_fill_made"
+    case delivered
 }
