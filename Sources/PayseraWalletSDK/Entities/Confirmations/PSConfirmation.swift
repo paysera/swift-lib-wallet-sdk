@@ -11,6 +11,7 @@ public class PSConfirmation: Mappable {
     public var city: String?
     public var browser: String?
     public var os: String?
+    public var model: String?
     
     required public init?(map: Map) {
     }
@@ -25,6 +26,7 @@ public class PSConfirmation: Mappable {
         city          <- map["city"]
         browser       <- map["browser"]
         os            <- map["os"]
+        model         <- map["model"]
     }
 }
 
