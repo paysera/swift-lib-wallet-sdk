@@ -195,6 +195,22 @@ extension PSSubscriber {
         }
     }
     
+    public func getNewDeviceRejectedEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.rejected.rawValue &&
+            $0.object == PSNotificationObjectType.newDevice.rawValue
+        }
+    }
+    
+    public func getNewDeviceAttemptEvent() -> PSSubscriberEvent? {
+        guard let events = events else { return nil }
+        return events.first {
+            $0.event == PSNotificationEventType.attempt.rawValue &&
+            $0.object == PSNotificationObjectType.newDevice.rawValue
+        }
+    }
+    
     private func isWalletObject(_ object: String?) -> Bool {
         return object == PSNotificationObjectType.pendingPayment.rawValue ||
                object == PSNotificationObjectType.statement.rawValue
