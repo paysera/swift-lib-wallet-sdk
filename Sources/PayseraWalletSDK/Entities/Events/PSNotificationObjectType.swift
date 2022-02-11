@@ -10,4 +10,5 @@ public enum PSNotificationObjectType: String {
     case recurrenceTransfer = "recurrence_transfer"
     case savingsAccountPayment = "savings_account_payment"
     case package
+    case newDevice = "new_device"
 }
