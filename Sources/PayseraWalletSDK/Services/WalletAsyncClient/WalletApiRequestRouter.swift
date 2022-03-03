@@ -63,7 +63,7 @@ enum WalletApiRequestRouter {
     case createTransfer(PSTransfer)
     case createSimulatedTransfer(PSTransfer)
     case issueFirebaseToken
-    case unsupportedRegistrationContact(email: String, country: String)
+    case sendUnsupportedRegistrationInfo(PSSendUnsupportedRegistrationInfoRequest)
     
     // MARK: - PUT
     case verifyPhone(userId: Int, code: String)
@@ -123,7 +123,7 @@ enum WalletApiRequestRouter {
              .createTransfer,
              .createSimulatedTransfer,
              .issueFirebaseToken,
-             .unsupportedRegistrationContact:
+             .sendUnsupportedRegistrationInfo:
             return .post
             
         case .get,
@@ -426,7 +426,7 @@ enum WalletApiRequestRouter {
         case .issueFirebaseToken:
             return "mobile-application-integration/firebase/tokens"
           
-        case .unsupportedRegistrationContact:
+        case .sendUnsupportedRegistrationInfo:
             return "contacts"
         }
     }
@@ -589,11 +589,8 @@ enum WalletApiRequestRouter {
              .createSimulatedTransfer(let transfer):
             return transfer.toJSON()
         
-        case .unsupportedRegistrationContact(let email, let country):
-            return [
-                "email": email,
-                "country_code": country
-            ]
+        case .sendUnsupportedRegistrationInfo(let payload):
+            return payload.toJSON()
             
         default:
             return nil

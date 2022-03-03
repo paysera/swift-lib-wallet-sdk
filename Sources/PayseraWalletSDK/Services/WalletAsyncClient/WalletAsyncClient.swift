@@ -549,14 +549,8 @@ public class WalletAsyncClient: BaseAsyncClient {
     }
     
     public func sendUnsupportedRegistration(
-        email: String,
-        country: String
+        payload: PSSendUnsupportedRegistrationInfoRequest
     ) -> Promise<Void> {
-        doRequest(
-            requestRouter: WalletApiRequestRouter.unsupportedRegistrationContact(
-                email: email,
-                country: country
-            )
-        )
+        doRequest(requestRouter: WalletApiRequestRouter.sendUnsupportedRegistrationInfo(payload))
     }
 }
