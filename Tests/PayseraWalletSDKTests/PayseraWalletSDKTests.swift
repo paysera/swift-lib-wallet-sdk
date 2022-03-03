@@ -40,8 +40,8 @@ class PayseraWalletSDKTests: XCTestCase {
         super.setUp()
         
         let userCredentials = PSCredentials()
-        userCredentials.accessToken = "change_me"
-        userCredentials.macKey = "change_me"
+        //userCredentials.accessToken = "change_me"
+        //userCredentials.macKey = "change_me"
         
         self.client = ClientsFactory.createWalletAsyncClient(
             credentials: userCredentials,
@@ -50,8 +50,8 @@ class PayseraWalletSDKTests: XCTestCase {
         )
         
         let appCredentials = PSCredentials()
-        appCredentials.accessToken = "change_me"
-        appCredentials.macKey = "change_me"
+        //appCredentials.accessToken = "change_me"
+        //appCredentials.macKey = "change_me"
         
         self.authClient = ClientsFactory.createOAuthClient(
             credentials: appCredentials,
@@ -1198,5 +1198,24 @@ class PayseraWalletSDKTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response?.token)
+    }
+    
+    func testUnsupportedRegistration() {
+        let expectation = XCTestExpectation(description: "Unsupported contact info must be submitted")
+
+        let email = "j.doe@gmail.com"
+        let country = "US"
+        
+        client
+            .sendUnsupportedRegistration(email: email, country: country)
+            .done { _ in }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 5.0)
     }
 }
