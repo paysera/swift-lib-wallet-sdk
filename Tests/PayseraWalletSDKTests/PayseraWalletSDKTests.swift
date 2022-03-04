@@ -1200,15 +1200,15 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(response?.token)
     }
     
-    func testUnsupportedRegistration() {
-        let expectation = XCTestExpectation(description: "Unsupported contact info must be submitted")
+    func testContactCollection() {
+        let expectation = XCTestExpectation(description: "Contact collection must be submitted")
         
-        let request = PSSendUnsupportedRegistrationInfoRequest()
+        let request = PSContactCollectionRequest()
         request.email = "j.doe@gmail.com"
         request.countryCode = "US"
         
         client
-            .sendUnsupportedRegistration(payload: request)
+            .collectContact(payload: request)
             .done { _ in }
             .catch {
                 error in XCTFail(error.localizedDescription)

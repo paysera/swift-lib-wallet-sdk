@@ -548,9 +548,9 @@ public class WalletAsyncClient: BaseAsyncClient {
         doRequest(requestRouter: WalletApiRequestRouter.issueFirebaseToken)
     }
     
-    public func sendUnsupportedRegistration(
-        payload: PSSendUnsupportedRegistrationInfoRequest
+    public func collectContact(
+        payload: PSContactCollectionRequest
     ) -> Promise<Void> {
-        doRequest(requestRouter: WalletApiRequestRouter.sendUnsupportedRegistrationInfo(payload))
+        doRequest(requestRouter: WalletApiRequestRouter.collectContact(payload))
     }
 }
