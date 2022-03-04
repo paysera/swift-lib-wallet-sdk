@@ -1199,4 +1199,24 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response?.token)
     }
+    
+    func testContactCollection() {
+        let expectation = XCTestExpectation(description: "Contact collection must be submitted")
+        
+        let request = PSContactCollectionRequest()
+        request.email = "j.doe@gmail.com"
+        request.countryCode = "US"
+        
+        client
+            .collectContact(payload: request)
+            .done { _ in }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
 }

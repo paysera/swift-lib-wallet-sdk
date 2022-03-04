@@ -547,4 +547,10 @@ public class WalletAsyncClient: BaseAsyncClient {
     public func issueFirebaseToken() -> Promise<PSFirebaseTokenResponse> {
         doRequest(requestRouter: WalletApiRequestRouter.issueFirebaseToken)
     }
+    
+    public func collectContact(
+        payload: PSContactCollectionRequest
+    ) -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.collectContact(payload))
+    }
 }
