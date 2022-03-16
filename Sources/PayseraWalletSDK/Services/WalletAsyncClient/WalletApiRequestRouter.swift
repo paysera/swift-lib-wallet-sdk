@@ -64,6 +64,8 @@ enum WalletApiRequestRouter {
     case createSimulatedTransfer(PSTransfer)
     case issueFirebaseToken
     case collectContact(PSContactCollectionRequest)
+    case createPartnerOAuthRequest(PSCreatePartnerOAuthRequest)
+    case approvePartnerOAuthRequest(key: String)
     
     // MARK: - PUT
     case verifyPhone(userId: Int, code: String)
@@ -98,7 +100,7 @@ enum WalletApiRequestRouter {
     case deleteAvatar
     
     // MARK: - Variables
-    private static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/")!
 
     private var method: HTTPMethod {
         switch self {
@@ -123,7 +125,9 @@ enum WalletApiRequestRouter {
              .createTransfer,
              .createSimulatedTransfer,
              .issueFirebaseToken,
-             .collectContact:
+             .collectContact,
+             .createPartnerOAuthRequest,
+             .approvePartnerOAuthRequest:
             return .post
             
         case .get,
@@ -197,7 +201,7 @@ enum WalletApiRequestRouter {
 
     }
     
-    private var path: String {
+    private var endpointPath: String {
         switch self {
         case .getTransaction(let key, _):
             return "transaction/\(key)"
@@ -428,6 +432,12 @@ enum WalletApiRequestRouter {
           
         case .collectContact:
             return "contacts"
+            
+        case .createPartnerOAuthRequest:
+            return "partner-oauth-requests"
+            
+        case .approvePartnerOAuthRequest(let key):
+            return "partner-oauth-requests/\(key)/approve"
         }
     }
     
@@ -592,9 +602,26 @@ enum WalletApiRequestRouter {
         case .collectContact(let payload):
             return payload.toJSON()
             
+        case .createPartnerOAuthRequest(let payload):
+            return payload.toJSON()
+            
         default:
             return nil
         }
+    }
+    
+    private var servicePath: String {
+        switch self {
+        case .approvePartnerOAuthRequest,
+             .createPartnerOAuthRequest:
+            return "partner-oauth/v1/"
+        default:
+            return "rest/v1/"
+        }
+    }
+    
+    private var path: String {
+        servicePath + endpointPath
     }
     
     private var extraParameters: [String: Any]? {

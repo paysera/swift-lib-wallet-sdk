@@ -1219,4 +1219,52 @@ class PayseraWalletSDKTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
+    
+    func testCreatePartnerOAuthRequest() {
+        let expectation = XCTestExpectation(description: "Create Partner OAuth response must not be nil")
+        
+        var response: PSCreatePartnerOAuthResponse?
+        
+        let request = PSCreatePartnerOAuthRequest()
+        request.walletID = 4
+        request.partner = "inrento"
+        
+        client
+            .createPartnerOAuthRequest(payload: request)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testApprovePartnerOAuthRequest() {
+        let expectation = XCTestExpectation(description: "Approve Partner OAuth response must not be nil")
+        
+        var response: PSApprovePartnerOAuthResponse?
+        
+        let key = "sdasdas"
+        
+        client
+            .approvePartnerOAuthRequest(key: key)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
 }
