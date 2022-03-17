@@ -566,12 +566,6 @@ public class WalletAsyncClient: BaseAsyncClient {
         doRequest(requestRouter: WalletApiRequestRouter.approvePartnerOAuthRequest(key: key))
     }
 
-    public func createPartnerOAuthRequestAny(
-        payload: PSCreatePartnerOAuthRequest
-    ) -> Promise<String> {
-        doRequest(requestRouter: WalletApiRequestRouter.createPartnerOAuthRequest(payload))
-    }
-    
     public func approvePartnerOAusthRequestAny(
         key: String
     ) -> Promise<String> {

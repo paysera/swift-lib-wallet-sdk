@@ -126,8 +126,7 @@ enum WalletApiRequestRouter {
              .createSimulatedTransfer,
              .issueFirebaseToken,
              .collectContact,
-             .createPartnerOAuthRequest,
-             .approvePartnerOAuthRequest:
+             .createPartnerOAuthRequest:
             return .post
             
         case .get,
@@ -183,7 +182,8 @@ enum WalletApiRequestRouter {
              .submitFacePhoto,
              .submitDocumentPhoto,
              .submitIdentificationRequest,
-             .uploadAvatar:
+             .uploadAvatar,
+             .approvePartnerOAuthRequest:
             return .put
             
         case .delete,
