@@ -21,9 +21,10 @@ public final class PSCreatePartnerOAuthResponse: Mappable {
 public final class PSPartnerOAuthAllowance: Mappable {
     public var walletID: Int!
     public var transactionKey: String!
-    public var validUntil: String!
-    public var maxPrice: String!
+    public var validUntil: Int!
+    public var maxPriceDecimal: String!
     public var currency: String!
+    public var status: String!
     
     required public init?(map: Map) { }
     
@@ -33,7 +34,8 @@ public final class PSPartnerOAuthAllowance: Mappable {
         walletID        <- map["wallet"]
         transactionKey  <- map["transaction_key"]
         validUntil      <- map["valid_until"]
-        maxPrice        <- map["max_price"]
+        maxPriceDecimal <- map["max_price_decimal"]
         currency        <- map["currency"]
+        status          <- map["status"]
     }
 }
