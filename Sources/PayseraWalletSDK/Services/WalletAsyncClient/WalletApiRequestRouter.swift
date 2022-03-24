@@ -66,7 +66,6 @@ enum WalletApiRequestRouter {
     case collectContact(PSContactCollectionRequest)
     case submitAdditionalDocument(
         documentID: Int,
-        isFront: Bool,
         data: Data,
         contentType: String
     )
@@ -436,9 +435,8 @@ enum WalletApiRequestRouter {
         case .collectContact:
             return "contacts"
             
-        case .submitAdditionalDocument(let documentID, let isFront, _, _):
-            let orientation = isFront ? "front" : "back"
-            return "identity-document/\(documentID)/file/\(orientation)"
+        case .submitAdditionalDocument(let documentID, _, _, _):
+            return "identity-document/\(documentID)/file"
         }
     }
     

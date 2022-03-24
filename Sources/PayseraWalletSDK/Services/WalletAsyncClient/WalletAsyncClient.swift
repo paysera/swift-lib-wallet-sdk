@@ -556,14 +556,12 @@ public class WalletAsyncClient: BaseAsyncClient {
     
     public func submitAdditionalDocument(
         documentID: Int,
-        isFront: Bool,
         data: Data,
         contentType: String
     ) -> Promise<Void> {
         doRequest(
             requestRouter: WalletApiRequestRouter.submitAdditionalDocument(
                 documentID: documentID,
-                isFront: isFront,
                 data: data,
                 contentType: contentType
             )
