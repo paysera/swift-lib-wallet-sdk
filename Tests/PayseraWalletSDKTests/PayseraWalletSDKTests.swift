@@ -1223,7 +1223,7 @@ class PayseraWalletSDKTests: XCTestCase {
     func testUploadAdditionalDocument() {
         let expectation = XCTestExpectation(description: "Additional document should be uploaded")
         let data = Data()
-        let documentID = "insert_me"
+        let documentID = 0
         let contentType = "insert_me"
         
         client
