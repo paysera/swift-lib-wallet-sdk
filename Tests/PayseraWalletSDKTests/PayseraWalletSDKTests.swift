@@ -1219,4 +1219,23 @@ class PayseraWalletSDKTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
+    
+    func testUploadAdditionalDocument() {
+        let expectation = XCTestExpectation(description: "Additional document should be uploaded")
+        let data = Data()
+        let documentID = "insert_me"
+        let contentType = "insert_me"
+        
+        client
+            .submitAdditionalDocument(
+                documentID: documentID,
+                data: data,
+                contentType: contentType
+            )
+            .done { _ in }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
 }
