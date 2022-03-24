@@ -438,9 +438,7 @@ enum WalletApiRequestRouter {
             
         case .submitAdditionalDocument(let documentID, let isFront, _, _):
             let orientation = isFront ? "front" : "back"
-            return "https://bank.paysera.com/en/identification-document/rest/identity-document/\(documentID)/file/\(orientation)"
-            
-            //"identity-document/\(documentID)/file/\(orientation)"
+            return "identity-document/\(documentID)/file/\(orientation)"
         }
     }
     
@@ -633,16 +631,7 @@ enum WalletApiRequestRouter {
 
 extension WalletApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
-        //let url = Self.baseURL.appendingPathComponent(path)
-        let url: URL
-        switch self {
-        case .submitAdditionalDocument:
-            url = .init(string: path)!
-        default:
-            url = Self.baseURL.appendingPathComponent(path)
-        }
-        
-        
+        let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)
         urlRequest.method = method
         
