@@ -553,4 +553,20 @@ public class WalletAsyncClient: BaseAsyncClient {
     ) -> Promise<Void> {
         doRequest(requestRouter: WalletApiRequestRouter.collectContact(payload))
     }
+    
+    public func submitAdditionalDocument(
+        documentID: Int,
+        isFront: Int,
+        data: Data,
+        contentType: String
+    ) -> Promise<Void> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.submitAdditionalDocument(
+                documentID: documentID,
+                isFront: isFront,
+                data: data,
+                contentType: contentType
+            )
+        )
+    }
 }
