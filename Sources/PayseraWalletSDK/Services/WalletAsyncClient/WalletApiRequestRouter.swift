@@ -435,7 +435,7 @@ enum WalletApiRequestRouter {
         case .collectContact:
             return "contacts"
             
-        case .submitAdditionalDocument(let documentID, _, _, _):
+        case .submitAdditionalDocument(let documentID, _, _):
             return "identity-document/\(documentID)/file"
         }
     }
