@@ -438,7 +438,7 @@ enum WalletApiRequestRouter {
             
         case .submitAdditionalDocument(let documentID, let isFront, _, _):
             let orientation = isFront ? "front" : "back"
-            return "identity-documents/\(documentID)/file/\(orientation)"
+            return "identity-document/\(documentID)/file/\(orientation)"
         }
     }
     
