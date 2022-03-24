@@ -556,7 +556,7 @@ public class WalletAsyncClient: BaseAsyncClient {
     
     public func submitAdditionalDocument(
         documentID: Int,
-        isFront: Int,
+        isFront: Bool,
         data: Data,
         contentType: String
     ) -> Promise<Void> {
