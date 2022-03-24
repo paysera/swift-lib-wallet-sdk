@@ -5,7 +5,7 @@ public class PSIdentificationDocumentRequest: Mappable {
     public var id: Int?
     public var type: String?
     public var personalNumber: String?
-    public var country: String?
+    public var countryOfIssue: String?
     public var dateOfBirth: String?   
     public var firstName: String?
     public var lastName: String?
@@ -22,7 +22,7 @@ public class PSIdentificationDocumentRequest: Mappable {
         id              <- map["id"]
         type            <- map["type"]
         personalNumber  <- map["personal_number"]
-        country         <- map["country"]
+        countryOfIssue  <- map["country_of_issue"]
         dateOfBirth     <- map["date_of_birth"]
         firstName       <- map["first_name"]
         lastName        <- map["last_name"]
