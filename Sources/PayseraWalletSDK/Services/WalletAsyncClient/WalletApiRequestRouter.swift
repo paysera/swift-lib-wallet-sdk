@@ -600,7 +600,7 @@ enum WalletApiRequestRouter {
         
         case .collectContact(let payload):
             return payload.toJSON()
-               
+        
         default:
             return nil
         }
