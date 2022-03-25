@@ -9,6 +9,8 @@ public class PSIdentityDocument: Mappable {
     public var reviewStatus: String?
     public var reviewedAt: String?
     public var reviewedByUserId: String?
+    public var files: Array<PSIdentityFile>?
+    public var countryOfIssue: String?
     
     required public init?(map: Map) {
     }
@@ -25,5 +27,29 @@ public class PSIdentityDocument: Mappable {
         reviewStatus                <- map["review_status"]
         reviewedAt                  <- map["reviewed_at"]
         reviewedByUserId            <- map["reviewed_by_user_id"]
+        files                       <- map["files"]
+        countryOfIssue              <- map["country_of_issue"]
+    }
+}
+
+public class PSIdentityFile: Mappable {
+    public var id: Int?
+    public var type: String?
+    public var mimeType: String?
+    public var documentID: Int?
+    public var documentType: String?
+    
+    required public init?(map: Map) {
+    }
+    
+    public init() { }
+    
+    // Mappable
+    public func mapping(map: Map) {
+        id           <- map["file_id"]
+        type         <- map["type"]
+        mimeType     <- map["mime_type"]
+        documentID   <- map["document_id"]
+        documentType <- map["document_type"]
     }
 }
