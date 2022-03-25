@@ -64,6 +64,11 @@ enum WalletApiRequestRouter {
     case createSimulatedTransfer(PSTransfer)
     case issueFirebaseToken
     case collectContact(PSContactCollectionRequest)
+    case submitAdditionalDocument(
+        documentID: Int,
+        data: Data,
+        contentType: String
+    )
     
     // MARK: - PUT
     case verifyPhone(userId: Int, code: String)
@@ -123,7 +128,8 @@ enum WalletApiRequestRouter {
              .createTransfer,
              .createSimulatedTransfer,
              .issueFirebaseToken,
-             .collectContact:
+             .collectContact,
+             .submitAdditionalDocument:
             return .post
             
         case .get,
@@ -428,6 +434,9 @@ enum WalletApiRequestRouter {
           
         case .collectContact:
             return "contacts"
+            
+        case .submitAdditionalDocument(let documentID, _, _):
+            return "identity-document/\(documentID)/file"
         }
     }
     
@@ -591,7 +600,7 @@ enum WalletApiRequestRouter {
         
         case .collectContact(let payload):
             return payload.toJSON()
-            
+        
         default:
             return nil
         }
@@ -634,7 +643,8 @@ extension WalletApiRequestRouter: URLRequestConvertible {
         case .putWithData(_, let data, let contentType),
              .uploadAvatar(let data, let contentType),
              .submitFacePhoto(_, _, let data, let contentType),
-             .submitDocumentPhoto(_, _, let data, let contentType):
+             .submitDocumentPhoto(_, _, let data, let contentType),
+             .submitAdditionalDocument(_, let data, let contentType):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = data
