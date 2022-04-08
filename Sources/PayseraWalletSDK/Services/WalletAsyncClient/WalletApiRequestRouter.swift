@@ -40,6 +40,7 @@ enum WalletApiRequestRouter {
     case getUserServices(userId: Int)
     case getConfirmations(filter: PSConfirmationFilter)
     case getConfirmation(identifier: String)
+    case getEasyPayFee(amount: PSMoney)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -69,6 +70,8 @@ enum WalletApiRequestRouter {
         data: Data,
         contentType: String
     )
+    case createEasyPayTransfer(amount: PSMoney, beneficiaryID: Int)
+    case checkEasyPayNotification(payload: PSEasyPayNotificationRequest)
     
     // MARK: - PUT
     case verifyPhone(userId: Int, code: String)
@@ -89,6 +92,7 @@ enum WalletApiRequestRouter {
     case submitDocumentPhoto(documentId: Int, order: Int, data: Data, contentType: String)
     case submitIdentificationRequest(requestId: Int)
     case uploadAvatar(imageData: Data, contentType: String)
+    case cancelEasyPayTransfer(id: Int)
     
     // MARK: - DELETE
     case deleteTransaction(key: String)
@@ -103,7 +107,7 @@ enum WalletApiRequestRouter {
     case deleteAvatar
     
     // MARK: - Variables
-    private static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/")!
 
     private var method: HTTPMethod {
         switch self {
@@ -129,7 +133,9 @@ enum WalletApiRequestRouter {
              .createSimulatedTransfer,
              .issueFirebaseToken,
              .collectContact,
-             .submitAdditionalDocument:
+             .submitAdditionalDocument,
+             .createEasyPayTransfer,
+             .checkEasyPayNotification:
             return .post
             
         case .get,
@@ -161,7 +167,8 @@ enum WalletApiRequestRouter {
              .getTransfers,
              .getUserServices,
              .getConfirmations,
-             .getConfirmation:
+             .getConfirmation,
+             .getEasyPayFee:
             return .get
             
         case .put,
@@ -185,7 +192,8 @@ enum WalletApiRequestRouter {
              .submitFacePhoto,
              .submitDocumentPhoto,
              .submitIdentificationRequest,
-             .uploadAvatar:
+             .uploadAvatar,
+             .cancelEasyPayTransfer:
             return .put
             
         case .delete,
@@ -204,6 +212,22 @@ enum WalletApiRequestRouter {
     }
     
     private var path: String {
+        servicePath + endpointPath
+    }
+    
+    private var servicePath: String {
+        switch self {
+        case .getEasyPayFee,
+             .createEasyPayTransfer,
+             .cancelEasyPayTransfer,
+             .checkEasyPayNotification:
+            return "epay/rest/v1/"
+        default:
+            return "rest/v1/"
+        }
+    }
+    
+    private var endpointPath: String {
         switch self {
         case .getTransaction(let key, _):
             return "transaction/\(key)"
@@ -437,6 +461,18 @@ enum WalletApiRequestRouter {
             
         case .submitAdditionalDocument(let documentID, _, _):
             return "identity-document/\(documentID)/file"
+            
+        case .getEasyPayFee:
+            return "fee"
+            
+        case .createEasyPayTransfer:
+            return "transfer/create"
+            
+        case .cancelEasyPayTransfer(let id):
+            return "transfer/\(id)/cancel"
+            
+        case .checkEasyPayNotification:
+            return "notification"
         }
     }
     
@@ -600,7 +636,18 @@ enum WalletApiRequestRouter {
         
         case .collectContact(let payload):
             return payload.toJSON()
+            
+        case .getEasyPayFee(let amount):
+            return amount.toJSON()
+            
+        case .createEasyPayTransfer(let amount, let beneficiaryID):
+            var data = amount.toJSON()
+            data["beneficiary_id"] = beneficiaryID
+            return data
         
+        case .checkEasyPayNotification(let payload):
+            return payload.toJSON()
+            
         default:
             return nil
         }

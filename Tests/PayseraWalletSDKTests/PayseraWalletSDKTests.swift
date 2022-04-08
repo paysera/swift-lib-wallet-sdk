@@ -1238,4 +1238,87 @@ class PayseraWalletSDKTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
+    
+    func testCreateEasyPayTransfer() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer must exist")
+        var response: PSEasyPayTransfer?
+        let amount = "insert_me"
+        let currency = "insert_me"
+        let beneficiaryID = 0
+        
+        client
+            .createEasyPayTransfer(
+                amount: .init(amount: amount, currency: currency),
+                beneficiaryID: beneficiaryID
+            )
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testCancelEasyPayTransfer() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer must exist")
+        var response: PSEasyPayTransfer?
+        let id = 0
+        
+        client
+            .cancelEasyPayTransfer(id: id)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testGetEasyPayFee() {
+        let expectation = XCTestExpectation(description: "PSEasyPayFee must exist")
+        var response: PSEasyPayFee?
+        let amount = "insert_me"
+        let currency = "insert_me"
+        
+        client
+            .getEasyPayFee(amount: .init(amount: amount, currency: currency))
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testCheckEasyPayNotification() {
+        let expectation = XCTestExpectation(description: "Notification must exist")
+        
+        let payload = PSEasyPayNotificationRequest()
+        payload.encoded = "insert_me"
+        payload.checkSum = "insert_me"
+
+        client
+            .checkEasyPayNotification(payload: payload)
+            .done { _ in }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
 }
