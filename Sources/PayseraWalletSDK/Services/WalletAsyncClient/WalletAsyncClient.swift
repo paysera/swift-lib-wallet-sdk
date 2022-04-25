@@ -584,11 +584,15 @@ public class WalletAsyncClient: BaseAsyncClient {
         )
     }
     
-    public func cancelEasyPayTransfer(id: Int) -> Promise<PSEasyPayTransfer> {
-        doRequest(requestRouter: WalletApiRequestRouter.cancelEasyPayTransfer(id: id))
+    public func getEasyPayTransfers(
+        filter: PSEasyPayTransferFilter?
+    ) -> Promise<PSMetadataAwareResponse<PSEasyPayTransfer>> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.getEasyPayTransfers(filter: filter)
+        )
     }
     
-    public func checkEasyPayNotification(payload: PSEasyPayNotificationRequest) -> Promise<Void> {
-        doRequest(requestRouter: WalletApiRequestRouter.checkEasyPayNotification(payload: payload))
+    public func cancelEasyPayTransfer(id: Int) -> Promise<PSEasyPayTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.cancelEasyPayTransfer(id: id))
     }
 }

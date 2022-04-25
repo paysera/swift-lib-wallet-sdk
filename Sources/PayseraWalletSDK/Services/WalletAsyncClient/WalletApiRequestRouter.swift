@@ -41,6 +41,7 @@ enum WalletApiRequestRouter {
     case getConfirmations(filter: PSConfirmationFilter)
     case getConfirmation(identifier: String)
     case getEasyPayFee(amount: PSMoney)
+    case getEasyPayTransfers(filter: PSEasyPayTransferFilter?)
     
     // MARK: - POST
     case registerClient(PSCreateClientRequest)
@@ -71,7 +72,6 @@ enum WalletApiRequestRouter {
         contentType: String
     )
     case createEasyPayTransfer(amount: PSMoney, beneficiaryID: Int)
-    case checkEasyPayNotification(payload: PSEasyPayNotificationRequest)
     
     // MARK: - PUT
     case verifyPhone(userId: Int, code: String)
@@ -134,8 +134,7 @@ enum WalletApiRequestRouter {
              .issueFirebaseToken,
              .collectContact,
              .submitAdditionalDocument,
-             .createEasyPayTransfer,
-             .checkEasyPayNotification:
+             .createEasyPayTransfer:
             return .post
             
         case .get,
@@ -168,7 +167,8 @@ enum WalletApiRequestRouter {
              .getUserServices,
              .getConfirmations,
              .getConfirmation,
-             .getEasyPayFee:
+             .getEasyPayFee,
+             .getEasyPayTransfers:
             return .get
             
         case .put,
@@ -220,7 +220,7 @@ enum WalletApiRequestRouter {
         case .getEasyPayFee,
              .createEasyPayTransfer,
              .cancelEasyPayTransfer,
-             .checkEasyPayNotification:
+             .getEasyPayTransfers:
             return "epay/rest/v1/"
         default:
             return "rest/v1/"
@@ -471,8 +471,8 @@ enum WalletApiRequestRouter {
         case .cancelEasyPayTransfer(let id):
             return "transfer/\(id)/cancel"
             
-        case .checkEasyPayNotification:
-            return "notification"
+        case .getEasyPayTransfers:
+            return "transfer"
         }
     }
     
@@ -644,10 +644,10 @@ enum WalletApiRequestRouter {
             var data = amount.toJSON()
             data["beneficiary_id"] = beneficiaryID
             return data
-        
-        case .checkEasyPayNotification(let payload):
-            return payload.toJSON()
             
+        case .getEasyPayTransfers(let filter):
+            return filter?.toJSON()
+   
         default:
             return nil
         }

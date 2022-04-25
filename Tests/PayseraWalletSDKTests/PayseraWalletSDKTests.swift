@@ -1302,23 +1302,22 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(response)
     }
     
-    func testCheckEasyPayNotification() {
-        let expectation = XCTestExpectation(description: "Notification must exist")
+    func testGetEasyPayTransfers() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer items must exist")
+        var response: PSMetadataAwareResponse<PSEasyPayTransfer>?
+        let filter = PSEasyPayTransferFilter()
         
-        let payload = PSEasyPayNotificationRequest()
-        payload.encoded = "insert_me"
-        payload.checkSum = "insert_me"
-
         client
-            .checkEasyPayNotification(payload: payload)
-            .done { _ in }
+            .getEasyPayTransfers(filter: filter)
+            .done { data in
+                response = data
+            }
             .catch {
                 error in XCTFail(error.localizedDescription)
             }
-            .finally {
-                expectation.fulfill()
-            }
+            .finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
     }
 }
