@@ -1,5 +1,6 @@
 import ObjectMapper
 import PayseraCommonSDK
+import Foundation
 
 public final class PSEasyPayTransfer: Mappable {
     public var payerID: Int!
@@ -10,6 +11,7 @@ public final class PSEasyPayTransfer: Mappable {
     public var invoice: String!
     public var revID: String!
     public var transferID: Int!
+    public var validUntil: Date!
     
     public var amountMoney: PSMoney {
         .init(amount: amount, currency: currency)
@@ -26,5 +28,6 @@ public final class PSEasyPayTransfer: Mappable {
         invoice             <- map["invoice"]
         revID               <- map["revId"]
         transferID          <- map["transfer_id"]
+        validUntil          <- (map["valid_until"], DateTransform())
     }
 }
