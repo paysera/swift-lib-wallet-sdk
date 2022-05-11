@@ -463,7 +463,7 @@ enum WalletApiRequestRouter {
             return "identity-document/\(documentID)/file"
             
         case .getEasyPayFee:
-            return "fee"
+            return "fees"
             
         case .createEasyPayTransfer:
             return "transfer/create"
