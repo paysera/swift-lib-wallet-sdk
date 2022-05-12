@@ -466,13 +466,13 @@ enum WalletApiRequestRouter {
             return "fees"
             
         case .createEasyPayTransfer:
-            return "transfer/create"
+            return "transfers"
             
         case .cancelEasyPayTransfer(let id):
-            return "transfer/\(id)/cancel"
+            return "transfers/\(id)/cancel"
             
         case .getEasyPayTransfers:
-            return "transfer"
+            return "transfers"
         }
     }
     
