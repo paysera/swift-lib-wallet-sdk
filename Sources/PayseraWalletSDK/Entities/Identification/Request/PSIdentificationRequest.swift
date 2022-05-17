@@ -8,6 +8,7 @@ public class PSIdentificationRequest: Mappable {
     public var userId: String?
     public var status: String?
     public var comment: String?
+    public private(set) var additionalDocument: PSIdentityDocument?
     
     required public init?(map: Map) {
     }
@@ -24,5 +25,6 @@ public class PSIdentificationRequest: Mappable {
         userId              <- map["user_id"]
         status              <- map["status"]
         comment             <- map["comment"]
+        additionalDocument  <- map["additional_document"]
     }
 }

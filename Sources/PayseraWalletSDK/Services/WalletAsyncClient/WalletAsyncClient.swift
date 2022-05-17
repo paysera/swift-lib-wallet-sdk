@@ -554,6 +554,14 @@ public class WalletAsyncClient: BaseAsyncClient {
         doRequest(requestRouter: WalletApiRequestRouter.collectContact(payload))
     }
     
+    public func createAdditionalDocument(
+        request: PSIdentificationDocumentRequest
+    ) -> Promise<PSIdentityDocument> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.createAdditionalDocument(request: request)
+        )
+    }
+    
     public func submitAdditionalDocument(
         documentID: Int,
         data: Data,
