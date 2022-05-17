@@ -64,6 +64,7 @@ enum WalletApiRequestRouter {
     case createSimulatedTransfer(PSTransfer)
     case issueFirebaseToken
     case collectContact(PSContactCollectionRequest)
+    case createAdditionalDocument(request: PSIdentificationDocumentRequest)
     case submitAdditionalDocument(
         documentID: Int,
         data: Data,
@@ -129,6 +130,7 @@ enum WalletApiRequestRouter {
              .createSimulatedTransfer,
              .issueFirebaseToken,
              .collectContact,
+             .createAdditionalDocument,
              .submitAdditionalDocument:
             return .post
             
@@ -435,8 +437,11 @@ enum WalletApiRequestRouter {
         case .collectContact:
             return "contacts"
             
+        case .createAdditionalDocument(let request):
+            return "identification-request/\(request.id!)/additional-document"
+            
         case .submitAdditionalDocument(let documentID, _, _):
-            return "identity-document/\(documentID)/file"
+            return "additional-document/\(documentID)/file"
         }
     }
     
@@ -601,6 +606,9 @@ enum WalletApiRequestRouter {
         case .collectContact(let payload):
             return payload.toJSON()
         
+        case .createAdditionalDocument(let request):
+            return request.toJSON()
+            
         default:
             return nil
         }
@@ -626,7 +634,6 @@ enum WalletApiRequestRouter {
     }
 }
 
-
 extension WalletApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
@@ -643,8 +650,7 @@ extension WalletApiRequestRouter: URLRequestConvertible {
         case .putWithData(_, let data, let contentType),
              .uploadAvatar(let data, let contentType),
              .submitFacePhoto(_, _, let data, let contentType),
-             .submitDocumentPhoto(_, _, let data, let contentType),
-             .submitAdditionalDocument(_, let data, let contentType):
+             .submitDocumentPhoto(_, _, let data, let contentType):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = data
