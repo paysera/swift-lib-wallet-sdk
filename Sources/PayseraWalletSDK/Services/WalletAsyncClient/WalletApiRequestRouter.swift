@@ -650,7 +650,8 @@ extension WalletApiRequestRouter: URLRequestConvertible {
         case .putWithData(_, let data, let contentType),
              .uploadAvatar(let data, let contentType),
              .submitFacePhoto(_, _, let data, let contentType),
-             .submitDocumentPhoto(_, _, let data, let contentType):
+             .submitDocumentPhoto(_, _, let data, let contentType),
+             .submitAdditionalDocument(_, let data, let contentType):
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = data
