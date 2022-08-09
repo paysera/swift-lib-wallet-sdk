@@ -18,12 +18,24 @@ let package = Package(
             url: "https://github.com/paysera/swift-lib-accounts-sdk",
             from: "8.2.0"
         ),
-        .package(url: "https://github.com/krzyzanowskim/CryptoSwift", .exact("1.4.2"))
+        .package(
+            url: "https://github.com/krzyzanowskim/CryptoSwift",
+            .exact("1.4.2")
+        ),
+        .package(
+            url: "https://github.com/konkab/AlamofireNetworkActivityLogger",
+            .upToNextMajor(from: "3.0.0")
+        ),
     ],
     targets: [
         .target(
             name: "PayseraWalletSDK",
-            dependencies: ["PayseraCommonSDK", "PayseraAccountsSDK", "CryptoSwift"]
+            dependencies: [
+                "PayseraCommonSDK",
+                "PayseraAccountsSDK",
+                "CryptoSwift",
+                "AlamofireNetworkActivityLogger"
+            ]
         ),
         .testTarget(
             name: "PayseraWalletSDKTests",

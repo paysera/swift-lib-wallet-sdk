@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "AlamofireNetworkActivityLogger",
+        "repositoryURL": "https://github.com/konkab/AlamofireNetworkActivityLogger",
+        "state": {
+          "branch": null,
+          "revision": "8db9d4e27176905298e7215e3d800e349cdfa30b",
+          "version": "3.4.0"
+        }
+      },
+      {
         "package": "CryptoSwift",
         "repositoryURL": "https://github.com/krzyzanowskim/CryptoSwift",
         "state": {

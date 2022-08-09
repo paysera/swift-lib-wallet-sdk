@@ -28,4 +28,10 @@ public class OAuthAsyncClient: BaseAsyncClient {
     public func activate(accessToken: String) -> Promise<PSCredentials>{
         doRequest(requestRouter: OAuthApiRequestRouter.activate(accessToken: accessToken))
     }
+    
+    public func getPartnerTokens(
+        payload: PSPartnerTokensRequest
+    ) -> Promise<PSPartnerTokensResponse> {
+        doRequest(requestRouter: OAuthApiRequestRouter.getPartnerTokens(payload))
+    }
 }

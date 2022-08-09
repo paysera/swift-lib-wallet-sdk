@@ -3,7 +3,7 @@ import Foundation
 
 enum PartnerOAuthApiRequestRouter {
     // POST
-    case createOAuthRequest
+    case createOAuthRequest(payload: PSPartnerTokensRequest)
     
     // PUT
     case approveOAuthRequest(key: String)
@@ -25,11 +25,21 @@ enum PartnerOAuthApiRequestRouter {
             return "partner-oauth-requests"
         case .approveOAuthRequest(let key):
             return "partner-oauth-requests/\(key)/approve"
+        }
+    }
+    
+    private var parameters: Parameters? {
+        switch self {
+        case .createOAuthRequest(let payload):
+            return payload.toJSON()
+        default:
+            return nil
+        }
     }
 }
 
 // MARK: - URLRequestConvertible
-    
+
 extension PartnerOAuthApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
@@ -38,8 +48,11 @@ extension PartnerOAuthApiRequestRouter: URLRequestConvertible {
         
         switch self {
         case .createOAuthRequest,
-             .approveOAuthRequest:
-            urlRequest = try URLEncoding.default.encode(urlRequest, with: nil)
+                .approveOAuthRequest:
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
+        case _ where method == .post,
+            _ where method == .put:
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
         }
         
         return urlRequest

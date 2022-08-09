@@ -8,7 +8,7 @@ class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
     func getServerTimeDifference() -> TimeInterval {
         return 0
     }
-
+    
     func serverTimeDifferenceRefreshed(diff: TimeInterval) {
     }
 }
@@ -33,6 +33,7 @@ class PrintLogger: PSLoggerProtocol {
 
 class PayseraWalletSDKTests: XCTestCase {
     private var client: WalletAsyncClient!
+    private var partnerClient: PartnerOAuthWalletApiClient!
     private var authClient: OAuthAsyncClient!
     private var token: String!
     
@@ -43,7 +44,7 @@ class PayseraWalletSDKTests: XCTestCase {
         userCredentials.accessToken = "change_me"
         userCredentials.macKey = "change_me"
         
-        self.client = ClientsFactory.createWalletAsyncClient(
+        client = ClientsFactory.createWalletAsyncClient(
             credentials: userCredentials,
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
@@ -53,13 +54,19 @@ class PayseraWalletSDKTests: XCTestCase {
         appCredentials.accessToken = "change_me"
         appCredentials.macKey = "change_me"
         
-        self.authClient = ClientsFactory.createOAuthClient(
+        authClient = ClientsFactory.createOAuthClient(
+            credentials: appCredentials,
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
+            serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
+        )
+        
+        partnerClient = ClientsFactory.createPartnerOAuthApiClient(
             credentials: appCredentials,
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
     }
-
+    
     func testGetUser() {
         var object: PSUser?
         let expectation = XCTestExpectation(description: "")
@@ -87,7 +94,7 @@ class PayseraWalletSDKTests: XCTestCase {
         request.credentialsType = "change_me"
         request.password = "change_me"
         request.scopes = ["change_me"]
-
+        
         client
             .registerUser(request)
             .done { user in
@@ -361,7 +368,7 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response)
     }
-
+    
     func testGetWalletStatements() {
         var response: PSMetadataAwareResponse<PSStatement>?
         let expectation = XCTestExpectation(description: "Statements must be non nil")
@@ -387,7 +394,7 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGettingCards() {
         var response: PSMetadataAwareResponse<PSCard>?
         let expectation = XCTestExpectation(description: "Cards according to the given filter should be returned")
-
+        
         let filter = PSCardFilter()
         filter.userId = 1337
         filter.limit = 200
@@ -658,7 +665,7 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response)
     }
-
+    
     func testProvidingUserPosition() {
         var response: PSUserPosition?
         let expectation = XCTestExpectation(description: "User position should be returned after successful submission")
@@ -990,7 +997,7 @@ class PayseraWalletSDKTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Confirmation with given identifier should be returned")
         var response: PSConfirmation?
         let identifier = "9ExARke12LrN4IY9gFv0mJUJ6LPUf2Jz"
-
+        
         client
             .getConfirmation(identifier: identifier)
             .done { response = $0 }
@@ -1053,7 +1060,7 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(response)
     }
-
+    
     func testCreatingIdentityDocument() {
         let expectation = XCTestExpectation(description: "Identity document should be created")
         var response: PSIdentityDocument?
@@ -1061,7 +1068,7 @@ class PayseraWalletSDKTests: XCTestCase {
         request.id = 4884446
         request.firstName = "Johny"
         request.lastName = "Appleseed"
-
+        
         client
             .createIdentityDocument(request: request)
             .done { response = $0 }
@@ -1175,7 +1182,7 @@ class PayseraWalletSDKTests: XCTestCase {
         transfer.performAt = Date().timeIntervalSince1970 + 24 * 60 * 60
         transfer.purpose = PSTransferPurpose()
         transfer.purpose?.details = "Hello internet"
-
+        
         client
             .createTransfer(transfer)
             .done { response = $0 }
@@ -1237,5 +1244,78 @@ class PayseraWalletSDKTests: XCTestCase {
             .finally { expectation.fulfill() }
         
         wait(for: [expectation], timeout: 5.0)
+    }
+    
+    func testGetPartnerTokens() {
+        let expectation = XCTestExpectation(description: "Pratner Tokens response must not be nil")
+        
+        var response: PSPartnerTokensResponse?
+        
+        let request = PSPartnerTokensRequest()
+        request.walletID = 4 // change to your wallet ID
+        request.partner = "inrento"
+        
+        authClient
+            .getPartnerTokens(payload: request)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testCreatePartnerOAuthRequest() {
+        let expectation = XCTestExpectation(description: "Create Partner OAuth response must not be nil")
+        
+        var response: PSCreatePartnerOAuthResponse?
+        
+        let request = PSPartnerTokensRequest()
+        request.walletID = 4 // change to your wallet ID
+        request.partner = "inrento"
+        
+        partnerClient
+            .createOAuthRequest(payload: request)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 10.0)
+        XCTAssertNotNil(response)
+    }
+    
+    func testApprovePartnerOAuthRequest() {
+        let expectation = XCTestExpectation(description: "Approve Partner OAuth response must not be nil")
+        
+        var response: PSApprovePartnerOAuthResponse?
+        
+        let key = "change_me" // to the `key` that you've gotten from the `createPartnerOAuthRequest`
+        
+        partnerClient
+            .approveOAuthRequest(key: key)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally {
+                expectation.fulfill()
+            }
+        
+        wait(for: [expectation], timeout: 5.0)
+        XCTAssertNotNil(response)
     }
 }

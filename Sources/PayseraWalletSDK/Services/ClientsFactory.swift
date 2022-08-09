@@ -92,6 +92,29 @@ public class ClientsFactory {
         )
     }
     
+    public static func createPartnerOAuthApiClient(
+        credentials: PSCredentials,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
+        logger: PSLoggerProtocol? = nil
+    ) -> PartnerOAuthWalletApiClient {
+        let interceptor = RequestSigningAdapter(
+            credentials: credentials,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
+        )
+        let session = createSession(with: interceptor)
+        
+        return PartnerOAuthWalletApiClient(
+            session: session,
+            publicWalletApiClient: publicWalletApiClient,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
+        )
+    }
+
     private static func createSession(with interceptor: RequestInterceptor? = nil) -> Session {
         Session(interceptor: interceptor)
     }

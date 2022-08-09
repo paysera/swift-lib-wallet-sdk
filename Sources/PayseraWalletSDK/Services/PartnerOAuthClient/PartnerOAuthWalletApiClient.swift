@@ -2,11 +2,15 @@ import Alamofire
 import PromiseKit
 
 public class PartnerOAuthWalletApiClient: BaseAsyncClient {
-    public func createOAuthRequest() -> Promise<Void> {
-        doRequest(requestRouter: PartnerOAuthApiRequestRouter.createOAuthRequest)
+    public func createOAuthRequest(
+        payload: PSPartnerTokensRequest
+    ) -> Promise<PSCreatePartnerOAuthResponse> {
+        doRequest(
+            requestRouter: PartnerOAuthApiRequestRouter.createOAuthRequest(payload: payload)
+        )
     }
     
-    public func approveOAuthRequest(key: String) -> Promise<Void> {
+    public func approveOAuthRequest(key: String) -> Promise<PSApprovePartnerOAuthResponse> {
         doRequest(requestRouter: PartnerOAuthApiRequestRouter.approveOAuthRequest(key: key))
     }
 }
