@@ -2,18 +2,17 @@ import Alamofire
 import Foundation
 
 enum OAuthApiRequestRouter {
-
-    // MARK: - POST
+    // POST
     case login(PSUserLoginRequest)
     case refreshToken(PSRefreshTokenRequest)
-    
-    // MARK: - PUT
+
+    // PUT
     case activate(accessToken: String)
     
-    // MARK: - Delete
+    // Delete
     case revoke(accessToken: String)
 
-    private static let baseURL = URL(string: "https://wallet-api.paysera.com")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/oauth/v1")!
     
     private var method: HTTPMethod {
         switch self {
@@ -34,10 +33,10 @@ enum OAuthApiRequestRouter {
         case .login,
              .refreshToken,
              .revoke:
-            return "oauth/v1/token"
+            return "token"
             
         case .activate(let accessToken):
-            return "oauth/v1/tokens/\(accessToken)/activate"
+            return "tokens/\(accessToken)/activate"
         }
     }
     
@@ -57,6 +56,8 @@ enum OAuthApiRequestRouter {
         }
     }
 }
+
+// MARK: - URLRequestConvertible
 
 extension OAuthApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {

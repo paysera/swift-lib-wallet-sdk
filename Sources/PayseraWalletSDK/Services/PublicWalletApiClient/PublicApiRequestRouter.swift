@@ -2,7 +2,7 @@ import Alamofire
 import Foundation
 
 enum PublicApiRequestRouter {
-    
+    // GET
     case getServerInformation
     case getServerConfiguration
     
@@ -10,9 +10,8 @@ enum PublicApiRequestRouter {
     
     private var method: HTTPMethod {
         switch self {
-        case .getServerInformation:
-            return .get
-        case .getServerConfiguration:
+        case .getServerInformation,
+             .getServerConfiguration:
             return .get
         }
     }
@@ -26,6 +25,8 @@ enum PublicApiRequestRouter {
         }
     }
 }
+
+// MARK: - URLRequestConvertible
 
 extension PublicApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
