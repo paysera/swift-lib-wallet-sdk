@@ -1251,7 +1251,7 @@ class PayseraWalletSDKTests: XCTestCase {
         
         var response: PSPartnerTokensOAuthResponse?
         
-        let request = PSPartnerTokensOAuthRequest()
+        let request = PSPartnerOAuthRequest()
         request.walletID = 4 // change to your wallet ID
         request.partner = "inrento"
         
@@ -1276,7 +1276,7 @@ class PayseraWalletSDKTests: XCTestCase {
         
         var response: PSCreatePartnerOAuthResponse?
         
-        let request = PSPartnerTokensOAuthRequest()
+        let request = PSPartnerOAuthRequest()
         request.walletID = 4 // change to your wallet ID
         request.partner = "inrento"
         

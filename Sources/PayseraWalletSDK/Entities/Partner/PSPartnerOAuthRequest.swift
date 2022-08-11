@@ -1,6 +1,6 @@
 import ObjectMapper
 
-public final class PSPartnerTokensOAuthRequest: Mappable {
+public final class PSPartnerOAuthRequest: Mappable {
     public var walletID: Int!
     public var partner: String!
     

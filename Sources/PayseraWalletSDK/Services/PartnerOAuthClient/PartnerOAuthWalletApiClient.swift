@@ -3,7 +3,7 @@ import PromiseKit
 
 public class PartnerOAuthWalletApiClient: BaseAsyncClient {
     public func createOAuthRequest(
-        payload: PSPartnerTokensOAuthRequest
+        payload: PSPartnerOAuthRequest
     ) -> Promise<PSCreatePartnerOAuthResponse> {
         doRequest(
             requestRouter: PartnerOAuthApiRequestRouter.createOAuthRequest(payload: payload)

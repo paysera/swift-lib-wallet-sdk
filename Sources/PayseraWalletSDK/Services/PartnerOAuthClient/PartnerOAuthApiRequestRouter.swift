@@ -3,7 +3,7 @@ import Foundation
 
 enum PartnerOAuthApiRequestRouter {
     // POST
-    case createOAuthRequest(payload: PSPartnerTokensOAuthRequest)
+    case createOAuthRequest(payload: PSPartnerOAuthRequest)
     
     // PUT
     case approveOAuthRequest(key: String)
