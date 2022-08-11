@@ -5,7 +5,7 @@ enum OAuthApiRequestRouter {
     // POST
     case login(PSUserLoginRequest)
     case refreshToken(PSRefreshTokenRequest)
-    case getPartnerTokens(PSPartnerTokensRequest)
+    case getPartnerTokens(PSPartnerTokensOAuthRequest)
 
     // PUT
     case activate(accessToken: String)

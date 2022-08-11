@@ -1249,9 +1249,9 @@ class PayseraWalletSDKTests: XCTestCase {
     func testGetPartnerTokens() {
         let expectation = XCTestExpectation(description: "Pratner Tokens response must not be nil")
         
-        var response: PSPartnerTokensResponse?
+        var response: PSPartnerTokensOAuthResponse?
         
-        let request = PSPartnerTokensRequest()
+        let request = PSPartnerTokensOAuthRequest()
         request.walletID = 4 // change to your wallet ID
         request.partner = "inrento"
         
@@ -1276,7 +1276,7 @@ class PayseraWalletSDKTests: XCTestCase {
         
         var response: PSCreatePartnerOAuthResponse?
         
-        let request = PSPartnerTokensRequest()
+        let request = PSPartnerTokensOAuthRequest()
         request.walletID = 4 // change to your wallet ID
         request.partner = "inrento"
         
@@ -1299,9 +1299,9 @@ class PayseraWalletSDKTests: XCTestCase {
     func testApprovePartnerOAuthRequest() {
         let expectation = XCTestExpectation(description: "Approve Partner OAuth response must not be nil")
         
-        var response: PSPartnerTokensResponse?
+        var response: PSPartnerTokensOAuthResponse?
         
-        let key = "change_me" // to the `key` that you've gotten from the `createPartnerOAuthRequest`
+        let key = "change_me" /// to the `key` that you've gotten from the `createPartnerOAuthRequest`
         
         partnerClient
             .approveOAuthRequest(key: key)

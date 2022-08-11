@@ -1,6 +1,6 @@
 import ObjectMapper
 
-public final class PSPartnerTokensResponse: Mappable {
+public final class PSPartnerTokensOAuthResponse: Mappable {
     public var relatedUserID: Int!
     public var authToken: String!
     public var authTokenExpiresIn: Int!
