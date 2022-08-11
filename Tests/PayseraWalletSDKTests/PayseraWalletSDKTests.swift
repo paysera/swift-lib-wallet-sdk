@@ -1299,7 +1299,7 @@ class PayseraWalletSDKTests: XCTestCase {
     func testApprovePartnerOAuthRequest() {
         let expectation = XCTestExpectation(description: "Approve Partner OAuth response must not be nil")
         
-        var response: PSApprovePartnerOAuthResponse?
+        var response: PSPartnerTokensResponse?
         
         let key = "change_me" // to the `key` that you've gotten from the `createPartnerOAuthRequest`
         

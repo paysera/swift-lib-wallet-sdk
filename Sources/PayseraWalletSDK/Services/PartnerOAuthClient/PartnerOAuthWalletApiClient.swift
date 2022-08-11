@@ -10,7 +10,7 @@ public class PartnerOAuthWalletApiClient: BaseAsyncClient {
         )
     }
     
-    public func approveOAuthRequest(key: String) -> Promise<PSApprovePartnerOAuthResponse> {
+    public func approveOAuthRequest(key: String) -> Promise<PSPartnerTokensResponse> {
         doRequest(requestRouter: PartnerOAuthApiRequestRouter.approveOAuthRequest(key: key))
     }
 }
