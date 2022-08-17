@@ -98,7 +98,7 @@ public class ClientsFactory {
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
         logger: PSLoggerProtocol? = nil
-    ) -> PartnerOAuthWalletApiClient {
+    ) -> PartnerOAuthWalletAsyncClient {
         let interceptor = RequestSigningAdapter(
             credentials: credentials,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
@@ -106,7 +106,7 @@ public class ClientsFactory {
         )
         let session = createSession(with: interceptor)
         
-        return PartnerOAuthWalletApiClient(
+        return PartnerOAuthWalletAsyncClient(
             session: session,
             publicWalletApiClient: publicWalletApiClient,
             rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,

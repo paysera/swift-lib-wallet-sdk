@@ -1,7 +1,8 @@
 import ObjectMapper
 
 public final class PSPartnerTokensOAuthResponse: Mappable {
-    public var relatedUserID: Int!
+    #warning("Should be changed to forceed unwrap once the response is OK")
+    public var relatedUserID: Int?
     public var authToken: String!
     public var authTokenExpiresIn: Int!
     public var refreshToken: String!
