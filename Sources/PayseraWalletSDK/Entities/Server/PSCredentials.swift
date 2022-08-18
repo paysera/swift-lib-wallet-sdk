@@ -10,6 +10,7 @@ public class PSCredentials: Mappable {
     public var expiresIn: TimeInterval?
     public var tokenType: String?
     public var validUntil: Date?
+    public var deletionRequestAt: Date?
     
     required public init?(map: Map) {
         do {
@@ -30,5 +31,6 @@ public class PSCredentials: Mappable {
         macKey              <- map["mac_key"]
         expiresIn           <- map["expires_in"]
         refreshToken        <- map["refresh_token"]
+        deletionRequestAt   <- map["deletion_request_at"]
     }
 }
