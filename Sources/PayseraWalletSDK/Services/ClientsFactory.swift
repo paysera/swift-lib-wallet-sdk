@@ -25,29 +25,6 @@ public class ClientsFactory {
         )
     }
     
-    public static func createOAuthClient(
-        credentials: PSCredentials,
-        publicWalletApiClient: PublicWalletApiClient,
-        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
-        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
-        logger: PSLoggerProtocol? = nil
-    ) -> OAuthAsyncClient {
-        let interceptor = RequestSigningAdapter(
-            credentials: credentials,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
-            logger: logger
-        )
-        let session = createSession(with: interceptor)
-        
-        return OAuthAsyncClient(
-            session: session,
-            publicWalletApiClient: publicWalletApiClient,
-            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
-            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
-            logger: logger
-        )
-    }
-    
     public static func createRefreshingWalletAsyncClient(
         activeCredentials: PSCredentials,
         inactiveCredentials: PSCredentials?,
@@ -71,6 +48,61 @@ public class ClientsFactory {
             activeCredentials: activeCredentials,
             inactiveCredentials: inactiveCredentials,
             grantType: grantType,
+            authAsyncClient: authAsyncClient,
+            publicWalletApiClient: publicWalletApiClient,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            accessTokenRefresherDelegate: accessTokenRefresherDelegate,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
+            logger: logger
+        )
+    }
+    
+    public static func createOAuthClient(
+        credentials: PSCredentials,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
+        logger: PSLoggerProtocol? = nil
+    ) -> OAuthAsyncClient {
+        let interceptor = RequestSigningAdapter(
+            credentials: credentials,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
+        )
+        let session = createSession(with: interceptor)
+        
+        return OAuthAsyncClient(
+            session: session,
+            publicWalletApiClient: publicWalletApiClient,
+            rateLimitUnlockerDelegate: rateLimitUnlockerDelegate,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
+        )
+    }
+    
+    public static func createRefreshingOAuthClient(
+        activeCredentials: PSCredentials,
+        inactiveCredentials: PSCredentials?,
+        authAsyncClient: OAuthAsyncClient,
+        publicWalletApiClient: PublicWalletApiClient,
+        serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
+        accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
+        rateLimitUnlockerDelegate: RateLimitUnlockerDelegate? = nil,
+        logger: PSLoggerProtocol? = nil
+    ) -> RefreshingOAuthAsyncClient {
+        let interceptor = RequestSigningAdapter(
+            credentials: activeCredentials,
+            serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
+            logger: logger
+        )
+        
+        let session = createSession(with: interceptor)
+        
+        return RefreshingOAuthAsyncClient(
+            session: session,
+            activeCredentials: activeCredentials,
+            inactiveCredentials: inactiveCredentials,
+            grantType: .refreshToken,
             authAsyncClient: authAsyncClient,
             publicWalletApiClient: publicWalletApiClient,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
@@ -114,7 +146,7 @@ public class ClientsFactory {
             logger: logger
         )
     }
-
+    
     private static func createSession(with interceptor: RequestInterceptor? = nil) -> Session {
         Session(interceptor: interceptor)
     }

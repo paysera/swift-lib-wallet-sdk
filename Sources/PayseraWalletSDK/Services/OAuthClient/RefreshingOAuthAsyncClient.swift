@@ -3,7 +3,7 @@ import Foundation
 import PayseraCommonSDK
 import PromiseKit
 
-public class RefreshingWalletAsyncClient: WalletAsyncClient {
+public class RefreshingOAuthAsyncClient: OAuthAsyncClient {
     private var activeCredentials: PSCredentials
     private var inactiveCredentials: PSCredentials?
     private let grantType: PSGrantType
@@ -123,7 +123,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
             
             refreshPromise
                 .done(on: workQueue) { credentials in
-                    self.handleSuccessfullTokenRefresh(with: credentials)
+                    self.handleSuccessfulTokenRefresh(with: credentials)
                     seal.fulfill(credentials)
                 }
                 .catch(on: workQueue) { error in
@@ -168,7 +168,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         }
     }
     
-    private func handleSuccessfullTokenRefresh(with credentials: PSCredentials) {
+    private func handleSuccessfulTokenRefresh(with credentials: PSCredentials) {
         tokenRefreshAttempt = 0
         updateActiveCredentials(using: credentials)
         tokenIsRefreshing = false

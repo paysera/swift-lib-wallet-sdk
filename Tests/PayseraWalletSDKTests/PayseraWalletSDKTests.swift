@@ -33,7 +33,7 @@ class PrintLogger: PSLoggerProtocol {
 
 class PayseraWalletSDKTests: XCTestCase {
     private var client: WalletAsyncClient!
-    private var partnerClient: PartnerOAuthWalletApiClient!
+    private var partnerClient: PartnerOAuthWalletAsyncClient!
     private var authClient: OAuthAsyncClient!
     private var token: String!
     
@@ -1277,7 +1277,7 @@ class PayseraWalletSDKTests: XCTestCase {
         var response: PSCreatePartnerOAuthResponse?
         
         let request = PSPartnerOAuthRequest()
-        request.walletID = 4 // change to your wallet ID
+        request.walletID = 4 /// change to your wallet ID
         request.partner = "inrento"
         
         partnerClient
