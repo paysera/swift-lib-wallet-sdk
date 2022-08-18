@@ -83,7 +83,6 @@ public class ClientsFactory {
     public static func createRefreshingOAuthClient(
         activeCredentials: PSCredentials,
         inactiveCredentials: PSCredentials?,
-        authAsyncClient: OAuthAsyncClient,
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
@@ -103,7 +102,6 @@ public class ClientsFactory {
             activeCredentials: activeCredentials,
             inactiveCredentials: inactiveCredentials,
             grantType: .refreshToken,
-            authAsyncClient: authAsyncClient,
             publicWalletApiClient: publicWalletApiClient,
             serverTimeSynchronizationProtocol: serverTimeSynchronizationProtocol,
             accessTokenRefresherDelegate: accessTokenRefresherDelegate,

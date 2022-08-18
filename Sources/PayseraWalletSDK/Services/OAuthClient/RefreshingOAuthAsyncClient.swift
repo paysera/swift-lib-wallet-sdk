@@ -8,7 +8,6 @@ public class RefreshingOAuthAsyncClient: OAuthAsyncClient {
     private var inactiveCredentials: PSCredentials?
     private let grantType: PSGrantType
     private let accessTokenRefresherDelegate: AccessTokenRefresherDelegate
-    private let authAsyncClient: OAuthAsyncClient
     private var tokenIsRefreshing = false
     private var tokenRefreshAttempt = 0
     
@@ -17,7 +16,6 @@ public class RefreshingOAuthAsyncClient: OAuthAsyncClient {
         activeCredentials: PSCredentials,
         inactiveCredentials: PSCredentials?,
         grantType: PSGrantType,
-        authAsyncClient: OAuthAsyncClient,
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
@@ -27,7 +25,6 @@ public class RefreshingOAuthAsyncClient: OAuthAsyncClient {
         self.activeCredentials = activeCredentials
         self.inactiveCredentials = inactiveCredentials
         self.grantType = grantType
-        self.authAsyncClient = authAsyncClient
         self.accessTokenRefresherDelegate = accessTokenRefresherDelegate
         
         super.init(
@@ -142,7 +139,7 @@ public class RefreshingOAuthAsyncClient: OAuthAsyncClient {
         switch grantType {
         case .refreshToken:
             if let activeRefreshToken = activeRefreshToken {
-                return authAsyncClient.refreshToken(
+                return refreshToken(
                     activeRefreshToken,
                     grantType: grantType,
                     code: code,
@@ -153,14 +150,13 @@ public class RefreshingOAuthAsyncClient: OAuthAsyncClient {
             }
         case .refreshTokenWithActivation:
             if let inactiveAccessToken = inactiveCredentials?.accessToken {
-                return authAsyncClient.activate(accessToken: inactiveAccessToken)
+                return activate(accessToken: inactiveAccessToken)
             } else if let activeRefreshToken = activeRefreshToken {
-                return authAsyncClient
-                    .refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
+                return refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                     .get(on: workQueue) { self.updateInactiveCredentials(to: $0) }
                     .compactMap(on: workQueue) { $0.accessToken }
                     .then(on: workQueue) { inactiveAccessToken in
-                        self.authAsyncClient.activate(accessToken: inactiveAccessToken)
+                        self.activate(accessToken: inactiveAccessToken)
                     }
             } else {
                 return .init(error: PSApiError.unknown())
