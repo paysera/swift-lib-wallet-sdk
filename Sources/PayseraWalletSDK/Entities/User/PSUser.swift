@@ -1,4 +1,5 @@
 import ObjectMapper
+import Foundation
 
 public class PSUser: Mappable {
     public var id: Int
