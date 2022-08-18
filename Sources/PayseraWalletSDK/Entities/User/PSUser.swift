@@ -12,11 +12,11 @@ public class PSUser: Mappable {
     public var defaultCurrency: String?
     public var wallets = [Int]()
     public var dob: String?
+    public var deletionRequestAt: Date?
     
     required public init?(map: Map) {
         do {
             id = try map.value("id")
-            
         } catch {
             return nil
         }
@@ -35,5 +35,6 @@ public class PSUser: Mappable {
         defaultCurrency     <- map["options.default_currency"]
         wallets             <- map["wallets"]
         dob                 <- map["dob"]
+        deletionRequestAt   <- map["deletion_request_at"]
     }
 }
