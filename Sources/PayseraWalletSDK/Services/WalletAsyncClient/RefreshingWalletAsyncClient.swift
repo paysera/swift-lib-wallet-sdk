@@ -134,6 +134,10 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
                 scopes: scopes
             )
             
+            print("==========")
+            print(scopes)
+            print("==========")
+            
             refreshPromise
                 .done(on: workQueue) { credentials in
                     self.handleSuccessfullTokenRefresh(with: credentials)
