@@ -13,7 +13,7 @@ public class PSUser: Mappable {
     public var defaultCurrency: String?
     public var wallets = [Int]()
     public var dob: String?
-    public var deletionRequestAt: Date?
+    public var deletionRequestAt: String?
     
     required public init?(map: Map) {
         do {
