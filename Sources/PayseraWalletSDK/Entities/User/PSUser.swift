@@ -25,8 +25,6 @@ public class PSUser: Mappable {
     
     // Mappable
     public func mapping(map: Map) {
-        print(map.JSON)
-        
         id                  <- map["id"]
         displayName         <- map["display_name"]
         identity            <- map["identity"]
