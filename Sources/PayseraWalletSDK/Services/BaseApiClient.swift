@@ -4,11 +4,11 @@ import ObjectMapper
 import PayseraCommonSDK
 import PromiseKit
 
-public class BaseAsyncClient {
+public class BaseApiClient {
     let session: Session
     let logger: PSLoggerProtocol?
     
-    let workQueue = DispatchQueue(label: String(describing: BaseAsyncClient.self))
+    let workQueue = DispatchQueue(label: String(describing: BaseApiClient.self))
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
     

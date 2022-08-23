@@ -1,12 +1,12 @@
 import Alamofire
 import PromiseKit
 
-public class PublicWalletApiClient: BaseAsyncClient {
+public class PublicWalletApiClient: BaseApiClient {
     public func getServerInformation() -> Promise<PSServerInformation> {
-        doRequest(requestRouter: PublicApiRequestRouter.getServerInformation)
+        doRequest(requestRouter: PublicWalletApiRequestRouter.getServerInformation)
     }
     
     public func getServerConfiguration() -> Promise<PSServerConfiguration> {
-        doRequest(requestRouter: PublicApiRequestRouter.getServerConfiguration)
+        doRequest(requestRouter: PublicWalletApiRequestRouter.getServerConfiguration)
     }
 }

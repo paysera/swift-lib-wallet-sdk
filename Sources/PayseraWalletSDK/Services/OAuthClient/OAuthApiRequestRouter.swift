@@ -5,7 +5,6 @@ enum OAuthApiRequestRouter {
     // POST
     case login(PSUserLoginRequest)
     case refreshToken(PSRefreshTokenRequest)
-    case getPartnerTokens(PSPartnerOAuthRequest)
 
     // PUT
     case activate(accessToken: String)
@@ -18,8 +17,7 @@ enum OAuthApiRequestRouter {
     private var method: HTTPMethod {
         switch self {
         case .login,
-             .refreshToken,
-             .getPartnerTokens:
+                .refreshToken:
             return .post
             
         case .activate:
@@ -39,9 +37,6 @@ enum OAuthApiRequestRouter {
             
         case .activate(let accessToken):
             return "tokens/\(accessToken)/activate"
-            
-        case .getPartnerTokens:
-            return "partner-tokens"
         }
     }
     
@@ -55,9 +50,6 @@ enum OAuthApiRequestRouter {
             
         case .revoke(let accessToken):
             return ["access_token": accessToken]
-            
-        case .getPartnerTokens(let partnerData):
-            return partnerData.toJSON()
             
         default:
             return nil
@@ -77,8 +69,7 @@ extension OAuthApiRequestRouter: URLRequestConvertible {
         case .refreshToken,
              .revoke,
              .login,
-             .activate,
-             .getPartnerTokens:
+             .activate:
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
         }
         

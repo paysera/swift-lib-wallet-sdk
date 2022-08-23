@@ -1,7 +1,7 @@
 import Alamofire
 import Foundation
 
-enum PublicApiRequestRouter {
+enum PublicWalletApiRequestRouter {
     // GET
     case getServerInformation
     case getServerConfiguration
@@ -28,7 +28,7 @@ enum PublicApiRequestRouter {
 
 // MARK: - URLRequestConvertible
 
-extension PublicApiRequestRouter: URLRequestConvertible {
+extension PublicWalletApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
         let url = Self.baseURL.appendingPathComponent(path)
         var urlRequest = URLRequest(url: url)

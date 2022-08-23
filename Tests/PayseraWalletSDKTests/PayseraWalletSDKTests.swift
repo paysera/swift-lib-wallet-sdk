@@ -32,9 +32,10 @@ class PrintLogger: PSLoggerProtocol {
 }
 
 class PayseraWalletSDKTests: XCTestCase {
-    private var client: WalletAsyncClient!
-    private var partnerClient: PartnerOAuthWalletAsyncClient!
-    private var authClient: OAuthAsyncClient!
+    private var client: WalletApiClient!
+    private var partnerOauthClient: PartnerOAuthApiClient!
+    private var partnerTokenClient: PartnerTokenApiClient!
+    private var authClient: OAuthApiClient!
     private var token: String!
     
     override func setUp() {
@@ -44,7 +45,7 @@ class PayseraWalletSDKTests: XCTestCase {
         userCredentials.accessToken = "change_me"
         userCredentials.macKey = "change_me"
         
-        client = ClientsFactory.createWalletAsyncClient(
+        client = ClientsFactory.createWalletApiClient(
             credentials: userCredentials,
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
@@ -54,13 +55,19 @@ class PayseraWalletSDKTests: XCTestCase {
         appCredentials.accessToken = "change_me"
         appCredentials.macKey = "change_me"
         
-        authClient = ClientsFactory.createOAuthClient(
+        authClient = ClientsFactory.createOAuthApiClient(
             credentials: appCredentials,
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
         )
         
-        partnerClient = ClientsFactory.createPartnerOAuthApiClient(
+        partnerOauthClient = ClientsFactory.createPartnerOAuthApiClient(
+            credentials: appCredentials,
+            publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
+            serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
+        )
+        
+        partnerTokenClient = ClientsFactory.createPartnerTokenApiClient(
             credentials: appCredentials,
             publicWalletApiClient: ClientsFactory.createPublicWalletApiClient(),
             serverTimeSynchronizationProtocol: ServerTimeSynchronizationManager()
@@ -80,7 +87,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 print(error)
             }.finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 10)
         XCTAssertNotNil(object)
     }
     
@@ -172,8 +179,8 @@ class PayseraWalletSDKTests: XCTestCase {
         let expectation = XCTestExpectation(description: "")
         let scopes = ["logged_in"]
         let userData = PSUserLoginRequest()
-        userData.username = "change_me"
-        userData.password = "change_me"
+        userData.username = "John Appleseed"
+        userData.password = "asd123asd123"
         userData.scopes = scopes
         userData.grantType = "password"
         authClient.loginUser(userData).done { res in
@@ -181,7 +188,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally { expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 5.0)
         XCTAssertNotNil(object)
     }
     
@@ -1255,7 +1262,7 @@ class PayseraWalletSDKTests: XCTestCase {
         request.walletID = 4 // change to your wallet ID
         request.partner = "inrento"
         
-        authClient
+        partnerTokenClient
             .getPartnerTokens(payload: request)
             .done { data in
                 response = data
@@ -1280,7 +1287,7 @@ class PayseraWalletSDKTests: XCTestCase {
         request.walletID = 4 /// change to your wallet ID
         request.partner = "inrento"
         
-        partnerClient
+        partnerOauthClient
             .createOAuthRequest(payload: request)
             .done { data in
                 response = data
@@ -1303,7 +1310,7 @@ class PayseraWalletSDKTests: XCTestCase {
         
         let key = "change_me" /// to the `key` that you've gotten from the `createPartnerOAuthRequest`
         
-        partnerClient
+        partnerOauthClient
             .approveOAuthRequest(key: key)
             .done { data in
                 response = data

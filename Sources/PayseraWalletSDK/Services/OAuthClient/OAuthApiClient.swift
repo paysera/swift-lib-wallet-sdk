@@ -1,7 +1,6 @@
 import PromiseKit
 
-public class OAuthAsyncClient: BaseAsyncClient {
-    
+public class OAuthApiClient: BaseApiClient {
     public func loginUser(_ userLoginData: PSUserLoginRequest) -> Promise<PSCredentials> {
         doRequest(requestRouter: OAuthApiRequestRouter.login(userLoginData))
     }
@@ -27,11 +26,5 @@ public class OAuthAsyncClient: BaseAsyncClient {
     
     public func activate(accessToken: String) -> Promise<PSCredentials>{
         doRequest(requestRouter: OAuthApiRequestRouter.activate(accessToken: accessToken))
-    }
-    
-    public func getPartnerTokens(
-        payload: PSPartnerOAuthRequest
-    ) -> Promise<PSPartnerTokensOAuthResponse> {
-        doRequest(requestRouter: OAuthApiRequestRouter.getPartnerTokens(payload))
     }
 }
