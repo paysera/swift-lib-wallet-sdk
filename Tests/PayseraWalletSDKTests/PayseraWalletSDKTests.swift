@@ -37,6 +37,7 @@ class PayseraWalletSDKTests: XCTestCase {
     private var partnerTokenClient: PartnerTokenApiClient!
     private var authClient: OAuthApiClient!
     private var token: String!
+    private let timeout: Double = 5
     
     override func setUp() {
         super.setUp()
@@ -87,7 +88,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 print(error)
             }.finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 10)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -112,7 +113,7 @@ class PayseraWalletSDKTests: XCTestCase {
             }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -128,7 +129,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 print(error)
             }.finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -142,7 +143,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -156,7 +157,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -170,7 +171,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -179,8 +180,8 @@ class PayseraWalletSDKTests: XCTestCase {
         let expectation = XCTestExpectation(description: "")
         let scopes = ["logged_in"]
         let userData = PSUserLoginRequest()
-        userData.username = "John Appleseed"
-        userData.password = "asd123asd123"
+        userData.username = "change_me"
+        userData.password = "change_me"
         userData.scopes = scopes
         userData.grantType = "password"
         authClient.loginUser(userData).done { res in
@@ -188,7 +189,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally { expectation.fulfill()}
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -208,7 +209,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -229,7 +230,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -241,7 +242,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -258,7 +259,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -271,7 +272,7 @@ class PayseraWalletSDKTests: XCTestCase {
         }.catch { error in
             print(error)
         }.finally {expectation.fulfill()}
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(object)
     }
     
@@ -297,7 +298,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testUpdatingSubscriber() {
@@ -328,7 +329,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testGetEvents() {
@@ -343,7 +344,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -358,7 +359,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -372,7 +373,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -394,7 +395,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertEqual(response?.items.count ?? 0, expectedStatementCount)
     }
     
@@ -413,7 +414,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -428,7 +429,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -448,7 +449,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertEqual(response?.accountInformation.accountDescription, newDescription, "Account description should be equal to new description")
     }
     
@@ -464,7 +465,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response?.accountInformation, "Wallet should contain account information")
         XCTAssertNil(response?.accountInformation.accountDescription, "Wallet description should be nil")
     }
@@ -479,7 +480,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -493,7 +494,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -507,7 +508,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -521,7 +522,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -535,7 +536,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -552,7 +553,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -568,7 +569,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -586,7 +587,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -604,7 +605,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -619,7 +620,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -639,7 +640,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -654,7 +655,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -669,7 +670,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -687,7 +688,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertEqual(position.latitude, response?.latitude)
         XCTAssertEqual(position.longitude, response?.longitude)
         XCTAssertEqual(position.type, response?.type)
@@ -704,7 +705,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -719,7 +720,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response?.id)
     }
     
@@ -737,7 +738,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertEqual(contactBookId, response?.id, "Contact book id must be equal to updated book id")
     }
     
@@ -754,7 +755,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testCalculateCurrencyConversionWithFromAmount() {
@@ -774,7 +775,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response?.toAmountDecimal, "Response should have toAmountDecimal set")
     }
     
@@ -795,7 +796,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response?.fromAmountDecimal, "Response should have fromAmountDecimal set")
     }
     
@@ -817,7 +818,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response?.toAmountDecimal, "Response should have toAmountDecimal set")
         XCTAssertNotNil(response?.date, "Response should have date set")
         XCTAssertNotNil(response?.id, "Response should have id set")
@@ -840,7 +841,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error = $0 as? PSApiError }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(error, "Conversion should fail with an error")
         XCTAssertEqual(error?.description, "To amount is smaller than expected", "Appropriate error should be returned")
     }
@@ -862,7 +863,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error = $0 as? PSApiError }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(error, "Conversion should fail with an error")
         XCTAssertEqual(error?.description, "From amount is larger than expected", "Appropriate error should be returned")
     }
@@ -878,7 +879,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -904,7 +905,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -919,7 +920,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -933,7 +934,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testGetTransfers() {
@@ -949,7 +950,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -964,7 +965,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -980,7 +981,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -996,7 +997,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1011,7 +1012,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1030,7 +1031,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertEqual(response?.status, "rejected", "Confirmation should be rejected")
     }
     
@@ -1049,7 +1050,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertEqual(response?.status, "confirmed", "Confirmation should be confirmed")
     }
     
@@ -1064,7 +1065,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1082,7 +1083,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1098,7 +1099,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testSubmittingDocumentPhoto() {
@@ -1113,7 +1114,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testSubmittingIdentificationRequest() {
@@ -1129,7 +1130,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1143,7 +1144,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testDeleteAvatar() {
@@ -1155,7 +1156,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testCreatingAuthToken() {
@@ -1168,7 +1169,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1196,7 +1197,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1210,7 +1211,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response?.token)
     }
     
@@ -1231,7 +1232,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 expectation.fulfill()
             }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testUploadAdditionalDocument() {
@@ -1250,7 +1251,7 @@ class PayseraWalletSDKTests: XCTestCase {
             .catch { error in XCTFail(error.localizedDescription) }
             .finally { expectation.fulfill() }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
     }
     
     func testGetPartnerTokens() {
@@ -1274,7 +1275,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 expectation.fulfill()
             }
         
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1299,7 +1300,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 expectation.fulfill()
             }
         
-        wait(for: [expectation], timeout: 10.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
     
@@ -1322,7 +1323,7 @@ class PayseraWalletSDKTests: XCTestCase {
                 expectation.fulfill()
             }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
 }
