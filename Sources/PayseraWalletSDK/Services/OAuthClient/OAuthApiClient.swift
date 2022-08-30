@@ -1,7 +1,6 @@
 import PromiseKit
 
-public class OAuthAsyncClient: BaseAsyncClient {
-    
+public class OAuthApiClient: BaseApiClient {
     public func loginUser(_ userLoginData: PSUserLoginRequest) -> Promise<PSCredentials> {
         doRequest(requestRouter: OAuthApiRequestRouter.login(userLoginData))
     }
@@ -13,7 +12,6 @@ public class OAuthAsyncClient: BaseAsyncClient {
         scopes: [String]? = nil
     ) -> Promise<PSCredentials> {
         let refreshTokenRequest = PSRefreshTokenRequest()
-        
         refreshTokenRequest.grantType = grantType.rawValue
         refreshTokenRequest.refreshToken = refreshToken
         refreshTokenRequest.scopes = scopes

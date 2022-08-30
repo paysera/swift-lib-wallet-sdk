@@ -68,6 +68,7 @@ public class RequestSigningAdapter: RequestInterceptor {
         
         let timeStamp = String(format: "%.0f", Date().timeIntervalSince1970 + timeDiff)
         let pathRange = requestURL.absoluteString.range(of: (requestURL.path))
+        #warning("❌ Change the deprecated function")
         let fullPath = requestURL.absoluteString.substring(from: (pathRange?.lowerBound)!)
         contentsHash.append(extraParameters)
         let items: [String] = [timeStamp, nonce, httpMethod.uppercased(), fullPath, (requestURL.host)!, port, contentsHash, ""]

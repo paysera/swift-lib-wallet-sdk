@@ -10,7 +10,7 @@ enum WalletApiRequestRouter {
     case putWithData(path: String, data: Data, contentType: String)
     case delete(path: String, parameters: [String: Any]?)
     
-    // MARK: - GET
+    // GET
     case getLocations(PSGetLocationsRequest)
     case getLocationCategories(locale: String)
     case getCurrentUser
@@ -41,7 +41,7 @@ enum WalletApiRequestRouter {
     case getConfirmations(filter: PSConfirmationFilter)
     case getConfirmation(identifier: String)
     
-    // MARK: - POST
+    // POST
     case registerClient(PSCreateClientRequest)
     case registerUser(PSUserRegistrationRequest)
     case resetPassword(PSPasswordResetRequest)
@@ -71,7 +71,7 @@ enum WalletApiRequestRouter {
         contentType: String
     )
     
-    // MARK: - PUT
+    // PUT
     case verifyPhone(userId: Int, code: String)
     case verifyEmail(userId: Int, code: String)
     case checkIn(spotId: Int, fields: [String])
@@ -91,7 +91,7 @@ enum WalletApiRequestRouter {
     case submitIdentificationRequest(requestId: Int)
     case uploadAvatar(imageData: Data, contentType: String)
     
-    // MARK: - DELETE
+    // DELETE
     case deleteTransaction(key: String)
     case deleteSubscriber(subscriberId: Int)
     case deleteSubscribers

@@ -3,25 +3,12 @@ import Foundation
 import PayseraCommonSDK
 import PromiseKit
 
-public protocol AccessTokenRefresherDelegate {
-    func activeCredentialsDidUpdate(to activeCredentials: PSCredentials)
-    func inactiveCredentialsDidUpdate(to inactiveCredentials: PSCredentials?)
-    func refreshTokenIsInvalid(_ error: Error, refreshToken: String?)
-    func shouldRefreshTokenBeforeRequest(with activeCredentials: PSCredentials) -> Bool
-}
-
-public extension AccessTokenRefresherDelegate {
-    func shouldRefreshTokenBeforeRequest(with activeCredentials: PSCredentials) -> Bool {
-        false
-    }
-}
-
-public class RefreshingWalletAsyncClient: WalletAsyncClient {
+public class RefreshingWalletApiClient: WalletApiClient {
     private var activeCredentials: PSCredentials
     private var inactiveCredentials: PSCredentials?
     private let grantType: PSGrantType
     private let accessTokenRefresherDelegate: AccessTokenRefresherDelegate
-    private let authAsyncClient: OAuthAsyncClient
+    private let authApiClient: OAuthApiClient
     private var tokenIsRefreshing = false
     private var tokenRefreshAttempt = 0
     
@@ -30,7 +17,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         activeCredentials: PSCredentials,
         inactiveCredentials: PSCredentials?,
         grantType: PSGrantType,
-        authAsyncClient: OAuthAsyncClient,
+        authApiClient: OAuthApiClient,
         publicWalletApiClient: PublicWalletApiClient,
         serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol,
         accessTokenRefresherDelegate: AccessTokenRefresherDelegate,
@@ -40,7 +27,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         self.activeCredentials = activeCredentials
         self.inactiveCredentials = inactiveCredentials
         self.grantType = grantType
-        self.authAsyncClient = authAsyncClient
+        self.authApiClient = authApiClient
         self.accessTokenRefresherDelegate = accessTokenRefresherDelegate
         
         super.init(
@@ -155,7 +142,7 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
         switch grantType {
         case .refreshToken:
             if let activeRefreshToken = activeRefreshToken {
-                return authAsyncClient.refreshToken(
+                return authApiClient.refreshToken(
                     activeRefreshToken,
                     grantType: grantType,
                     code: code,
@@ -166,14 +153,14 @@ public class RefreshingWalletAsyncClient: WalletAsyncClient {
             }
         case .refreshTokenWithActivation:
             if let inactiveAccessToken = inactiveCredentials?.accessToken {
-                return authAsyncClient.activate(accessToken: inactiveAccessToken)
+                return authApiClient.activate(accessToken: inactiveAccessToken)
             } else if let activeRefreshToken = activeRefreshToken {
-                return authAsyncClient
+                return authApiClient
                     .refreshToken(activeRefreshToken, grantType: grantType, code: code, scopes: scopes)
                     .get(on: workQueue) { self.updateInactiveCredentials(to: $0) }
                     .compactMap(on: workQueue) { $0.accessToken }
                     .then(on: workQueue) { inactiveAccessToken in
-                        self.authAsyncClient.activate(accessToken: inactiveAccessToken)
+                        self.authApiClient.activate(accessToken: inactiveAccessToken)
                     }
             } else {
                 return .init(error: PSApiError.unknown())

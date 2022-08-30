@@ -3,7 +3,7 @@ import PayseraAccountsSDK
 import PayseraCommonSDK
 import PromiseKit
 
-public class WalletAsyncClient: BaseAsyncClient {
+public class WalletApiClient: BaseApiClient {
     
     public func registerNewAuthClient(deviceInfo: PSCreateClientRequest) -> Promise<PSClient> {
         doRequest(requestRouter: WalletApiRequestRouter.registerClient(deviceInfo))
