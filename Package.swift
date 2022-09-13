@@ -11,12 +11,12 @@ let package = Package(
         .package(
             name: "PayseraCommonSDK",
             url: "https://github.com/paysera/swift-lib-common-sdk",
-            .exact("4.2.1")
+            .exact("4.2.2")
         ),
         .package(
             name: "PayseraAccountsSDK",
             url: "https://github.com/paysera/swift-lib-accounts-sdk",
-            from: "8.2.0"
+            from: "8.2.1"
         ),
         .package(
             url: "https://github.com/krzyzanowskim/CryptoSwift",
