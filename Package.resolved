@@ -39,7 +39,7 @@
       },
       {
         "package": "ObjectMapper",
-        "repositoryURL": "https://github.com/Hearst-DD/ObjectMapper",
+        "repositoryURL": "https://github.com/tristanhimmelman/ObjectMapper",
         "state": {
           "branch": null,
           "revision": "0b96a734de3ea1c87374ae677064f86adb0716ec",
@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/paysera/swift-lib-accounts-sdk",
         "state": {
           "branch": null,
-          "revision": "f3ea2d167d2412e12b398fe4bc869e273ca82766",
-          "version": "8.2.0"
+          "revision": "bf9b8f363b156500442578d6bea54b0096b203f3",
+          "version": "8.6.1"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/paysera/swift-lib-common-sdk",
         "state": {
           "branch": null,
-          "revision": "945750c023796838c76293bdccc4e374f677833a",
-          "version": "4.2.1"
+          "revision": "db4b6caf2bf8533f75388c625ffa642b3b2518d8",
+          "version": "4.2.2"
         }
       }
     ]
