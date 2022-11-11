@@ -189,7 +189,7 @@ public class BaseApiClient {
             siteKey: siteKey,
             lastRequestBody: apiRequest.requestEndPoint.urlRequest?.httpBody
         ) { [weak self] didUnlock in
-            guard let self else { return }
+            guard let self = self else { return }
             
             self.workQueue.async {
                 if didUnlock {
