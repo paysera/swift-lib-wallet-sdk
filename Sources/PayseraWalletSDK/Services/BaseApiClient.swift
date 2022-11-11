@@ -184,10 +184,12 @@ public class BaseApiClient {
     ) {
         hasReachedRetryLimit = true
         requestsQueue.append(apiRequest)
-        rateLimitUnlockerDelegate?.unlock(url: unlockURL, siteKey: siteKey) { [weak self] didUnlock in
-            guard let self = self else {
-                return
-            }
+        rateLimitUnlockerDelegate?.unlock(
+            url: unlockURL,
+            siteKey: siteKey,
+            lastRequestBody: apiRequest.requestEndPoint.urlRequest?.httpBody
+        ) { [weak self] didUnlock in
+            guard let self else { return }
             
             self.workQueue.async {
                 if didUnlock {
