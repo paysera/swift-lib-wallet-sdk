@@ -7,7 +7,13 @@ public protocol RateLimitUnlockerDelegate {
     /// - Parameters:
     ///   - url: URL which should be used to uplift request limit
     ///   - siteKey: Site key used to display the challenge
+    ///   - previousRequestBody: Body of the request that causes the rate limit (if there is any)
     ///   - completion: Completion handler which indicates if the challenge was successfully solved. The completion handler is
     ///   called on **the internal work queue**.
-    func unlock(url: URL, siteKey: String, completion: @escaping (Bool) -> Void)
+    func unlock(
+        url: URL,
+        siteKey: String,
+        lastRequestBody: Data?,
+        completion: @escaping (Bool) -> Void
+    )
 }

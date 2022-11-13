@@ -47,7 +47,6 @@ enum WalletApiRequestRouter {
     case resetPassword(PSPasswordResetRequest)
     case sendPhoneVerificationCode(userId: Int, phone: String, scopes: [String])
     case sendEmailVerificationCode(userId: Int, email: String)
-    case changePassword(userId: Int, PSPasswordChangeRequest)
     case createTransaction(PSTransaction)
     case createTransactionInProject(PSTransaction, projectId: Int, locationId: Int)
     case createTransactionRequest(key: String, request: PSTransactionRequest)
@@ -74,6 +73,7 @@ enum WalletApiRequestRouter {
     // PUT
     case verifyPhone(userId: Int, code: String)
     case verifyEmail(userId: Int, code: String)
+    case changePassword(userId: Int, PSPasswordChangeRequest)
     case checkIn(spotId: Int, fields: [String])
     case reserveTransaction(key: String, reservationCode: String)
     case confirmTransaction(key: String, projectId: Int, locationId: Int)
@@ -90,6 +90,7 @@ enum WalletApiRequestRouter {
     case submitDocumentPhoto(documentId: Int, order: Int, data: Data, contentType: String)
     case submitIdentificationRequest(requestId: Int)
     case uploadAvatar(imageData: Data, contentType: String)
+    case rejectConfirmation(identifier: String)
     
     // DELETE
     case deleteTransaction(key: String)
@@ -100,7 +101,6 @@ enum WalletApiRequestRouter {
     case cancelPendingPayment(walletId: Int, pendingPaymentId: Int)
     case deleteFromContactBook(contactBookId: Int, request: PSContactBookRequest)
     case deleteCard(cardId: Int)
-    case rejectConfirmation(identifier: String)
     case deleteAvatar
     
     // MARK: - Variables

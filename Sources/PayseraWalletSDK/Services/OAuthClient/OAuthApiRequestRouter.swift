@@ -17,7 +17,7 @@ enum OAuthApiRequestRouter {
     private var method: HTTPMethod {
         switch self {
         case .login,
-                .refreshToken:
+             .refreshToken:
             return .post
             
         case .activate:
