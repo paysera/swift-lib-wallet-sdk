@@ -183,23 +183,22 @@ public class BaseApiClient {
         siteKey: String
     ) {
         hasReachedRetryLimit = true
-        requestsQueue.append(apiRequest)
+//        requestsQueue.append(apiRequest)
         rateLimitUnlockerDelegate?.unlock(
             url: unlockURL,
             siteKey: siteKey,
             lastRequestBody: apiRequest.requestEndPoint.urlRequest?.httpBody
         ) { [weak self] didUnlock in
             guard let self = self else { return }
-            
-            self.workQueue.async {
-                if didUnlock {
-                    self.hasReachedRetryLimit = false
-                    self.resumeQueue()
-                } else {
-                    self.cancelQueue(error: PSApiError.cancelled())
-                    self.hasReachedRetryLimit = false
-                }
+
+            if didUnlock {
+                apiRequest.pendingPromise.resolver.reject(PSApiError.silenced())
+            } else {
+                apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
             }
+            
+//            self.cancelQueue(error: PSApiError.cancelled())
+            self.hasReachedRetryLimit = false
         }
     }
     
