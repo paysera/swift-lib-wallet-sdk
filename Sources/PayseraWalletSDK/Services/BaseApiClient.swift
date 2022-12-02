@@ -183,7 +183,6 @@ public class BaseApiClient {
         siteKey: String
     ) {
         hasReachedRetryLimit = true
-//        requestsQueue.append(apiRequest)
         rateLimitUnlockerDelegate?.unlock(
             url: unlockURL,
             siteKey: siteKey,
@@ -197,7 +196,6 @@ public class BaseApiClient {
                 apiRequest.pendingPromise.resolver.reject(PSApiError.cancelled())
             }
             
-//            self.cancelQueue(error: PSApiError.cancelled())
             self.hasReachedRetryLimit = false
         }
     }
