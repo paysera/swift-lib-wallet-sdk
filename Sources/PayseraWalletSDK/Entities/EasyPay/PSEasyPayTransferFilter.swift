@@ -11,4 +11,3 @@ public final class PSEasyPayTransferFilter: PSBaseFilter {
         beneficiaryUserID   <- map["beneficiary_user_id"]
     }
 }
-
