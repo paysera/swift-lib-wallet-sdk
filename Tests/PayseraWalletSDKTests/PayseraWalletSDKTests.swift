@@ -5,12 +5,8 @@ import PayseraWalletSDK
 import PromiseKit
 
 class ServerTimeSynchronizationManager: ServerTimeSynchronizationProtocol {
-    func getServerTimeDifference() -> TimeInterval {
-        return 0
-    }
-    
-    func serverTimeDifferenceRefreshed(diff: TimeInterval) {
-    }
+    func getServerTimeDifference() -> TimeInterval { .zero }
+    func serverTimeDifferenceRefreshed(diff: TimeInterval) {}
 }
 
 class PrintLogger: PSLoggerProtocol {
@@ -1260,7 +1256,7 @@ class PayseraWalletSDKTests: XCTestCase {
         var response: PSPartnerTokensOAuthResponse?
         
         let request = PSPartnerOAuthRequest()
-        request.walletID = 4 // change to your wallet ID
+        request.walletID = 4 /// change to your wallet ID
         request.partner = "inrento"
         
         partnerTokenClient
@@ -1323,6 +1319,88 @@ class PayseraWalletSDKTests: XCTestCase {
                 expectation.fulfill()
             }
         
+        wait(for: [expectation], timeout: timeout)
+        XCTAssertNotNil(response)
+    }
+    
+    func testCreateEasyPayTransfer() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer must exist")
+        var response: PSEasyPayTransfer?
+        let amount = "insert_me"
+        let currency = "insert_me"
+        let beneficiaryID = 0
+
+        client
+            .createEasyPayTransfer(
+                amount: .init(amount: amount, currency: currency),
+                beneficiaryID: beneficiaryID
+            )
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+
+        wait(for: [expectation], timeout: timeout)
+        XCTAssertNotNil(response)
+    }
+
+    func testCancelEasyPayTransfer() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer must exist")
+        var response: PSEasyPayTransfer?
+        let id = 0
+
+        client
+            .cancelEasyPayTransfer(id: id)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+
+        wait(for: [expectation], timeout: timeout)
+        XCTAssertNotNil(response)
+    }
+
+    func testGetEasyPayFee() {
+        let expectation = XCTestExpectation(description: "PSEasyPayFee must exist")
+        var response: PSEasyPayFee?
+        let amount = "insert_me"
+        let currency = "insert_me"
+
+        client
+            .getEasyPayFee(amount: .init(amount: amount, currency: currency))
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+
+        wait(for: [expectation], timeout: timeout)
+        XCTAssertNotNil(response)
+    }
+
+    func testGetEasyPayTransfers() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer items must exist")
+        var response: PSMetadataAwareResponse<PSEasyPayTransfer>?
+        let filter = PSEasyPayTransferFilter()
+
+        client
+            .getEasyPayTransfers(filter: filter)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+
         wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }

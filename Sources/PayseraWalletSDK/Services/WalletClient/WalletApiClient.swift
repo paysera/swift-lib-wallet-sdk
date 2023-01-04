@@ -575,4 +575,32 @@ public class WalletApiClient: BaseApiClient {
             )
         )
     }
+    
+    public func getEasyPayFee(amount: PSMoney) -> Promise<PSEasyPayFee> {
+        doRequest(requestRouter: WalletApiRequestRouter.getEasyPayFee(amount: amount))
+    }
+
+    public func createEasyPayTransfer(
+        amount: PSMoney,
+        beneficiaryID: Int
+    ) -> Promise<PSEasyPayTransfer> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.createEasyPayTransfer(
+                amount: amount,
+                beneficiaryID: beneficiaryID
+            )
+        )
+    }
+
+    public func getEasyPayTransfers(
+        filter: PSEasyPayTransferFilter?
+    ) -> Promise<PSMetadataAwareResponse<PSEasyPayTransfer>> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.getEasyPayTransfers(filter: filter)
+        )
+    }
+
+    public func cancelEasyPayTransfer(id: Int) -> Promise<PSEasyPayTransfer> {
+        doRequest(requestRouter: WalletApiRequestRouter.cancelEasyPayTransfer(id: id))
+    }
 }
