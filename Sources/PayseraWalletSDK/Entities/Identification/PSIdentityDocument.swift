@@ -11,6 +11,7 @@ public class PSIdentityDocument: Mappable {
     public var reviewedByUserId: String?
     public var files: Array<PSIdentityFile>?
     public var countryOfIssue: String?
+    public var type: String?
     
     required public init?(map: Map) {
     }
@@ -29,6 +30,7 @@ public class PSIdentityDocument: Mappable {
         reviewedByUserId            <- map["reviewed_by_user_id"]
         files                       <- map["files"]
         countryOfIssue              <- map["country_of_issue"]
+        type                        <- map["type"]
     }
 }
 
