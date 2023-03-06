@@ -1,5 +1,4 @@
 import Alamofire
-import AlamofireNetworkActivityLogger
 import PromiseKit
 
 class ApiRequest {
@@ -12,8 +11,5 @@ class ApiRequest {
     ) {
         self.pendingPromise = pendingPromise
         self.requestEndPoint = requestEndPoint
-        
-        NetworkActivityLogger.shared.startLogging()
-        NetworkActivityLogger.shared.level = .debug
     }
 }

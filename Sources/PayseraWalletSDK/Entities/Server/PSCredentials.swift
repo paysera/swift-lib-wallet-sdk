@@ -1,8 +1,7 @@
 import Foundation
 import ObjectMapper
 
-public class PSCredentials: Mappable {
-    
+public final class PSCredentials: Mappable {
     public var accessToken: String?
     public var macKey: String?
     public var refreshToken: String?
@@ -19,8 +18,7 @@ public class PSCredentials: Mappable {
         }
     }
     
-    public init() {
-    }
+    public init() {}
     
     // Mappable
     public func mapping(map: Map) {
