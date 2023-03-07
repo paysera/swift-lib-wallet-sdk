@@ -21,11 +21,7 @@ let package = Package(
         .package(
             url: "https://github.com/krzyzanowskim/CryptoSwift",
             .exact("1.4.2")
-        ),
-        .package(
-            url: "https://github.com/konkab/AlamofireNetworkActivityLogger",
-            .upToNextMajor(from: "3.0.0")
-        ),
+        )
     ],
     targets: [
         .target(
@@ -33,8 +29,7 @@ let package = Package(
             dependencies: [
                 "PayseraCommonSDK",
                 "PayseraAccountsSDK",
-                "CryptoSwift",
-                "AlamofireNetworkActivityLogger"
+                "CryptoSwift"
             ]
         ),
         .testTarget(
