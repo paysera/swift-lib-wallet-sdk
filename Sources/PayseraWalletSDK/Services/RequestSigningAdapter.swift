@@ -67,12 +67,20 @@ public class RequestSigningAdapter: RequestInterceptor {
         logger?.log(level: .DEBUG, message: "Generated nonce \(nonce) for \(requestURL.absoluteURL) ")
         
         let timeStamp = String(format: "%.0f", Date().timeIntervalSince1970 + timeDiff)
-        let pathRange = requestURL.absoluteString.range(of: (requestURL.path))
-        #warning("❌ Change the deprecated function")
-        let fullPath = requestURL.absoluteString.substring(from: (pathRange?.lowerBound)!)
+        let pathRangeLowerBound = requestURL.absoluteString.range(of: (requestURL.path))!.lowerBound
+        let fullPath = String(requestURL.absoluteString.suffix(from: pathRangeLowerBound))
         contentsHash.append(extraParameters)
-        let items: [String] = [timeStamp, nonce, httpMethod.uppercased(), fullPath, (requestURL.host)!, port, contentsHash, ""]
-        let dataString = items.joined(separator: "\n")
+        
+        let dataString: String = [
+            timeStamp,
+            nonce,
+            httpMethod.uppercased(),
+            fullPath,
+            (requestURL.host)!,
+            port,
+            contentsHash,
+            ""
+        ].joined(separator: "\n")
         
         guard
             let bytes = try? HMAC(key: macKey, variant: .sha2(.sha256))
