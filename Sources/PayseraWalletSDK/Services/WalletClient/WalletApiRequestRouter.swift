@@ -11,6 +11,8 @@ enum WalletApiRequestRouter {
     case delete(path: String, parameters: [String: Any]?)
     
     // GET
+    case getClient
+    case getClientStatus(appClientInfoID: Int)
     case getLocations(PSGetLocationsRequest)
     case getLocationCategories(locale: String)
     case getCurrentUser
@@ -137,6 +139,8 @@ enum WalletApiRequestRouter {
             return .post
             
         case .get,
+             .getClient,
+             .getClientStatus,
              .getLocationCategories,
              .getCurrentUser,
              .getUser,
@@ -287,8 +291,12 @@ enum WalletApiRequestRouter {
         case .changePassword(let userId, _):
             return "user/\(userId)/password"
             
-        case .registerClient:
+        case .registerClient,
+             .getClient:
             return "client"
+            
+        case .getClientStatus(let appClientInfoID):
+            return "client/info/\(appClientInfoID)/status"
             
         case .getLocations:
             return "locations"

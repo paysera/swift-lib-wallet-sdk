@@ -1,7 +1,6 @@
 import ObjectMapper
 
-public class PSClient: Mappable {
-    
+public final class PSClient: Mappable {
     public var credentials: PSCredentials
     
     required public init?(map: Map) {
@@ -13,6 +12,5 @@ public class PSClient: Mappable {
     }
     
     // Mappable
-    public func mapping(map: Map) {
-    }
+    public func mapping(map: Map) {}
 }

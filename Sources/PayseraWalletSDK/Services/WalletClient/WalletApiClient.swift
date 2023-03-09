@@ -4,9 +4,16 @@ import PayseraCommonSDK
 import PromiseKit
 
 public class WalletApiClient: BaseApiClient {
-    
     public func registerNewAuthClient(deviceInfo: PSCreateClientRequest) -> Promise<PSClient> {
         doRequest(requestRouter: WalletApiRequestRouter.registerClient(deviceInfo))
+    }
+    
+    public func getClient() -> Promise<PSClient> {
+        doRequest(requestRouter: WalletApiRequestRouter.getClient)
+    }
+    
+    public func getClientStatus(for appClientInfoID: Int) -> Promise<PSClientStatus> {
+        doRequest(requestRouter: WalletApiRequestRouter.getClientStatus(appClientInfoID: appClientInfoID))
     }
     
     public func getLocations(
