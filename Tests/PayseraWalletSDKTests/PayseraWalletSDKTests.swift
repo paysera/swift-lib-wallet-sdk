@@ -1326,15 +1326,13 @@ class PayseraWalletSDKTests: XCTestCase {
     func testCreateEasyPayTransfer() {
         let expectation = XCTestExpectation(description: "PSEasyPayTransfer must exist")
         var response: PSEasyPayTransfer?
-        let amount = "insert_me"
-        let currency = "insert_me"
-        let beneficiaryID = 0
+        var request: PSEasyPayTransferRequest!
+        request.amount = .init(amount: "0.01", currency: "BGN")
+        request.beneficiaryUserID = 123
+        request.payerWalletID = 123
 
         client
-            .createEasyPayTransfer(
-                amount: .init(amount: amount, currency: currency),
-                beneficiaryID: beneficiaryID
-            )
+            .createEasyPayTransfer(request: request)
             .done { data in
                 response = data
             }

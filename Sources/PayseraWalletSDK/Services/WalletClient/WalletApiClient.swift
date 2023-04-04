@@ -588,23 +588,15 @@ public class WalletApiClient: BaseApiClient {
     }
 
     public func createEasyPayTransfer(
-        amount: PSMoney,
-        beneficiaryID: Int
+        request: PSEasyPayTransferRequest
     ) -> Promise<PSEasyPayTransfer> {
-        doRequest(
-            requestRouter: WalletApiRequestRouter.createEasyPayTransfer(
-                amount: amount,
-                beneficiaryID: beneficiaryID
-            )
-        )
+        doRequest(requestRouter: WalletApiRequestRouter.createEasyPayTransfer(request))
     }
 
     public func getEasyPayTransfers(
         filter: PSEasyPayTransferFilter?
     ) -> Promise<PSMetadataAwareResponse<PSEasyPayTransfer>> {
-        doRequest(
-            requestRouter: WalletApiRequestRouter.getEasyPayTransfers(filter: filter)
-        )
+        doRequest(requestRouter: WalletApiRequestRouter.getEasyPayTransfers(filter: filter))
     }
 
     public func cancelEasyPayTransfer(id: Int) -> Promise<PSEasyPayTransfer> {
