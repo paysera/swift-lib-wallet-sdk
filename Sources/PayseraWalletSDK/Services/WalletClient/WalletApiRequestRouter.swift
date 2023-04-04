@@ -69,7 +69,7 @@ enum WalletApiRequestRouter {
     case collectContact(PSContactCollectionRequest)
     case createAdditionalDocument(request: PSIdentificationDocumentRequest)
     case submitAdditionalDocument(documentID: Int, data: Data, contentType: String)
-    case createEasyPayTransfer(amount: PSMoney, beneficiaryID: Int)
+    case createEasyPayTransfer(PSEasyPayTransferRequest)
 
     // PUT
     case verifyPhone(userId: Int, code: String)
@@ -107,7 +107,7 @@ enum WalletApiRequestRouter {
     
     // MARK: - Variables
     
-    private static let baseURL = URL(string: "https://wallet-api.paysera.com/")!
+    private static let baseURL = URL(string: "https://wallet-api.paysera.com/rest/v1/")!
 
     private var method: HTTPMethod {
         switch self {
@@ -215,22 +215,6 @@ enum WalletApiRequestRouter {
     }
     
     private var path: String {
-        servicePath + endpointPath
-    }
-
-    private var servicePath: String {
-        switch self {
-        case .getEasyPayFee,
-             .createEasyPayTransfer,
-             .cancelEasyPayTransfer,
-             .getEasyPayTransfers:
-            return "epay/rest/v1/"
-        default:
-            return "rest/v1/"
-        }
-    }
-
-    private var endpointPath: String {
         switch self {
         case .getTransaction(let key, _):
             return "transaction/\(key)"
@@ -473,22 +457,19 @@ enum WalletApiRequestRouter {
             return "additional-document/\(documentID)/file"
             
         case .getEasyPayFee:
-            return "fees"
+            return "epay/fees"
 
-        case .createEasyPayTransfer:
-            return "transfers"
+        case .createEasyPayTransfer,
+             .getEasyPayTransfers:
+            return "epay/transfers"
 
         case .cancelEasyPayTransfer(let id):
-            return "transfers/\(id)/cancel"
-
-        case .getEasyPayTransfers:
-            return "transfers"
+            return "epay/transfers/\(id)/cancel"
         }
     }
     
     private var parameters: Parameters? {
         switch self {
-        
         case .getTransaction(_, let fields):
             return ["fields": fields.joined(separator: ",")]
             
@@ -653,10 +634,8 @@ enum WalletApiRequestRouter {
         case .getEasyPayFee(let amount):
             return amount.toJSON()
 
-        case .createEasyPayTransfer(let amount, let beneficiaryID):
-            var data = amount.toJSON()
-            data["beneficiary_id"] = beneficiaryID
-            return data
+        case .createEasyPayTransfer(let request):
+            return request.toJSON()
 
         case .getEasyPayTransfers(let filter):
             return filter?.toJSON()
@@ -685,6 +664,8 @@ enum WalletApiRequestRouter {
         }
     }
 }
+
+// MARK: - URLRequestConvertible
 
 extension WalletApiRequestRouter: URLRequestConvertible {
     func asURLRequest() throws -> URLRequest {
