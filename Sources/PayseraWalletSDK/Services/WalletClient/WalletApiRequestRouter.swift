@@ -620,12 +620,10 @@ enum WalletApiRequestRouter {
         case .getConfirmations(let filter):
             return filter.toJSON()
             
-        case .createIdentificationRequest:
+        case .createIdentificationRequest,
+             .createFacePhoto:
             return [:]
 
-        case .createFacePhoto:
-            return ["liveliness_score": 99]
-            
         case .createIdentityDocument(let request):
             return request.toJSON()
             
