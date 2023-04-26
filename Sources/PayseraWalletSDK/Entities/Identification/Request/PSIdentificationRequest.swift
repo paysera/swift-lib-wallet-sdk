@@ -10,13 +10,10 @@ public class PSIdentificationRequest: Mappable {
     public var comment: String?
     public private(set) var additionalDocument: PSIdentityDocument?
     
-    required public init?(map: Map) {
-    }
+    required public init?(map: Map) {}
     
-    public init() {
-    }
-    
-    // Mappable
+    public init() {}
+        
     public func mapping(map: Map) {
         id                  <- map["id"]
         facePhotos          <- map["face_photos"]

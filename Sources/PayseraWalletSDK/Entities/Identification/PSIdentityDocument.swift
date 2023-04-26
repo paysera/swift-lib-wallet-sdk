@@ -1,7 +1,6 @@
 import ObjectMapper
 
 public class PSIdentityDocument: Mappable {
-    
     public var id: Int?
     public var comment: String?
     public var identificationRequestId: Int?
@@ -13,13 +12,10 @@ public class PSIdentityDocument: Mappable {
     public var countryOfIssue: String?
     public var type: String?
     
-    required public init?(map: Map) {
-    }
+    required public init?(map: Map) {}
     
-    public init() {
-    }
+    public init() {}
     
-    // Mappable
     public func mapping(map: Map) {
         id                          <- map["id"]
         comment                     <- map["comment"]
@@ -41,12 +37,10 @@ public class PSIdentityFile: Mappable {
     public var documentID: Int?
     public var documentType: String?
     
-    required public init?(map: Map) {
-    }
+    required public init?(map: Map) {}
     
-    public init() { }
+    public init() {}
     
-    // Mappable
     public func mapping(map: Map) {
         id           <- map["file_id"]
         type         <- map["type"]
