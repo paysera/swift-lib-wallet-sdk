@@ -1083,6 +1083,20 @@ class PayseraWalletSDKTests: XCTestCase {
         XCTAssertNotNil(response)
     }
     
+    func testCreatingFacePhoto() {
+        let expectation = XCTestExpectation(description: "Face photo request should be created")
+        let requestId = 4884446
+        let locale = "en"
+        
+        client
+            .createFacePhoto(requestId: requestId, for: locale)
+            .done { _ in }
+            .catch { error in XCTFail(error.localizedDescription) }
+            .finally { expectation.fulfill() }
+        
+        wait(for: [expectation], timeout: timeout)
+    }
+    
     func testSubmittingFacePhoto() {
         let expectation = XCTestExpectation(description: "Face photo should be uploaded")
         let requestId = 4884446
