@@ -1085,7 +1085,7 @@ class PayseraWalletSDKTests: XCTestCase {
     
     func testCreatingFacePhoto() {
         let expectation = XCTestExpectation(description: "Face photo request should be created")
-        let requestId = 4884446
+        let requestId = 0
         let locale = "en"
         
         client
