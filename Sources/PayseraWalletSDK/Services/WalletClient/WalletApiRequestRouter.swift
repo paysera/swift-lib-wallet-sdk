@@ -62,6 +62,7 @@ enum WalletApiRequestRouter {
     case createCard(userId: Int, request: PSCardAccountRequest)
     case createIdentificationRequest(userId: Int)
     case createIdentityDocument(request: PSIdentificationDocumentRequest)
+    case createFacePhoto(requestId: Int, locale: String)
     case createAuthToken
     case createTransfer(PSTransfer)
     case createSimulatedTransfer(PSTransfer)
@@ -128,6 +129,7 @@ enum WalletApiRequestRouter {
              .createCard,
              .createIdentificationRequest,
              .createIdentityDocument,
+             .createFacePhoto,
              .createAuthToken,
              .createTransfer,
              .createSimulatedTransfer,
@@ -421,6 +423,9 @@ enum WalletApiRequestRouter {
             
         case .createIdentityDocument(let request):
             return "identification-request/\(request.id!)/identity-document"
+            
+        case .createFacePhoto(let requestId, _):
+            return "identification-request/\(requestId)/face-photo"
         
         case .submitFacePhoto(let requestId, let order, _, _):
             return "identification-request/\(requestId)/face-photo/image/\(order)"
@@ -615,9 +620,10 @@ enum WalletApiRequestRouter {
         case .getConfirmations(let filter):
             return filter.toJSON()
             
-        case .createIdentificationRequest:
+        case .createIdentificationRequest,
+             .createFacePhoto:
             return [:]
-            
+
         case .createIdentityDocument(let request):
             return request.toJSON()
             
@@ -688,6 +694,10 @@ extension WalletApiRequestRouter: URLRequestConvertible {
             urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
             urlRequest.setValue(contentType, forHTTPHeaderField: "Content-Type")
             urlRequest.httpBody = data
+            
+        case .createFacePhoto(_, let locale):
+            urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
+            urlRequest.addValue(locale, forHTTPHeaderField: "Accept-Language")
             
         case .checkIn:
             urlRequest.url = try! "\(urlRequest.url!.absoluteString)?\(parameters!.queryString)".asURL()

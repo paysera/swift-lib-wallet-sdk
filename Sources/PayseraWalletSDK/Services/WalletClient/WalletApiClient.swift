@@ -509,6 +509,16 @@ public class WalletApiClient: BaseApiClient {
         )
     }
     
+    public func createFacePhoto(requestId: Int, for locale: String) -> Promise<PSLivenessCheck> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.createFacePhoto(
+                requestId: requestId,
+                locale: locale
+            )
+        )
+    }
+
+    
     public func submitDocumentPhoto(
         documentId: Int,
         order: Int,
@@ -525,13 +535,9 @@ public class WalletApiClient: BaseApiClient {
         )
     }
     
-    public func submitIdentificationRequest(
-        requestId: Int
-    ) -> Promise<PSIdentificationRequest> {
+    public func submitIdentificationRequest(requestId: Int) -> Promise<PSIdentificationRequest> {
         doRequest(
-            requestRouter: WalletApiRequestRouter.submitIdentificationRequest(
-                requestId: requestId
-            )
+            requestRouter: WalletApiRequestRouter.submitIdentificationRequest(requestId: requestId)
         )
     }
     
