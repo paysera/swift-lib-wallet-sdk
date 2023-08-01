@@ -5,14 +5,12 @@ import PayseraCommonSDK
 import PromiseKit
 
 public class BaseApiClient {
-    let session: Session
-    let logger: PSLoggerProtocol?
-    
-    let workQueue = DispatchQueue(label: String(describing: BaseApiClient.self))
     var requestsQueue = [ApiRequest]()
     var timeIsSyncing = false
-    
     var hasReachedRetryLimit = false
+    let session: Session
+    let logger: PSLoggerProtocol?
+    let workQueue = DispatchQueue(label: String(describing: BaseApiClient.self))
     private let publicWalletApiClient: PublicWalletApiClient?
     private let rateLimitUnlockerDelegate: RateLimitUnlockerDelegate?
     private let serverTimeSynchronizationProtocol: ServerTimeSynchronizationProtocol?
@@ -133,10 +131,20 @@ public class BaseApiClient {
         switch statusCode {
         case 200...299:
             logger?.log(level: .DEBUG, message: logMessage, response: urlResponse)
+            
             handleSuccessfulResponse(for: apiRequest, with: responseString)
         default:
-            let error = mapError(jsonString: responseString, statusCode: statusCode)
+            let correlationID = urlResponse.headers
+                .first(where: { $0.name == "paysera-correlation-id" })?
+                .value
+            let error = mapError(
+                jsonString: responseString,
+                statusCode: statusCode,
+                correlationID: correlationID
+            )
+            
             logger?.log(level: .ERROR, message: logMessage, response: urlResponse, error: error)
+            
             handleErrorResponse(
                 apiRequest: apiRequest,
                 urlResponse: urlResponse,
@@ -156,12 +164,15 @@ public class BaseApiClient {
         error: PSApiError,
         expiredTokenHandler: ((ApiRequest) -> Void)?
     ) {
-        if urlResponse.statusCode == 401 && error.isInvalidTimestamp() {
+        if
+            urlResponse.statusCode == 401,
+            error.isInvalidTimestamp()
+        {
             syncTimestamp(apiRequest, error)
         } else if
             urlResponse.statusCode == 400,
             error.isTokenExpired(),
-            let expiredTokenHandler = expiredTokenHandler
+            let expiredTokenHandler
         {
             expiredTokenHandler(apiRequest)
         } else if
@@ -200,11 +211,15 @@ public class BaseApiClient {
         }
     }
     
-    private func mapError(jsonString: String, statusCode: Int) -> PSApiError {
+    private func mapError(
+        jsonString: String,
+        statusCode: Int,
+        correlationID: String?
+    ) -> PSApiError {
         let error: PSApiError
         
         if 500 ... 600 ~= statusCode {
-            error = PSApiError.internalServerError()
+            error = PSApiError.internalServerError(with: correlationID)
         } else {
             error = Mapper<PSApiError>().map(JSONString: jsonString)
                 ?? PSApiError.mapping(json: jsonString)
