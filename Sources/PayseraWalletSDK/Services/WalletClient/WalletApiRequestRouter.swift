@@ -44,6 +44,8 @@ enum WalletApiRequestRouter {
     case getConfirmation(identifier: String)
     case getEasyPayFee(amount: PSMoney)
     case getEasyPayTransfers(filter: PSEasyPayTransferFilter?)
+    #warning("TODO: should be removed when we are done with APP-5724")
+    case getInternalServerError
 
     // POST
     case registerClient(PSCreateClientRequest)
@@ -173,7 +175,8 @@ enum WalletApiRequestRouter {
              .getConfirmations,
              .getConfirmation,
              .getEasyPayFee,
-             .getEasyPayTransfers:
+             .getEasyPayTransfers,
+             .getInternalServerError:
             return .get
             
         case .put,
@@ -470,6 +473,9 @@ enum WalletApiRequestRouter {
 
         case .cancelEasyPayTransfer(let id):
             return "epay/transfers/\(id)/cancel"
+            
+        case .getInternalServerError:
+            return "user/test-internal"
         }
     }
     
