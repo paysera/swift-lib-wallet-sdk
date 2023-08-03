@@ -608,4 +608,8 @@ public class WalletApiClient: BaseApiClient {
     public func cancelEasyPayTransfer(id: Int) -> Promise<PSEasyPayTransfer> {
         doRequest(requestRouter: WalletApiRequestRouter.cancelEasyPayTransfer(id: id))
     }
+    
+    public func getInternalServerError() -> Promise<Void> {
+        doRequest(requestRouter: WalletApiRequestRouter.getInternalServerError)
+    }
 }
