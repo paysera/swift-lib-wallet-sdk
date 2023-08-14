@@ -33,7 +33,7 @@ enum WalletApiRequestRouter {
     case getCards(filter: PSCardFilter)
     case getPendingPayments(walletId: Int, filter: PSBaseFilter?)
     case getReservationStatements(walletId: Int, filter: PSBaseFilter?)
-    case getIdentificationRequests(filter: PSIdentificationRequestsFilter)
+    case getIdentificationRequests(filter: PSIdentificationRequestsFilter, locale: String)
     case getGenerator(generatorId: Int)
     case calculateCurrencyConversion(PSCurrencyConversion)
     case getCodeInformation(code: String)
@@ -590,7 +590,7 @@ enum WalletApiRequestRouter {
         case .provideUserPosition(let position):
             return position.toJSON()
         
-        case .getIdentificationRequests(let filter):
+        case .getIdentificationRequests(let filter, _):
             return filter.toJSON()
             
         case .createContactBook(let request),
@@ -704,7 +704,11 @@ extension WalletApiRequestRouter: URLRequestConvertible {
         case .createFacePhoto(_, let locale):
             urlRequest = try JSONEncoding.default.encode(urlRequest, with: parameters)
             urlRequest.addValue(locale, forHTTPHeaderField: "Accept-Language")
-            
+
+        case .getIdentificationRequests(_, let locale):
+            urlRequest = try URLEncoding.default.encode(urlRequest, with: parameters)
+            urlRequest.addValue(locale, forHTTPHeaderField: "Accept-Language")
+
         case .checkIn:
             urlRequest.url = try! "\(urlRequest.url!.absoluteString)?\(parameters!.queryString)".asURL()
             
