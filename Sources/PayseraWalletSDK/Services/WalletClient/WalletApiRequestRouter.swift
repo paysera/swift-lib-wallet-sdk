@@ -22,6 +22,7 @@ enum WalletApiRequestRouter {
     case getWallets(PSWalletsFilter)
     case getUserWallets(inactiveIncluded: String)
     case getSpot(id: Int, fields: [String])
+    case getEVP(iban: String)
     case getTransfer(id: Int)
     case getTransaction(key: String, fields: [String])
     case getProjects
@@ -153,6 +154,7 @@ enum WalletApiRequestRouter {
              .getWalletByFilter,
              .getUserWallets,
              .getSpot,
+             .getEVP,
              .getTransfer,
              .getTransaction,
              .getWallets,
@@ -249,6 +251,9 @@ enum WalletApiRequestRouter {
             
         case .getSpot(let id, _):
             return "spot/\(id)"
+
+        case .getEVP(let iban):
+            return "account/\(iban)"
             
         case .getTransfer(let id):
             return "transfers/\(id)"
