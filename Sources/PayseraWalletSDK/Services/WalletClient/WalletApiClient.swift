@@ -374,9 +374,15 @@ public class WalletApiClient: BaseApiClient {
     }
     
     public func getIdentificationRequests(
-        filter: PSIdentificationRequestsFilter
+        filter: PSIdentificationRequestsFilter,
+        locale: String
     ) -> Promise<PSMetadataAwareResponse<PSIdentificationRequest>> {
-        doRequest(requestRouter: WalletApiRequestRouter.getIdentificationRequests(filter: filter))
+        doRequest(
+            requestRouter: WalletApiRequestRouter.getIdentificationRequests(
+                filter: filter,
+                locale: locale
+            )
+        )
     }
     
     public func createContactBook(request: PSContactBookRequest) -> Promise<PSContactBookResponse> {
