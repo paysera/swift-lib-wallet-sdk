@@ -555,6 +555,10 @@ public class WalletApiClient: BaseApiClient {
         doRequest(requestRouter: WalletApiRequestRouter.createAuthToken)
     }
     
+    public func getEVP(from iban: String) -> Promise<PSEvpAccount> {
+        doRequest(requestRouter: WalletApiRequestRouter.getEVP(iban: iban))
+    }
+    
     public func createTransfer(_ transfer: PSTransfer) -> Promise<PSTransfer> {
         doRequest(requestRouter: WalletApiRequestRouter.createTransfer(transfer))
     }
