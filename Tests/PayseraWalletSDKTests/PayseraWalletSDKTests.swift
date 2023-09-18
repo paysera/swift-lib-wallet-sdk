@@ -1416,4 +1416,43 @@ class PayseraWalletSDKTests: XCTestCase {
         wait(for: [expectation], timeout: timeout)
         XCTAssertNotNil(response)
     }
+    
+    func testGetEasyPayUpdatedTransfers() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer items must exist")
+        var response: PSMetadataAwareResponse<PSEasyPayTransfer>?
+        let filter = PSEasyPayTransferFilter()
+
+        client
+            .getEasyPayUpdatedTransfers(filter: filter)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+
+        wait(for: [expectation], timeout: timeout)
+        XCTAssertNotNil(response)
+    }
+    
+    func testMarkEasyPayTransferAsSeen() {
+        let expectation = XCTestExpectation(description: "PSEasyPayTransfer items must exist")
+        var response: PSMetadataAwareResponse<PSEasyPayTransfer>?
+        let filter = PSEasyPayTransferFilter()
+        let seenIDs = [] // insert IDs here
+
+        client
+            .markEasyPayTransfersAsSeen(transferIDs: seenIDs)
+            .done { data in
+                response = data
+            }
+            .catch {
+                error in XCTFail(error.localizedDescription)
+            }
+            .finally { expectation.fulfill() }
+
+        wait(for: [expectation], timeout: timeout)
+        XCTAssertNotNil(response)
+    }
 }
