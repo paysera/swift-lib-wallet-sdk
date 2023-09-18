@@ -45,6 +45,7 @@ enum WalletApiRequestRouter {
     case getConfirmation(identifier: String)
     case getEasyPayFee(amount: PSMoney)
     case getEasyPayTransfers(filter: PSEasyPayTransferFilter?)
+    case getEasyPayUpdatedTransfers(filter: PSEasyPayTransferFilter?)
     #warning("TODO: should be removed when we are done with APP-5724")
     case getInternalServerError
 
@@ -97,6 +98,7 @@ enum WalletApiRequestRouter {
     case uploadAvatar(imageData: Data, contentType: String)
     case rejectConfirmation(identifier: String)
     case cancelEasyPayTransfer(id: Int)
+    case markEasyPayTransfersAsSeen(ids: [Int])
 
     // DELETE
     case deleteTransaction(key: String)
@@ -178,6 +180,7 @@ enum WalletApiRequestRouter {
              .getConfirmation,
              .getEasyPayFee,
              .getEasyPayTransfers,
+             .getEasyPayUpdatedTransfers,
              .getInternalServerError:
             return .get
             
@@ -203,7 +206,8 @@ enum WalletApiRequestRouter {
              .submitDocumentPhoto,
              .submitIdentificationRequest,
              .uploadAvatar,
-             .cancelEasyPayTransfer:
+             .cancelEasyPayTransfer,
+             .markEasyPayTransfersAsSeen:
             return .put
             
         case .delete,
@@ -475,9 +479,15 @@ enum WalletApiRequestRouter {
         case .createEasyPayTransfer,
              .getEasyPayTransfers:
             return "epay/transfers"
+            
+        case .getEasyPayUpdatedTransfers:
+            return "epay/transfers/updated-transfers"
 
         case .cancelEasyPayTransfer(let id):
             return "epay/transfers/\(id)/cancel"
+            
+        case .markEasyPayTransfersAsSeen:
+            return "epay/transfers/mark-updated-transfers-as-seen"
             
         case .getInternalServerError:
             return "user/test-internal"
@@ -654,8 +664,12 @@ enum WalletApiRequestRouter {
         case .createEasyPayTransfer(let request):
             return request.toJSON()
 
-        case .getEasyPayTransfers(let filter):
+        case .getEasyPayTransfers(let filter),
+             .getEasyPayUpdatedTransfers(let filter):
             return filter?.toJSON()
+            
+        case .markEasyPayTransfersAsSeen(let ids):
+            return ["epay_transaction_ids": ids]
             
         default:
             return nil

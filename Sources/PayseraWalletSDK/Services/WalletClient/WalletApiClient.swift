@@ -614,9 +614,23 @@ public class WalletApiClient: BaseApiClient {
     ) -> Promise<PSMetadataAwareResponse<PSEasyPayTransfer>> {
         doRequest(requestRouter: WalletApiRequestRouter.getEasyPayTransfers(filter: filter))
     }
+    
+    public func getEasyPayUpdatedTransfers(
+        filter: PSEasyPayTransferFilter?
+    ) -> Promise<PSMetadataAwareResponse<PSEasyPayTransfer>> {
+        doRequest(requestRouter: WalletApiRequestRouter.getEasyPayUpdatedTransfers(filter: filter))
+    }
 
     public func cancelEasyPayTransfer(id: Int) -> Promise<PSEasyPayTransfer> {
         doRequest(requestRouter: WalletApiRequestRouter.cancelEasyPayTransfer(id: id))
+    }
+    
+    public func markEasyPayTransfersAsSeen(
+        transferIDs: [Int]
+    ) -> Promise<PSMetadataAwareResponse<PSEasyPayTransfer>> {
+        doRequest(
+            requestRouter: WalletApiRequestRouter.markEasyPayTransfersAsSeen(ids: transferIDs)
+        )
     }
     
     public func getInternalServerError() -> Promise<Void> {
